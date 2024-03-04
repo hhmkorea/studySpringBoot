@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 public class Book {
 	@Id // PK를 해당 변수로 하겠다는 읨.
 	@GeneratedValue(strategy = GenerationType.IDENTITY) // 해당 데이터베이스 번호증가 전략을 따라가겠다.
-	private Long id;
+	private Long id; // long이 아닌 Long으로 하는 이유, Wrapping Class로 넣으면 null로도 넣을 수 있음.
 	
 	private String title;
 	private String author;

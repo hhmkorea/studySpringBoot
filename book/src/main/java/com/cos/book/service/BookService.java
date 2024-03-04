@@ -13,7 +13,7 @@ import lombok.RequiredArgsConstructor;
 
 // 기능을 정의할 수 있고, Transaction을 관리할 수 있음.
 @RequiredArgsConstructor // final이 들어있는 변수의 생성자 자동으로 만들어줌, 자동으로 DI(의존성 주입)됨.
-@Service
+@Service // Spring Ioc 컨테이너에 들어가 있음. Spring에 문제가 있으면 이게 메모리에 떳는지 확인해야함.
 public class BookService {
 
 	private final BookRepository bookRepository;
