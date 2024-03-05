@@ -1,5 +1,8 @@
 package com.cos.book.domain;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
@@ -14,5 +17,17 @@ import org.springframework.transaction.annotation.Transactional;
 public class BookRepositoryUnitTest {
 
 	@Autowired
-	private BookRepository bookRepository;
+	private BookRepository bookRepository; // 실제 데이타 응답받음.
+	
+	@Test
+	public void save_Test() {
+		// given
+		Book book = new Book(null, "책제목1", "책저자1");
+		
+		// when
+		Book bookEntity = bookRepository.save(book);
+		
+		// then
+		assertEquals("책제목1", bookEntity.getTitle()); // 기대하는값, 실제값
+	}
 }

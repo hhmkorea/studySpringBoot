@@ -1,10 +1,15 @@
 package com.cos.book.service;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.when;
+
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import com.cos.book.domain.Book;
 import com.cos.book.domain.BookRepository;
 
 /**
@@ -20,4 +25,23 @@ public class BookServiceUnitTest {
 	
 	@Mock
 	private BookRepository bookRepository;
+	
+	@Test
+	public void save_Test() { // 전부 가짜 데이터
+//		
+//		// BODMocikto 방식
+//		// given
+//		Book book = new Book();
+//		book.setTitle("책제목1");
+//		book.setAuthor("책저자1");
+//		
+//		// stub - 동작 지정
+//		when(bookRepository.save(book)).thenReturn(book);
+//		
+//		// test execute
+//		Book bookEntity = bookService.save(book);
+//		
+//		// then
+//		assertEquals(bookEntity, book);
+	}
 }
