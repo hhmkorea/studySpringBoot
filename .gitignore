@@ -1,2 +1,16 @@
 /.metadata/
 /.idea/
+/book/.idea/
+/book/.mvn/
+/book/.settings/
+/book/target/
+/book/.classpath
+/book/.factorypath
+/book/.project
+/demo/.gradle/
+/demo/.idea/
+/demo/build/
+/demo/gradle/
+/junit-project/.gradle/
+/junit-project/.idea/
+/junit-project/gradle/

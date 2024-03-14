@@ -1,7 +1,6 @@
 package com.cos.book.web;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -13,7 +12,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.hamcrest.Matchers;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +30,6 @@ import com.cos.book.domain.BookRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jakarta.persistence.EntityManager;
-import lombok.extern.slf4j.Slf4j;
 
 /*
  * 
@@ -43,7 +40,6 @@ import lombok.extern.slf4j.Slf4j;
  * @Transactional : 각각의 테스트 함수가 종료될때마다 트랜잭션을 rollback 해주는 anotation
  */
 
-@Slf4j
 @Transactional
 @AutoConfigureMockMvc 
 @SpringBootTest(webEnvironment = WebEnvironment.MOCK) 
@@ -60,22 +56,8 @@ public class BookControllerIntegreTest {
 	
 	@BeforeEach	// 모든 테스트가 실행되기 전에 각각 한번씩 실행됨. (JUnit4는 @Before)
 	public void init() {
-		//entityManager.persist(new Book()); // 영속화 시키기 
-		
-//		List<Book> books = new ArrayList<>();
-//		books.add(new Book(null, "스프링부트 따라하기", "코스"));
-//		books.add(new Book(null, "리엑트 따라하기", "코스"));		
-//		books.add(new Book(null, "JUnit 따라하기", "코스"));	
-//		
-//		bookRepository.saveAll(books); // 실제 DB에 데이타 넣기 
-		
 		entityManager.createNativeQuery("ALTER TABLE book ALTER COLUMN id RESTART WITH 1").executeUpdate();
 	}
-	
-//	@AfterEach
-//	public void end() {
-//		bookRepository.deleteAll();
-//	}
 	
 	@Test
 	public void save_Test() throws Exception {

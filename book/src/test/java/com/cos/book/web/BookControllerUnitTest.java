@@ -14,12 +14,10 @@ import java.util.List;
 
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
@@ -29,15 +27,14 @@ import com.cos.book.domain.Book;
 import com.cos.book.service.BookService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import lombok.extern.slf4j.Slf4j;
-
 // 단위 테스트 : Controller만 테스트 (Controller 관련 로직만 띄우기)
 
-@Slf4j
 @WebMvcTest // 메모리에 Controller, Filter, ControllerAdvice 가 뜸.
 // @ExtendWith(SpringExtension.class)이 안에 돌어있음. Spring 환경에서 테스트할때 필수! Junit4에는 붙여야함.
 public class BookControllerUnitTest {
 
+	//private static final Logger log = org.slf4j.LoggerFactory.getLogger(BookControllerIntegreTest.class);
+	
 	@Autowired
 	private MockMvc mockMvc;
 
