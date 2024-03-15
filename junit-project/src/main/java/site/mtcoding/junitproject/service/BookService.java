@@ -9,6 +9,7 @@ import site.mtcoding.junitproject.web.dto.BookRespDto;
 import site.mtcoding.junitproject.web.dto.BookSaveReqDto;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor // final 지정시 같이 넣음.
@@ -33,8 +34,20 @@ public class BookService {
     }
 
     // 3. 책 한건 보기
+    public BookRespDto findOneBook(Long id) {
+        Optional <Book> bookOP = bookRepository.findById(id);
+        if(bookOP.isPresent()) {// 찾았다면
+            return new BookRespDto().toDto(bookOP.get());
+        } else {
+            throw new RuntimeException("해당 아이디를 찾을 수 없습니다.");
+        }
+    }
 
     // 4. 책 삭제
+    @Transactional(rollbackFor = RuntimeException.class)
+    public void deleteBook(Long id) {
+        bookRepository.deleteById(id);
+    }
 
     // 5. 책 수정
 }
