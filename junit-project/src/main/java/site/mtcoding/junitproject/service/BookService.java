@@ -8,6 +8,9 @@ import site.mtcoding.junitproject.domain.BookRepository;
 import site.mtcoding.junitproject.web.dto.BookRespDto;
 import site.mtcoding.junitproject.web.dto.BookSaveReqDto;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @RequiredArgsConstructor // final 지정시 같이 넣음.
 @Service
 public class BookService {
@@ -23,6 +26,11 @@ public class BookService {
     }
 
     // 2. 책 목록 보기
+    public List<BookRespDto> findAllBooks() {
+        return bookRepository.findAll().stream()
+                .map(new BookRespDto()::toDto) // 자바 1.8 메서드 참조 // (bookPS) -> new BookRespDto().toDto(bookPS)
+                .collect(Collectors.toList());
+    }
 
     // 3. 책 한건 보기
 
