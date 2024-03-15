@@ -90,8 +90,41 @@ public class BookRepositoryTest {
         bookRepository.deleteById(id);
         // then
         Assertions.assertFalse(bookRepository.findById(id).isPresent()); // 값이 없으면 false
-
     }
 
+    // prepareData() 실행으로 데이타 들어가 있음: Junit, 겟인데어
     // 5. 책 수정
+    @Sql("classpath:db/tableInit.sql")
+    @Test
+    public void update_test() {
+        // given
+        Long id = 1L;
+        String title = "junit5";
+        String author = "메타코딩";
+        Book book = new Book(id, title, author);
+
+        // when
+//        bookRepository.findAll().stream()
+//                .forEach((b) -> {
+//                    System.out.println(b.getId());
+//                    System.out.println(b.getTitle());
+//                    System.out.println(b.getAuthor());
+//                    System.out.println("========= 1 ============");
+//                });
+
+        Book bookPS = bookRepository.save(book);
+
+//        bookRepository.findAll().stream()
+//                .forEach((b) -> {
+//                    System.out.println(b.getId());
+//                    System.out.println(b.getTitle());
+//                    System.out.println(b.getAuthor());
+//                    System.out.println("========= 2 ============");
+//                });
+
+        // then
+        Assertions.assertEquals(id, bookPS.getId());
+        Assertions.assertEquals(title, bookPS.getTitle());
+        Assertions.assertEquals(author, bookPS.getAuthor());
+    }
 }
