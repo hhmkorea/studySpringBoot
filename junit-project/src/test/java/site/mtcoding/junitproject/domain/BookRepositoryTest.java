@@ -65,7 +65,7 @@ public class BookRepositoryTest {
     } // transaction 종료(저장된 데이터를 초기화함)
 
     // 3. 책 한건보기
-    @Sql("classpath:db/tableInit.sql")
+    @Sql("classpath:db/tableInit.sql")// auto_increment 때문에 drop table, create table 수행
     @Test
     public void findOne_test() {
         // given (데이터 준비)
