@@ -39,7 +39,7 @@ public class BookService {
     public List<BookRespDto> findAllBooks() {
         // 본코드에 문제가 있나?
         List<BookRespDto> dtos = bookRepository.findAll().stream()
-                //.map((bookPS) -> bookPS.toDto()) // 람다식 
+                //.map((bookPS) -> bookPS.toDto()) // 람다식
                 .map(Book::toDto)
                 .collect(Collectors.toList());
 
@@ -72,11 +72,12 @@ public class BookService {
 
     // 5. 책 수정
     @Transactional(rollbackFor = RuntimeException.class)
-    public void updateBook(Long id, BookSaveReqDto dto) {
+    public BookRespDto updateBook(Long id, BookSaveReqDto dto) {
         Optional <Book> bookOP = bookRepository.findById(id);
         if(bookOP.isPresent()) {// 찾았다면
             Book bookPS = bookOP.get();
-            bookPS.update(dto.getTitle(), dto.getAuthor());
+            bookPS.update(dto.getTitle(), dto.getAuthor()); // update 메서드 테스트를 못해본다.
+            return bookPS.toDto();
         } else {
             throw new RuntimeException("해당 아이디를 찾을 수 없습니다.");
         }

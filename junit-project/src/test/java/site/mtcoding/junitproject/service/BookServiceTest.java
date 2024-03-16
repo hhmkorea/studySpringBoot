@@ -17,6 +17,7 @@ import site.mtcoding.junitproject.web.dto.BookSaveReqDto;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 @ExtendWith(MockitoExtension.class) // 가짜 메모리 환경
 public class BookServiceTest {
@@ -80,6 +81,45 @@ public class BookServiceTest {
         assertThat(bookRespDtoList.get(1).getAuthor()).isEqualTo("겟인데어");
     }
 
+    @Test
+    public void findOneBook_test() {
+        // given
+        Long id = 1L;
+
+        // stub
+        Book book = new Book(1L, "junit강의", "메타코딩");
+        Optional<Book> bookOP = Optional.of(book);
+        Mockito.when(bookRepository.findById(id)).thenReturn(bookOP);
+
+        // when
+        BookRespDto bookRespDto = bookService.findOneBook(id);
+
+        // then
+        assertThat(bookRespDto.getTitle()).isEqualTo(book.getTitle());
+        assertThat(bookRespDto.getAuthor()).isEqualTo(book.getAuthor());
+    }
+
+    @Test
+    public void updateBook_test() {
+        // given
+        Long id = 1L;
+        BookSaveReqDto dto = new BookSaveReqDto();
+        dto.setTitle("spring강의"); // junit강의
+        dto.setAuthor("겟인데어"); // 메타코딩
+
+        // stub
+        Book book = new Book(1L, "junit강의", "메타코딩");
+        Optional<Book> bookOP = Optional.of(book);
+        Mockito.when(bookRepository.findById(id)).thenReturn(bookOP);
+
+        // when
+        BookRespDto bookRespDto = bookService.updateBook(id, dto);
+
+        // then
+        assertThat(bookRespDto.getTitle()).isEqualTo(dto.getTitle());
+        assertThat(bookRespDto.getAuthor()).isEqualTo(dto.getAuthor());
+
+    }
     // given
 
     // stub
