@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import site.mtcoding.junitproject.web.dto.BookRespDto;
+import site.mtcoding.junitproject.web.dto.response.BookRespDto;
 
 @NoArgsConstructor
 @Getter
