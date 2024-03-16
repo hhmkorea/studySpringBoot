@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import site.mtcoding.junitproject.web.dto.BookRespDto;
 
 @NoArgsConstructor
 @Getter
@@ -31,4 +32,11 @@ public class Book {
         this.author = author;
     }
 
+    public BookRespDto toDto() {
+        return BookRespDto.builder()
+                .id(id)
+                .title(title)
+                .author(author)
+                .build();
+    }
 }

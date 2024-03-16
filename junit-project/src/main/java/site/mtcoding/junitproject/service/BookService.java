@@ -32,14 +32,15 @@ public class BookService {
             }
 
         }
-        return new BookRespDto().toDto(bookPS);
+        return bookPS.toDto();
     }
 
     // 2. 책 목록 보기
     public List<BookRespDto> findAllBooks() {
         // 본코드에 문제가 있나?
         List<BookRespDto> dtos = bookRepository.findAll().stream()
-                .map((bookPS) -> new BookRespDto().toDto(bookPS))
+                //.map((bookPS) -> bookPS.toDto()) // 람다식 
+                .map(Book::toDto)
                 .collect(Collectors.toList());
 
         // print
@@ -56,7 +57,8 @@ public class BookService {
     public BookRespDto findOneBook(Long id) {
         Optional <Book> bookOP = bookRepository.findById(id);
         if(bookOP.isPresent()) {// 찾았다면
-            return new BookRespDto().toDto(bookOP.get());
+            Book bookPS = bookOP.get();
+            return bookPS.toDto();
         } else {
             throw new RuntimeException("해당 아이디를 찾을 수 없습니다.");
         }
