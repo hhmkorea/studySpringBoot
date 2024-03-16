@@ -37,9 +37,19 @@ public class BookService {
 
     // 2. 책 목록 보기
     public List<BookRespDto> findAllBooks() {
-        return bookRepository.findAll().stream()
-                .map(new BookRespDto()::toDto) // 자바 1.8 메서드 참조 // (bookPS) -> new BookRespDto().toDto(bookPS)
+        // 본코드에 문제가 있나?
+        List<BookRespDto> dtos = bookRepository.findAll().stream()
+                .map((bookPS) -> new BookRespDto().toDto(bookPS))
                 .collect(Collectors.toList());
+
+        // print
+        dtos.stream().forEach((dto) -> {
+            System.out.println("============= 본코드 =============");
+            System.out.println(dto.getId());
+            System.out.println(dto.getTitle());
+            System.out.println(dto.getAuthor());
+        });
+        return dtos;
     }
 
     // 3. 책 한건 보기

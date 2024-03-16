@@ -8,10 +8,15 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import site.mtcoding.junitproject.domain.Book;
 import site.mtcoding.junitproject.domain.BookRepository;
 import site.mtcoding.junitproject.util.MailSender;
 import site.mtcoding.junitproject.web.dto.BookRespDto;
 import site.mtcoding.junitproject.web.dto.BookSaveReqDto;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 @ExtendWith(MockitoExtension.class) // 가짜 메모리 환경
 public class BookServiceTest {
@@ -43,7 +48,43 @@ public class BookServiceTest {
         // then
         //Assertions.assertEquals(dto.getTitle(), bookRespDto.getTitle());
         //Assertions.assertEquals(dto.getAuthor(), bookRespDto.getAuthor());
-        assertThat(dto.getTitle()).isEqualTo(bookRespDto.getTitle());
-        assertThat(dto.getAuthor()).isEqualTo(bookRespDto.getAuthor());
+        assertThat(bookRespDto.getTitle()).isEqualTo(dto.getTitle());
+        assertThat(bookRespDto.getAuthor()).isEqualTo(dto.getAuthor());
     }
+
+    @Test
+    public void findAllBooks_test() {
+        // given(파라매터로 들어올 데이터)
+
+        // stub(가설)
+        List<Book> books = new ArrayList<>();
+        books.add(new Book(1L, "junit강의", "메타코딩"));
+        books.add(new Book(2L, "spring강의", "겟인데어"));
+        Mockito.when(bookRepository.findAll()).thenReturn(books);
+
+        // when(실행)
+        List<BookRespDto> bookRespDtoList = bookService.findAllBooks();
+
+        // print
+        bookRespDtoList.stream().forEach((dto) -> {
+            System.out.println("============= 테스트 코드 =============");
+            System.out.println(dto.getId());
+            System.out.println(dto.getTitle());
+            System.out.println(dto.getAuthor());
+        });
+
+        // then(검증)
+        assertThat(bookRespDtoList.get(0).getTitle()).isEqualTo("junit강의");
+        assertThat(bookRespDtoList.get(0).getAuthor()).isEqualTo("메타코딩");
+        assertThat(bookRespDtoList.get(1).getTitle()).isEqualTo("spring강의");
+        assertThat(bookRespDtoList.get(1).getAuthor()).isEqualTo("겟인데어");
+    }
+
+    // given
+
+    // stub
+
+    // when
+
+    // then
 }
