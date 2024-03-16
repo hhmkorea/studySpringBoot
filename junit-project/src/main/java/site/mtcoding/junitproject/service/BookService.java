@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import site.mtcoding.junitproject.domain.Book;
 import site.mtcoding.junitproject.domain.BookRepository;
+import site.mtcoding.junitproject.util.MailSender;
 import site.mtcoding.junitproject.web.dto.BookRespDto;
 import site.mtcoding.junitproject.web.dto.BookSaveReqDto;
 
@@ -17,12 +18,20 @@ import java.util.stream.Collectors;
 public class BookService {
 
     private final BookRepository bookRepository;
+    private final MailSender mailSender;
+
     // 1. 책 등록
     @Transactional(rollbackFor = RuntimeException.class)
     public BookRespDto saveBook(BookSaveReqDto dto) {
-        // 영속화된(DB에 저장된) Dto가 빠져나가지 못하게하고 서비스 단 안에서 움직이는 응답한 Dto 지정.
-        // 영속화된 Dto를 다시 return하면 LazyLoding 현상 발생우려.
         Book bookPS = bookRepository.save(dto.toEntity());
+        if (bookPS != null) {
+
+            // 메일 보내기 메서드 호출 (return ture or false)
+            if (!mailSender.send()) {
+                throw new RuntimeException("메일이 전송되지 않았습니다.");
+            }
+
+        }
         return new BookRespDto().toDto(bookPS);
     }
 
