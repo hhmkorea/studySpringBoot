@@ -74,12 +74,27 @@ public class BookApiController { // Composition = has 관계
     @DeleteMapping("/api/v1/book/{id}")
     public ResponseEntity<?> deleteBook(@PathVariable Long id) {
         bookService.deleteBook(id);
-        return new ResponseEntity<>( CMRespDto.builder().code(1).msg("글 한건 삭제하기 성공").body(null).build(), HttpStatus.OK); // 200 = ok;
+        return new ResponseEntity<>( CMRespDto.builder().code(1).msg("글 삭제하기 성공").body(null).build(), HttpStatus.OK); // 200 = ok;
     }
 
     // 5. 책 수정하기
-    public ResponseEntity<?> updateBook() {
-        return null;
+    @PutMapping("/api/v1/book/{id}")
+    public ResponseEntity<?> updateBook(@PathVariable Long id, @RequestBody @Valid BookSaveReqDto bookSaveReqDto, BindingResult bindingResult) {
+        // @RequestBody : Spring에서 JSON 타입으로 받을 때 쓰임.
+        // @Valid : Validation 체크(유효성 검사)
+
+        // AOP 처리하는 게 좋음!!
+        if (bindingResult.hasErrors()) {
+            Map<String, String> errorMap = new HashMap<>();
+            for (FieldError fe : bindingResult.getFieldErrors()) {
+                errorMap.put(fe.getField(), fe.getDefaultMessage());
+            }
+
+            throw new RuntimeException(errorMap.toString());
+        }
+
+        BookRespDto bookRespDto = bookService.updateBook(id, bookSaveReqDto);
+        return new ResponseEntity<>( CMRespDto.builder().code(1).msg("글 수정하기 성공").body(bookRespDto).build(), HttpStatus.OK); // 200 = ok;
 
     }
 }
