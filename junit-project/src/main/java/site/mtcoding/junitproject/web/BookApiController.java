@@ -71,9 +71,10 @@ public class BookApiController { // Composition = has 관계
     }
 
     // 4. 책 삭제하기
-    public ResponseEntity<?> deleteBook() {
-        return null;
-
+    @DeleteMapping("/api/v1/book/{id}")
+    public ResponseEntity<?> deleteBook(@PathVariable Long id) {
+        bookService.deleteBook(id);
+        return new ResponseEntity<>( CMRespDto.builder().code(1).msg("글 한건 삭제하기 성공").body(null).build(), HttpStatus.OK); // 200 = ok;
     }
 
     // 5. 책 수정하기
