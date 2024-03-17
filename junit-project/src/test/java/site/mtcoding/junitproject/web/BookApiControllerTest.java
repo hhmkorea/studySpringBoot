@@ -1,17 +1,19 @@
 package site.mtcoding.junitproject.web;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.JsonPath;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.*;
-import site.mtcoding.junitproject.service.BookService;
+import org.springframework.test.context.jdbc.Sql;
+import site.mtcoding.junitproject.domain.Book;
+import site.mtcoding.junitproject.domain.BookRepository;
 import site.mtcoding.junitproject.web.dto.request.BookSaveReqDto;
 
 // 통합테스트 (Controller, Service, Repository)
@@ -22,6 +24,9 @@ public class BookApiControllerTest {
     @Autowired
     private TestRestTemplate rt;
 
+    @Autowired // DI
+    private BookRepository bookRepository;
+
     private static ObjectMapper om; // static 변수 : JVM 시작될때 최초로 메모리에 떠 있는것
     private static HttpHeaders headers;
 
@@ -30,6 +35,36 @@ public class BookApiControllerTest {
         om = new ObjectMapper();
         headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
+    }
+
+    @BeforeEach // 각 테스트 시작 전에 한번씩 실행
+    public void prepareData(){
+        String title = "junit";
+        String author = "겟인데어";
+        Book book = Book.builder()
+                .title(title)
+                .author(author)
+                .build();
+        Book bookPS = bookRepository.save(book);
+        System.out.println("------------------ prepareData : " + bookPS.getId());
+    } // 트랜잭션 종료 됐다면 말이 안됨 :
+
+    @Sql("classpath:db/tableInit.sql")
+    @Test
+    public void getBookList_test() {
+        // given
+        // when
+        HttpEntity<String> request = new HttpEntity<>(null, headers);
+        ResponseEntity<String> response = rt.exchange("/api/v1/book", HttpMethod.GET, request, String.class);
+
+        // then
+        DocumentContext dc = JsonPath.parse(response.getBody()); // DocumentContext : JSON 데이터 분석.
+        Integer code = dc.read("$.code");
+        String title = dc.read("$.body.items[0].title");
+
+        Assertions.assertThat(code).isEqualTo(1);
+        Assertions.assertThat(title).isEqualTo("junit");
+
     }
 
     @Test
