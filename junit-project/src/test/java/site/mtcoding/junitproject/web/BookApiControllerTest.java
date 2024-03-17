@@ -20,9 +20,6 @@ import site.mtcoding.junitproject.web.dto.request.BookSaveReqDto;
 public class BookApiControllerTest {
 
     @Autowired
-    private BookService bookService;
-
-    @Autowired
     private TestRestTemplate rt;
 
     private static ObjectMapper om; // static 변수 : JVM 시작될때 최초로 메모리에 떠 있는것
