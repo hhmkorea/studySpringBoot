@@ -48,6 +48,26 @@ public class BookApiControllerTest {
         Book bookPS = bookRepository.save(book);
     }
 
+    @Sql("classpath:db/tableInit.sql")
+    @Test
+    public void deleteBook_test() {
+        // given
+        Long id = 1L;
+
+        // when
+        HttpEntity<String> request = new HttpEntity<>(null, headers);
+        ResponseEntity<String> response = rt.exchange("/api/v1/book/"+id, HttpMethod.DELETE, request, String.class);
+
+        // then
+        //System.out.println("=========================");
+        //System.out.println("deleteBook_test : " + response.getStatusCodeValue());
+
+        DocumentContext dc = JsonPath.parse(response.getBody()); // DocumentContext : JSON 데이터 분석.
+        Integer code = dc.read("$.code");
+
+        Assertions.assertThat(code).isEqualTo(1);
+    }
+
     @Sql("classpath:db/tableInit.sql") // 0. 테이블 초기화
     @Test
     public void getBookOne_test() { // 1. getBookOne_test 시작 전에 @BeforeEach를 시작하는데!!!
