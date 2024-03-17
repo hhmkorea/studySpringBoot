@@ -6,10 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import site.mtcoding.junitproject.service.BookService;
 import site.mtcoding.junitproject.web.dto.response.BookListRespDto;
 import site.mtcoding.junitproject.web.dto.response.BookRespDto;
@@ -48,19 +45,29 @@ public class BookApiController { // Composition = has 관계
         return new ResponseEntity<>( CMRespDto.builder().code(1).msg("글 저장 성공").body(bookRespDto).build(), HttpStatus.CREATED); // 201 = insert
     }
 
+    @PostMapping("/api/v2/book")
+    public ResponseEntity<?> saveBookV2(@RequestBody  BookSaveReqDto bookSaveReqDto) {
+        // 사용자가 입력한 값을 받아서 Controller에 전달하는 역할을 제대로 수행 못함.
+
+        BookRespDto bookRespDto = bookService.saveBook(bookSaveReqDto);
+
+        return new ResponseEntity<>( CMRespDto.builder().code(1).msg("글 저장 성공").body(bookRespDto).build(), HttpStatus.CREATED); // 201 = insert
+    }
+
     // 2. 책 목록보기
     @GetMapping("/api/v1/book")
     public ResponseEntity<?> getBookList() {
         BookListRespDto bookListRespDto =  bookService.findAllBooks();
 
-        return new ResponseEntity<>( CMRespDto.builder().code(1).msg("글 목록보기 성공").body(bookListRespDto).build(), HttpStatus.CREATED); // 200 = ok
+        return new ResponseEntity<>( CMRespDto.builder().code(1).msg("글 목록보기 성공").body(bookListRespDto).build(), HttpStatus.OK); // 200 = ok
 
     }
 
     // 3. 책 한건보기
-    public ResponseEntity<?> getBookOne() {
-        return null;
-
+    @GetMapping("/api/v1/book/{id}")
+    public ResponseEntity<?> getBookOne(@PathVariable Long id) {
+        BookRespDto bookRespDto = bookService.findOneBook(id);
+        return new ResponseEntity<>( CMRespDto.builder().code(1).msg("글 한건보기 성공").body(bookRespDto).build(), HttpStatus.OK); // 200 = ok;
     }
 
     // 4. 책 삭제하기
