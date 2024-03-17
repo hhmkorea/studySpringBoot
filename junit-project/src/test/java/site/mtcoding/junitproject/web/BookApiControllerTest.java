@@ -46,8 +46,31 @@ public class BookApiControllerTest {
                 .author(author)
                 .build();
         Book bookPS = bookRepository.save(book);
-        System.out.println("------------------ prepareData : " + bookPS.getId());
-    } // 트랜잭션 종료 됐다면 말이 안됨 :
+    }
+
+    @Sql("classpath:db/tableInit.sql") // 0. 테이블 초기화
+    @Test
+    public void getBookOne_test() { // 1. getBookOne_test 시작 전에 @BeforeEach를 시작하는데!!!
+
+        // given
+        Long id = 1L;
+
+        // when
+        HttpEntity<String> request = new HttpEntity<>(null, headers);
+        ResponseEntity<String> response = rt.exchange("/api/v1/book/"+id, HttpMethod.GET, request, String.class);
+
+        System.out.println("======================");
+        System.out.println(response.getBody());
+
+        // then
+        DocumentContext dc = JsonPath.parse(response.getBody()); // DocumentContext : JSON 데이터 분석.
+        Integer code = dc.read("$.code");
+        String title = dc.read("$.body.title");
+
+        Assertions.assertThat(code).isEqualTo(1);
+        Assertions.assertThat(title).isEqualTo("junit");
+
+    }
 
     @Sql("classpath:db/tableInit.sql")
     @Test
