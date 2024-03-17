@@ -11,6 +11,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import site.mtcoding.junitproject.domain.Book;
 import site.mtcoding.junitproject.domain.BookRepository;
 import site.mtcoding.junitproject.util.MailSender;
+import site.mtcoding.junitproject.web.dto.response.BookListRespDto;
 import site.mtcoding.junitproject.web.dto.response.BookRespDto;
 import site.mtcoding.junitproject.web.dto.request.BookSaveReqDto;
 
@@ -52,6 +53,7 @@ public class BookServiceTest {
         assertThat(bookRespDto.getAuthor()).isEqualTo(dto.getAuthor());
     }
 
+    // 체크포인트
     @Test
     public void findAllBooks_test() {
         // given(파라매터로 들어올 데이터)
@@ -63,21 +65,13 @@ public class BookServiceTest {
         Mockito.when(bookRepository.findAll()).thenReturn(books);
 
         // when(실행)
-        List<BookRespDto> bookRespDtoList = bookService.findAllBooks();
-
-        // print
-        bookRespDtoList.stream().forEach((dto) -> {
-            System.out.println("============= 테스트 코드 =============");
-            System.out.println(dto.getId());
-            System.out.println(dto.getTitle());
-            System.out.println(dto.getAuthor());
-        });
+        BookListRespDto bookListRespDto = bookService.findAllBooks();
 
         // then(검증)
-        assertThat(bookRespDtoList.get(0).getTitle()).isEqualTo("junit강의");
-        assertThat(bookRespDtoList.get(0).getAuthor()).isEqualTo("메타코딩");
-        assertThat(bookRespDtoList.get(1).getTitle()).isEqualTo("spring강의");
-        assertThat(bookRespDtoList.get(1).getAuthor()).isEqualTo("겟인데어");
+        assertThat(bookListRespDto.getItems().get(0).getTitle()).isEqualTo("junit강의");
+        assertThat(bookListRespDto.getItems().get(0).getAuthor()).isEqualTo("메타코딩");
+        assertThat(bookListRespDto.getItems().get(1).getTitle()).isEqualTo("spring강의");
+        assertThat(bookListRespDto.getItems().get(1).getAuthor()).isEqualTo("겟인데어");
     }
 
     @Test

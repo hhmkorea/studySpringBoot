@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import site.mtcoding.junitproject.domain.Book;
 import site.mtcoding.junitproject.domain.BookRepository;
 import site.mtcoding.junitproject.util.MailSender;
+import site.mtcoding.junitproject.web.dto.response.BookListRespDto;
 import site.mtcoding.junitproject.web.dto.response.BookRespDto;
 import site.mtcoding.junitproject.web.dto.request.BookSaveReqDto;
 
@@ -36,7 +37,7 @@ public class BookService {
     }
 
     // 2. 책 목록 보기
-    public List<BookRespDto> findAllBooks() {
+    public BookListRespDto findAllBooks() {
         // 본코드에 문제가 있나?
         List<BookRespDto> dtos = bookRepository.findAll().stream()
                 //.map((bookPS) -> bookPS.toDto()) // 람다식
@@ -50,7 +51,8 @@ public class BookService {
             System.out.println(dto.getTitle());
             System.out.println(dto.getAuthor());
         });
-        return dtos;
+        BookListRespDto bookListRespDto = BookListRespDto.builder().bookList(dtos).build();
+        return bookListRespDto;
     }
 
     // 3. 책 한건 보기
