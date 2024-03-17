@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.*;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
 import site.mtcoding.junitproject.domain.Book;
 import site.mtcoding.junitproject.domain.BookRepository;
@@ -18,6 +19,7 @@ import site.mtcoding.junitproject.web.dto.request.BookSaveReqDto;
 
 // 통합테스트 (Controller, Service, Repository)
 // 전체를 메모리에 다 띄우고 테스트 진행.
+@ActiveProfiles("dev")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class BookApiControllerTest {
 
@@ -50,6 +52,30 @@ public class BookApiControllerTest {
 
     @Sql("classpath:db/tableInit.sql")
     @Test
+    public void updateBook_test() throws Exception {
+        // given
+        Long id = 1L;
+        BookSaveReqDto bookSaveReqDto = new BookSaveReqDto();
+        bookSaveReqDto.setTitle("spring");
+        bookSaveReqDto.setAuthor("메타코딩");
+
+        String body = om.writeValueAsString(bookSaveReqDto); // body데이터가 JSON으로 변경됨.
+
+        // when
+        HttpEntity<String> request = new HttpEntity<>(body, headers);
+        ResponseEntity<String> response = rt.exchange("/api/v1/book/"+id, HttpMethod.PUT, request, String.class);
+
+        // then
+//        System.out.println("==================");
+//        System.out.println("updateBook_test: " +response.getStatusCodeValue()); // 200 값을 기대함.
+//        System.out.println("updateBook_test: " +response.getBody());
+        DocumentContext dc = JsonPath.parse(response.getBody()); // DocumentContext : JSON 데이터 분석.
+        String title = dc.read("$.body.title");
+        Assertions.assertThat(title).isEqualTo("spring");
+    }
+
+    @Sql("classpath:db/tableInit.sql")
+    @Test
     public void deleteBook_test() {
         // given
         Long id = 1L;
@@ -64,7 +90,6 @@ public class BookApiControllerTest {
 
         DocumentContext dc = JsonPath.parse(response.getBody()); // DocumentContext : JSON 데이터 분석.
         Integer code = dc.read("$.code");
-
         Assertions.assertThat(code).isEqualTo(1);
     }
 
@@ -86,7 +111,6 @@ public class BookApiControllerTest {
         DocumentContext dc = JsonPath.parse(response.getBody()); // DocumentContext : JSON 데이터 분석.
         Integer code = dc.read("$.code");
         String title = dc.read("$.body.title");
-
         Assertions.assertThat(code).isEqualTo(1);
         Assertions.assertThat(title).isEqualTo("junit");
 
@@ -104,7 +128,6 @@ public class BookApiControllerTest {
         DocumentContext dc = JsonPath.parse(response.getBody()); // DocumentContext : JSON 데이터 분석.
         Integer code = dc.read("$.code");
         String title = dc.read("$.body.items[0].title");
-
         Assertions.assertThat(code).isEqualTo(1);
         Assertions.assertThat(title).isEqualTo("junit");
 
@@ -127,7 +150,6 @@ public class BookApiControllerTest {
         DocumentContext dc = JsonPath.parse(response.getBody()); // DocumentContext : JSON 데이터 분석.
         String title = dc.read("$.body.title");
         String author = dc.read("$.body.author");
-
         Assertions.assertThat(title).isEqualTo("스프링1강");
         Assertions.assertThat(author).isEqualTo("겟인데어");
     }

@@ -8,6 +8,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.test.context.ActiveProfiles;
 import site.mtcoding.junitproject.domain.Book;
 import site.mtcoding.junitproject.domain.BookRepository;
 import site.mtcoding.junitproject.util.MailSender;
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+@ActiveProfiles("dev")
 @ExtendWith(MockitoExtension.class) // 가짜 메모리 환경
 public class BookServiceTest {
 
