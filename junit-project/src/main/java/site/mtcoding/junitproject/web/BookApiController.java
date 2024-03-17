@@ -29,8 +29,6 @@ public class BookApiController { // Composition = has 관계
     @PostMapping("/api/v1/book")
     public ResponseEntity<?> saveBook(@RequestBody @Valid BookSaveReqDto bookSaveReqDto, BindingResult bindingResult) {
 
-        BookRespDto bookRespDto = bookService.saveBook(bookSaveReqDto);
-
         // AOP 처리하는 게 좋음!!
         if (bindingResult.hasErrors()) {
             Map<String, String> errorMap = new HashMap<>();
@@ -40,8 +38,10 @@ public class BookApiController { // Composition = has 관계
             System.out.println("========= errorMap =============");
             System.out.println(errorMap.toString());
 
-            return new ResponseEntity<>( CMRespDto.builder().code(-1).msg(errorMap.toString()).body(bookRespDto).build(), HttpStatus.BAD_REQUEST); // 400 = 요청이 잘못됨.
+            throw new RuntimeException(errorMap.toString());
         }
+        BookRespDto bookRespDto = bookService.saveBook(bookSaveReqDto);
+
         return new ResponseEntity<>( CMRespDto.builder().code(1).msg("글 저장 성공").body(bookRespDto).build(), HttpStatus.CREATED); // 201 = insert
     }
 
