@@ -2,6 +2,7 @@
 /.idea/
 /bank/.gradle/
 /bank/.idea/
+/bank/build/
 /bank/gradle/
 /book/.idea/
 /book/.mvn/
