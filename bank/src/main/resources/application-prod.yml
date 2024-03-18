@@ -3,6 +3,7 @@ server:
   servlet:
     encoding:
       charset: utf-8
+      force: true
 
 spring:
   datasource:
@@ -10,14 +11,13 @@ spring:
     driver-class-name: org.mariadb.jdbc.Driver
     username: ${rds.username}
     password: ${rds.password}
-
   jpa:
-    open-in-view: true
+    open-in-view: false
     hibernate:
       ddl-auto: none
-      naming:
-        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    properties:
+      '[hibernate.default_batch_fetch_size]': 100
 
 logging:
   level:
-    '[org.springframework.boot.web]': INFO
+    '[shop.mtcoding.bank]': INFO

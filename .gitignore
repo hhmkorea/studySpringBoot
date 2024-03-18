@@ -1,5 +1,8 @@
 /.metadata/
 /.idea/
+/bank/.gradle/
+/bank/.idea/
+/bank/gradle/
 /book/.idea/
 /book/.mvn/
 /book/.settings/
