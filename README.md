@@ -9,4 +9,5 @@
 #### 메타코딩 스프링부트 JUnit x Security 강의 실습(VS code, Gradle)
 > https://easyupclass.e-itwill.com/course/course_view.jsp?id=357&rtype=0&ch=course#cview1
 + demo : 1~6강 
-+ junit-project : 7~ 
++ junit-project : 7~43강 
++ bank : 44~

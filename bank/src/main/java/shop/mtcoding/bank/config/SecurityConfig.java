@@ -40,6 +40,14 @@ public class SecurityConfig {
                 .sessionManagement((sessionManagement) -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 // react, 앱으로 요청예정, HTML formLogin 방식 사용 안함.
                 .formLogin((formLogin)->formLogin.disable())
+
+                // Excepiton 가로채기
+                .exceptionHandling(httpSecurityExceptionHandlingConfigurer -> httpSecurityExceptionHandlingConfigurer.authenticationEntryPoint((request, response, authException) -> {
+                    //response.setContentType("application/json; charset=utf-8");
+                    response.setStatus(403);
+                    response.getWriter().println("error"); // 예쁘게 메시지를 포장하는 공통적인 응답 DTO를 만들어보자!!
+                }))
+
                 // httpBasic은 브라우저가 팝업창을 이용해서 사용자 인증을 진행한다. - 비허용!!
                 .httpBasic((httpSecurityHttpBasicConfigurer) -> httpSecurityHttpBasicConfigurer.disable())
                 .authorizeHttpRequests((authorizationManagerRequestMatcherRegistry) ->
