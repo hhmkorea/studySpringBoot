@@ -47,12 +47,5 @@ public class SecurityConfigTest {
 
         // then
         Assertions.assertThat(httpStatusCode).isEqualTo(401); // 401 : 인증이 안된거, 403 : 권한이 없는거
-
     }
-    // given
-
-    // when
-
-    // then
-
 }
