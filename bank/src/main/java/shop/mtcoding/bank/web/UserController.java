@@ -34,13 +34,7 @@ public class UserController {
         // ResponseEntity : 컨트롤러를 통해 객체 반환할때 쓰임.
         // @RequestBody : Json타입으로 값을 받음.
         // BindingResult : 데이타처리 중 발생한 오류가 여기 담김.
-        if (bindingResult.hasErrors()) {
-            Map<String, String> errorMap = new HashMap<>();
-            for (FieldError error : bindingResult.getFieldErrors()) {
-                errorMap.put(error.getField(), error.getDefaultMessage());
-            }
-            return new ResponseEntity<>(new ResponseDto<>(-1, "유효성 검사 실패", errorMap), HttpStatus.BAD_REQUEST);
-        }
+
         JoinRespDto joinRespDto = userService.joinMember(joinReqDto);
         return new ResponseEntity<>(new ResponseDto<>(1, "회원가입 성공", joinRespDto), HttpStatus.CREATED);
     }
