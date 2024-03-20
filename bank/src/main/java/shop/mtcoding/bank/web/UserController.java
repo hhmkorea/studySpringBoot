@@ -1,8 +1,11 @@
 package shop.mtcoding.bank.web;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,6 +15,9 @@ import shop.mtcoding.bank.dto.ResponseDto;
 import shop.mtcoding.bank.dto.user.UserReqDto.*;
 import shop.mtcoding.bank.dto.user.UserRespDto.*;
 import shop.mtcoding.bank.service.UserService;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @RequiredArgsConstructor
 @RequestMapping("/api")
@@ -24,9 +30,17 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/join") // 인증이 필요없는 주소
-    public ResponseEntity<?> join(@RequestBody JoinReqDto joinReqDto) {
+    public ResponseEntity<?> join(@RequestBody @Valid JoinReqDto joinReqDto, BindingResult bindingResult) {
         // ResponseEntity : 컨트롤러를 통해 객체 반환할때 쓰임.
         // @RequestBody : Json타입으로 값을 받음.
+        // BindingResult : 데이타처리 중 발생한 오류가 여기 담김.
+        if (bindingResult.hasErrors()) {
+            Map<String, String> errorMap = new HashMap<>();
+            for (FieldError error : bindingResult.getFieldErrors()) {
+                errorMap.put(error.getField(), error.getDefaultMessage());
+            }
+            return new ResponseEntity<>(new ResponseDto<>(-1, "유효성 검사 실패", errorMap), HttpStatus.BAD_REQUEST);
+        }
         JoinRespDto joinRespDto = userService.joinMember(joinReqDto);
         return new ResponseEntity<>(new ResponseDto<>(1, "회원가입 성공", joinRespDto), HttpStatus.CREATED);
     }
