@@ -13,8 +13,8 @@ import shop.mtcoding.bank.domain.user.UserRepository;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
-import shop.mtcoding.bank.service.UserService.JoinReqDto;
-import shop.mtcoding.bank.service.UserService.JoinRespDto;
+import shop.mtcoding.bank.dto.user.UserReqDto.*;
+import shop.mtcoding.bank.dto.user.UserRespDto.*;
 
 // Spring 관련 Bean들이 하나도 없는 환경.
 @ExtendWith(MockitoExtension.class)
