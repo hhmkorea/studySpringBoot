@@ -12,6 +12,13 @@ import shop.mtcoding.bank.domain.user.UserEnum;
 public class UserReqDto {
     @Setter
     @Getter
+    public static class LoginReqDto { // Controller가기 전에 동작해서 유효성 검사 못함.
+        private String username;
+        private String password;
+    }
+
+    @Setter
+    @Getter
     public static class JoinReqDto {
         // 영문, 숫자는 되고, 길이는 최소 2~20자 내외
         @Pattern(regexp = "^[a-zA-Z0-9]{2,20}$", message = "영문/숫자 2~20자 이내로 작성해주세요.") // 정규표현식
