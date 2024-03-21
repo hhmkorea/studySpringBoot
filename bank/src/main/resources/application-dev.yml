@@ -6,11 +6,15 @@ server:
       force: true
 
 spring:
+  config:
+    activate:
+      on-profile: testdb #프로파일 이름등록
   datasource:
-    url: jdbc:h2:mem:test;MODE=MySQL
+    url: jdbc:h2:mem:test;mode=mysql # mode=mysql:AUTO_INCREMENT 지원
     driver-class-name: org.h2.Driver
     username: sa
     password:
+  test.database.replace: none # testdb 프로파일을 모든 테스트에 적용
   h2:
     console:
       enabled: true
