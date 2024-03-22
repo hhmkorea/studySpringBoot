@@ -26,8 +26,8 @@ import shop.mtcoding.bank.util.CustomResponseUtil;
 
 // @Slf4j // JUnit테스트할때 문제 생겨서 Logger 사용
 @Configuration // IoC에 설정파일로 등록해줌
-@EnableWebSecurity
-@EnableMethodSecurity
+//@EnableWebSecurity
+//@EnableMethodSecurity
 public class SecurityConfig {
     public static final Logger log = LoggerFactory.getLogger(SecurityConfig.class);
 
@@ -70,7 +70,8 @@ public class SecurityConfig {
                 .httpBasic((httpSecurityHttpBasicConfigurer) -> httpSecurityHttpBasicConfigurer.disable())
 
                 // 필터 적용
-                .apply(new CustomSecurityFileterManager())
+                //.apply(new CustomSecurityFileterManager()) // apply() API 더이상 지원안함.
+                //.addFilterBefore(new CustomSecurityFileterManager(), UsernamePasswordAuthenticationFilter.class) // 안됨.
                 .authorizeHttpRequests((registry) ->
                         registry
                                 .requestMatchers("/api/s/**").authenticated() // antMatchers 대신 requestMatchers 사용.
