@@ -9,7 +9,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
  * fileName       : SecurityUtil
  * author         : dotdot
  * date           : 2024-03-24
- * description    :
+ * description    : SecurityContext 에서 전역으로 유저 정보를 제공하는 유틸 클래스
  * ===========================================================
  * DATE              AUTHOR             NOTE
  * -----------------------------------------------------------

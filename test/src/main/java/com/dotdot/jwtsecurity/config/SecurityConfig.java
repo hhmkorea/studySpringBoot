@@ -18,7 +18,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
  * fileName       : SecurityConfig
  * author         : dotdot
  * date           : 2024-03-24
- * description    : Spring Security에 필요한 설정
+ * description    : Spring Security에 필요한 설정.
  *                  (참고 : bank 프로젝트에서 SecurityConfig)
  * ===========================================================
  * DATE              AUTHOR             NOTE
