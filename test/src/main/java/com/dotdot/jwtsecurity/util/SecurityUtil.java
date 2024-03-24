@@ -5,7 +5,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 /**
- * packageName    : com.dotdot.test.util
+ * packageName    : com.dotdot.jwtsecurity.util
  * fileName       : SecurityUtil
  * author         : dotdot
  * date           : 2024-03-24

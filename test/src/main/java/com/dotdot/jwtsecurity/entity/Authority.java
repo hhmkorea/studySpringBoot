@@ -1,7 +1,7 @@
 package com.dotdot.jwtsecurity.entity;
 
 /**
- * packageName    : com.dotdot.test.domain
+ * packageName    : com.dotdot.jwtsecurity.domain
  * fileName       : Authority
  * author         : dotdot
  * date           : 2024-03-24

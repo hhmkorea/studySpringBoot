@@ -6,7 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 /**
- * packageName    : com.dotdot.test.domain
+ * packageName    : com.dotdot.jwtsecurity.domain
  * fileName       : Member
  * author         : dotdot
  * date           : 2024-03-24

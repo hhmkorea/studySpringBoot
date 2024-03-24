@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * packageName    : com.dotdot.test.service
+ * packageName    : com.dotdot.jwtsecurity.service
  * fileName       : MemberService
  * author         : dotdot
  * date           : 2024-03-24

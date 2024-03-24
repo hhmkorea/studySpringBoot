@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * packageName    : com.dotdot.test.web
+ * packageName    : com.dotdot.jwtsecurity.web
  * fileName       : MemberController
  * author         : dotdot
  * date           : 2024-03-24

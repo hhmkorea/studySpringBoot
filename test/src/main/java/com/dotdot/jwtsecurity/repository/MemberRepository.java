@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 /**
- * packageName    : com.dotdot.test.domain
+ * packageName    : com.dotdot.jwtsecurity.domain
  * fileName       : MemberRepository
  * author         : dotdot
  * date           : 2024-03-24

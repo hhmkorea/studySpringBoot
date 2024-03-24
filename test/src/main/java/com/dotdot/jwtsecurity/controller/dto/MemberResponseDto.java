@@ -1,7 +1,7 @@
 package com.dotdot.jwtsecurity.controller.dto;
 
 /**
- * packageName    : com.dotdot.security.controller.dto
+ * packageName    : com.dotdot.jwtsecurity.controller.dto
  * fileName       : MemberResponseDto
  * author         : dotdot
  * date           : 2024-03-24
