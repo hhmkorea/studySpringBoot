@@ -1,4 +1,4 @@
-package com.dotdot.security.entity;
+package com.dotdot.jwtsecurity.entity;
 
 import jakarta.persistence.*;
 import lombok.Builder;

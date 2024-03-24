@@ -1,4 +1,4 @@
-package com.dotdot.security.controller.dto;
+package com.dotdot.jwtsecurity.controller.dto;
 
 /**
  * packageName    : com.dotdot.security.controller.dto
@@ -12,7 +12,7 @@ package com.dotdot.security.controller.dto;
  * 2024-03-24        dotdot       최초 생성
  */
 
-import com.dotdot.security.entity.Member;
+import com.dotdot.jwtsecurity.entity.Member;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

@@ -1,7 +1,7 @@
-package com.dotdot.security.service;
+package com.dotdot.jwtsecurity.service;
 
-import com.dotdot.security.controller.dto.MemberResponseDto;
-import com.dotdot.security.repository.MemberRepository;
+import com.dotdot.jwtsecurity.controller.dto.MemberResponseDto;
+import com.dotdot.jwtsecurity.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

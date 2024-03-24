@@ -1,4 +1,4 @@
-package com.dotdot.security;
+package com.dotdot.jwtsecurity;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

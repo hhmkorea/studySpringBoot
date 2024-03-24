@@ -1,6 +1,6 @@
-package com.dotdot.security.repository;
+package com.dotdot.jwtsecurity.repository;
 
-import com.dotdot.security.entity.Member;
+import com.dotdot.jwtsecurity.entity.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

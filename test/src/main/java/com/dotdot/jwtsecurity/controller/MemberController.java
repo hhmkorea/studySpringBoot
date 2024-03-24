@@ -1,8 +1,8 @@
-package com.dotdot.security.controller;
+package com.dotdot.jwtsecurity.controller;
 
-import com.dotdot.security.controller.dto.MemberResponseDto;
-import com.dotdot.security.service.MemberService;
-import com.dotdot.security.util.SecurityUtil;
+import com.dotdot.jwtsecurity.controller.dto.MemberResponseDto;
+import com.dotdot.jwtsecurity.service.MemberService;
+import com.dotdot.jwtsecurity.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
