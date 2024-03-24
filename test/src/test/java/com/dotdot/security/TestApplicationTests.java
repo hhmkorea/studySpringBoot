@@ -1,4 +1,4 @@
-package com.dotdot.test;
+package com.dotdot.security;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
