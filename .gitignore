@@ -19,4 +19,7 @@
 /junit-project/.idea/
 /junit-project/gradle/
 /junit-project/build/
+/test/.gradle/
+/test/.idea/
 /test/gradle/
+/test/build/
