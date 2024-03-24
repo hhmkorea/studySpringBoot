@@ -5,7 +5,7 @@ package com.dotdot.jwtsecurity.entity;
  * fileName       : Authority
  * author         : dotdot
  * date           : 2024-03-24
- * description    :
+ * description    : 유저 권한 설정, Spring Security 자체에서 내부적으로 사용함. 정확한 형식을 갖춰야 함.
  * ===========================================================
  * DATE              AUTHOR             NOTE
  * -----------------------------------------------------------
