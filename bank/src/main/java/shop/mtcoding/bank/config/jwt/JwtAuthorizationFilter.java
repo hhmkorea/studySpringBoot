@@ -4,6 +4,8 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -25,6 +27,8 @@ import java.io.IOException;
  * 2024-03-25        dotdot       최초 생성
  */
 public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
+    private static final Logger log = LoggerFactory.getLogger(JwtAuthorizationFilter.class);
+
     public JwtAuthorizationFilter(AuthenticationManager authenticationManager) {
         super(authenticationManager);
     }
@@ -34,13 +38,16 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
         if (isHeaderVerify(request, response)) {
             // 토큰이 존재함.
+            log.debug("디버그 : 토큰이 존재함");
             String token = request.getHeader(JwtVO.HEADER).replace(JwtVO.TOKEN_PREFIX,"");
             // 토큰 검증 완료.
+            log.debug("디버그 : 토큰이 검증이 완료됨");
             LoginUser loginUser = JwtProcess.verify(token);
 
             // 임시 세션 (UserDetails 타입 or username) : 여기는 id와 role만 들어가므로 객체 통채로 넣음. role만 잘들어가 있으면 됨!!
             Authentication authentication = new UsernamePasswordAuthenticationToken(loginUser, null, loginUser.getAuthorities()); // 객체, 패스워드 모름, 권한
             SecurityContextHolder.getContext().setAuthentication(authentication); // 강제 로그인!!!
+            log.debug("디버그 : 임시 세션이 생성됨");
 
         }
         chain.doFilter(request, response);
