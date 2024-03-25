@@ -11,7 +11,7 @@ import shop.mtcoding.bank.domain.user.User;
 
 import java.time.LocalDateTime;
 
-@NoArgsConstructor
+@NoArgsConstructor // 스프링이 User 객체생성할 때 빈생성자료 new를 하기 때문!
 @Getter
 @EntityListeners(AuditingEntityListener.class)
 @Table(name = "account_tb")
@@ -32,11 +32,11 @@ public class Account {
     @ManyToOne(fetch = FetchType.LAZY) // 지연로딩, account.getUser().아무필드호출() == Lazy 발동
     private User user; // user_id // 한명의 유저는 여러개의 계좌를 가질 수 있음.
 
-    @CreatedDate
+    @CreatedDate // Insert
     @Column(nullable = false)
     private LocalDateTime createdAt;
 
-    @LastModifiedDate
+    @LastModifiedDate // Insert, Update
     @Column(nullable = false)
     private LocalDateTime updatedAt;
 
