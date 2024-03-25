@@ -21,6 +21,25 @@ import shop.mtcoding.bank.util.CustomResponseUtil;
 
 import java.io.IOException;
 
+/**
+ * packageName    : shop.mtcoding.bank.config.jwt
+ * fileName       : JwtAuthenticationFilter
+ * author         : dotdot
+ * date           : 2024-03-24
+ * description    :
+ *                  1. username, userpassword 받음.
+ *                  2. LoginReqDto로 바꿈.
+ *                  3. 인증관련 토큰 만듬.
+ *                  4. UserDetailsService 호울(loadUserByUsername) : DB에 유저 확인.
+ *                  5. 없으면 unsuccessfulAuthentication,
+ *                  6. 있으면 LoginUser 객체 생성 리턴!
+ *                  7. 시큐리티 전용 세션에 담김.
+ *                  8. JWT 토큰생성, response 헤더 담기
+ * ===========================================================
+ * DATE              AUTHOR             NOTE
+ * -----------------------------------------------------------
+ * 2024-03-24        dotdot       최초 생성
+ */
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     private final Logger log = LoggerFactory.getLogger(JwtAuthenticationFilter.class);
     private AuthenticationManager authenticationManager;
@@ -47,6 +66,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
             // JWT를 쓴다 하더라도 Controller 진입을 하면 SecurityConfig의 filterChain메서드에서 authorizeHttpRequests를 통해 권한체크, 인증체크의 도움을 받을 수 있게 세션을 만든다.
             // 이 세션의 유효기간은 request하고 response하면 끝!! ---> 세션 만들어지면 바로 리턴하면 없어짐!!!
             Authentication authentication = authenticationManager.authenticate(authenticationToken);
+            //authentication.getPrincipal();
             return authentication;
         } catch (Exception e) {
             // unsuccessfulAuthentication 호출함
@@ -66,7 +86,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         log.debug("디버그 : successfulAuthentication 호출됨. --- 로그인됨, 세션이 만들어졌다는 의미.");
         LoginUser loginUser = (LoginUser) authResult.getPrincipal();
         String jwtToken = JwtProcess.create(loginUser); // Jwt Token 생성
-        response.addHeader(JwtVO.HEADER, jwtToken);
+        response.addHeader(JwtVO.HEADER, jwtToken); // response 헤더에 담기
 
         LoginRespDto loginRespDto = new LoginRespDto(loginUser.getUser());
         CustomResponseUtil.success(response, loginRespDto);

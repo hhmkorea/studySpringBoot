@@ -20,7 +20,10 @@ import java.io.IOException;
  * fileName       : JwtAuthorizationFilter
  * author         : dotdot
  * date           : 2024-03-25
- * description    : 토큰 검증, 모든 주소에서 동작함.
+ * description    :
+ *                  1. 토큰검증.
+ *                  2. Authenticatio 객체를 만듬.
+ *                  3. 시큐리티 Session에 담기.
  * ===========================================================
  * DATE              AUTHOR             NOTE
  * -----------------------------------------------------------

@@ -75,7 +75,7 @@ public class SecurityConfig {
 
         //.apply(new CustomSecurityFileterManager()) // apply() API 더이상 지원안함.
         http.authorizeHttpRequests(c ->
-                c.requestMatchers("/api/s/**").authenticated() // antMatchers 대신 requestMatchers 사용.
+                c.requestMatchers("/api/s/**").authenticated() // 인증이 필요한 주소!!, antMatchers 대신 requestMatchers 사용.
                         .requestMatchers("/api/admin/**").hasRole("" + UserEnum.ADMIN) // 최근 공식문서에서는 ROLE_ 안붙여도 됨.
                         .anyRequest().permitAll()
         );
