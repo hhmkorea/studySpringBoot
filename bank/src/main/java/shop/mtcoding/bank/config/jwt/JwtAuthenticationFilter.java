@@ -22,7 +22,7 @@ import shop.mtcoding.bank.util.CustomResponseUtil;
 import java.io.IOException;
 
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
-    private static final Logger log = LoggerFactory.getLogger(JwtAuthenticationFilter.class);
+    private final Logger log = LoggerFactory.getLogger(JwtAuthenticationFilter.class);
     private AuthenticationManager authenticationManager;
 
     public JwtAuthenticationFilter(AuthenticationManager authenticationManager) {

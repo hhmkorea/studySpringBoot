@@ -1,35 +1,28 @@
 package shop.mtcoding.bank.config;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.servlet.Filter;
-import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import shop.mtcoding.bank.config.jwt.JwtAuthenticationFilter;
 import shop.mtcoding.bank.config.jwt.JwtAuthorizationFilter;
 import shop.mtcoding.bank.domain.user.UserEnum;
-import shop.mtcoding.bank.dto.ResponseDto;
 import shop.mtcoding.bank.util.CustomResponseUtil;
 
 // @Slf4j // JUnit테스트할때 문제 생겨서 Logger 사용
 @Configuration // IoC에 설정파일로 등록해줌
 public class SecurityConfig {
-    public static final Logger log = LoggerFactory.getLogger(SecurityConfig.class);
+    public final Logger log = LoggerFactory.getLogger(SecurityConfig.class);
 
     @Bean // IoC 컨테이너에 BCryptPasswordEncoder() 객체가 등록됨, @Configuration가 붙어있는 곳에서만 작동함.
     public BCryptPasswordEncoder passwordEncoder() {
@@ -97,7 +90,7 @@ public class SecurityConfig {
         configuration.addAllowedMethod("*"); // GET, POST, PUT, DELETE (JS 요청 허용)
         configuration.addAllowedOriginPattern("*"); // 모든 IP 주소 허용 (frontend IP만 허용 react)
         configuration.setAllowCredentials(true); // 클라이언트에서 쿠키 요청 허용
-        //configuration.addExposedHeader("Authorization"); // 옛날에는 디폴트
+        configuration.addExposedHeader("Authorization"); // 옛날에는 디폴트, 지금은 아님.
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
