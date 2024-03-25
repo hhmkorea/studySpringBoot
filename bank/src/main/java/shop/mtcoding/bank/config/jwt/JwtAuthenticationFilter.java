@@ -39,13 +39,13 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
             ObjectMapper om = new ObjectMapper(); // 받은 객체에 json 데이타를 뽑아야 함.
             LoginReqDto loginReqDto = om.readValue(request.getInputStream(), LoginReqDto.class);
 
-            // 강제 로그인
+            // 강제 로그인!!!
             UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
                     loginReqDto.getUsername(), loginReqDto.getPassword()
             );
             // UserDetailsService의 loadUserByUsername 호출
             // JWT를 쓴다 하더라도 Controller 진입을 하면 SecurityConfig의 filterChain메서드에서 authorizeHttpRequests를 통해 권한체크, 인증체크의 도움을 받을 수 있게 세션을 만든다.
-            // 이 세션의 유효기간은 request하고 response하면 끝!!
+            // 이 세션의 유효기간은 request하고 response하면 끝!! ---> 세션 만들어지면 바로 리턴하면 없어짐!!!
             Authentication authentication = authenticationManager.authenticate(authenticationToken);
             return authentication;
         } catch (Exception e) {
@@ -57,7 +57,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     // 로그인 실패
     @Override
     protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException, ServletException {
-        CustomResponseUtil.fail(response, "로그인 실패", HttpStatus.UNAUTHORIZED);
+        CustomResponseUtil.fail(response, "로그인 실패", HttpStatus.UNAUTHORIZED); // 401
     }
 
     // return authentication 잘 작동하면 successfulAuthentication 메서드가 호출됨.
