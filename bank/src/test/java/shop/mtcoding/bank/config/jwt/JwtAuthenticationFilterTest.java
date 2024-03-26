@@ -1,6 +1,7 @@
 package shop.mtcoding.bank.config.jwt;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,9 +13,11 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import shop.mtcoding.bank.config.dummy.DummyObject;
 import shop.mtcoding.bank.domain.user.UserRepository;
 import shop.mtcoding.bank.dto.user.UserReqDto.LoginReqDto;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 /**
@@ -64,6 +67,10 @@ public class JwtAuthenticationFilterTest extends DummyObject {
         System.out.println("테스트 : " + jwtToken);
 
         // then
+        resultActions.andExpect(MockMvcResultMatchers.status().isOk());
+        Assertions.assertNotNull(jwtToken);
+        assertTrue(jwtToken.startsWith(JwtVO.TOKEN_PREFIX));
+        resultActions.andExpect(MockMvcResultMatchers.jsonPath("$.data.username").value("ssar"));
     }
 
     @Test
