@@ -9,15 +9,23 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class JwtProcessTest {
-    @Test
-    public void create_test() throws Exception {
+
+    private String createToken() {
         // given
         User user = User.builder().id(1L).role(UserEnum.CUSTOMER).build();
         LoginUser loginUser = new LoginUser(user); // id, role만 들어가 있음.
 
         // when
         String jwtToken = JwtProcess.create(loginUser);
-        System.out.println("테스트 : "+jwtToken); // 값은 계속 바뀜.
+        return jwtToken;
+    }
+
+    @Test
+    public void create_test() throws Exception {
+        // given
+        // when
+        String jwtToken = createToken(); // token 자동 생성.
+        System.out.println("테스트 : "+jwtToken);
 
         // then
         assertTrue(jwtToken.startsWith(JwtVO.TOKEN_PREFIX));
@@ -26,7 +34,8 @@ public class JwtProcessTest {
     @Test
     public void verify_test() throws Exception {
         // given
-        String jwtToken = "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJiYW5rIiwiZXhwIjoxNzExMzg5NTY1LCJpZCI6MSwicm9sZSI6IkNVU1RPTUVSIn0.7JOmbzmDZE6RdFd1JRVpEF8H0pLBIMsvLowpBVm1Tzt-D6YNghzhn5we65ujjBYVMtrKWO4DENLBNpkH_tcMaQ";
+        String token = createToken(); // Bearer 제거해서 처리하기
+        String jwtToken = token.replace(JwtVO.TOKEN_PREFIX, "");
 
         // when
         LoginUser loginUser = JwtProcess.verify(jwtToken);
@@ -35,6 +44,6 @@ public class JwtProcessTest {
 
         // then
         assertThat(loginUser.getUser().getId()).isEqualTo(1L);
-        assertThat(loginUser.getUser().getRole()).isEqualTo(UserEnum.ADMIN);
+        assertThat(loginUser.getUser().getRole()).isEqualTo(UserEnum.CUSTOMER);
     }
 }
