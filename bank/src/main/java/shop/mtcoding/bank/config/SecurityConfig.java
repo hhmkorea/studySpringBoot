@@ -31,7 +31,7 @@ public class SecurityConfig {
     }
 
     // JWT 필터 등록이 필요함!
-    public class CustomSecurityFileterManager extends AbstractHttpConfigurer<CustomSecurityFileterManager, HttpSecurity> {
+    public static class CustomSecurityFilterManager  extends AbstractHttpConfigurer<CustomSecurityFilterManager , HttpSecurity> {
         @Override
         public void configure(HttpSecurity builder) throws Exception {
             AuthenticationManager authenticationManager = builder.getSharedObject(AuthenticationManager.class); // 인증 매니저 접근이 가능함.
@@ -63,7 +63,7 @@ public class SecurityConfig {
         http.httpBasic(hb -> hb.disable());
 
         // jwt필터 등록
-        http.with(new CustomSecurityFileterManager(), c -> c.build());
+        http.with(new CustomSecurityFilterManager(), c -> c.build());
 
         // 인증 실패
         http.exceptionHandling(e -> e.authenticationEntryPoint((request, response, authException) -> {
@@ -74,9 +74,11 @@ public class SecurityConfig {
         }));
 
         //.apply(new CustomSecurityFileterManager()) // apply() API 더이상 지원안함.
+        // 인증이 필요한 주소!!, antMatchers 대신 requestMatchers 사용.
+        // 최근 공식문서에서는 ROLE_ 안붙여도 됨.
         http.authorizeHttpRequests(c ->
-                c.requestMatchers("/api/s/**").authenticated() // 인증이 필요한 주소!!, antMatchers 대신 requestMatchers 사용.
-                        .requestMatchers("/api/admin/**").hasRole("" + UserEnum.ADMIN) // 최근 공식문서에서는 ROLE_ 안붙여도 됨.
+                c.requestMatchers("/api/s/**").authenticated()
+                        .requestMatchers("/api/admin/**").hasRole("" + UserEnum.ADMIN)
                         .anyRequest().permitAll()
         );
 
