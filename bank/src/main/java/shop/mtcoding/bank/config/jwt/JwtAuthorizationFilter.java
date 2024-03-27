@@ -59,7 +59,7 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
     // 토큰 유효성검사
     private boolean isHeaderVerify(HttpServletRequest request, HttpServletResponse response) {
         String header = request.getHeader(JwtVO.HEADER);
-        if (header == null || header.startsWith(JwtVO.TOKEN_PREFIX)) {
+        if (header == null || !header.startsWith(JwtVO.TOKEN_PREFIX)) {
             return false;
         } else {
             return true;
