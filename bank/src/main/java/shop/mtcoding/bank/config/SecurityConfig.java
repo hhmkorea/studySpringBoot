@@ -67,10 +67,10 @@ public class SecurityConfig {
 
         // 인증 실패
         http.exceptionHandling(e -> e.authenticationEntryPoint((request, response, authException) -> {
-            CustomResponseUtil.fail(response, "로그인을 진행해 주세요.", HttpStatus.UNAUTHORIZED);
+            CustomResponseUtil.fail(response, "로그인을 진행해 주세요.", HttpStatus.UNAUTHORIZED); // 401
         }));
         http.exceptionHandling(e -> e.accessDeniedHandler((request, response, accessDeniedException) -> {
-            CustomResponseUtil.fail(response, "권한이 없습니다.", HttpStatus.FORBIDDEN);
+            CustomResponseUtil.fail(response, "권한이 없습니다.", HttpStatus.FORBIDDEN);   // 403
         }));
 
         //.apply(new CustomSecurityFileterManager()) // apply() API 더이상 지원안함.
