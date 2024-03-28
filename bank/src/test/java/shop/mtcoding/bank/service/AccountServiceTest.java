@@ -1,6 +1,7 @@
 package shop.mtcoding.bank.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
@@ -12,6 +13,7 @@ import shop.mtcoding.bank.domain.user.User;
 import shop.mtcoding.bank.domain.user.UserRepository;
 import shop.mtcoding.bank.dto.account.AccountReqDto;
 import shop.mtcoding.bank.dto.account.AccountRespDto.AccountSaveRespDto;
+import shop.mtcoding.bank.handler.ex.CustomApiException;
 
 import java.util.Optional;
 
@@ -69,5 +71,23 @@ public class AccountServiceTest extends DummyObject {
 
         // then
         assertThat(accountRespDto.getNumber()).isEqualTo(1111L);
+    }
+
+    @Test
+    public void deleteAccount_test() throws Exception {
+        // given
+        Long number = 1111L;
+        Long userId = 2L;
+
+        // stub
+        User ssar = newMockUser(1L, "ssar", "쌀");
+        Account ssarAccount = newMockAccount(1L, 1111L, 1000L, ssar);
+        Mockito.when(accountRepository.findByNumber(ArgumentMatchers.any())).thenReturn(Optional.of(ssarAccount));
+
+        // when
+        accountService.deleteAccount(number, userId);
+
+        // then
+        Assertions.assertThrows(CustomApiException.class, () -> accountService.deleteAccount(number, userId));
     }
 }
