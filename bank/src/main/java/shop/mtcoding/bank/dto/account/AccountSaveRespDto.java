@@ -22,7 +22,7 @@ public class AccountSaveRespDto {
     private Long number;
     private Long balance;
 
-    public AccountSaveRespDto(Account account) {
+    public AccountSaveRespDto(Account account) { // Entity객체를 DTO로 옮김. Entity 객체를 DTO로 옮김. 원하는 것만 Lazy Loading을 위한 작업
         this.id = account.getId();
         this.number = account.getNumber();
         this.balance = account.getBalance();

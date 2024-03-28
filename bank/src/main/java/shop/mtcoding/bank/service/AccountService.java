@@ -11,7 +11,10 @@ import shop.mtcoding.bank.dto.account.AccountSaveReqDto;
 import shop.mtcoding.bank.dto.account.AccountSaveRespDto;
 import shop.mtcoding.bank.handler.ex.CustomApiException;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * packageName    : shop.mtcoding.bank.service
@@ -30,6 +33,40 @@ import java.util.Optional;
 public class AccountService {
     private final UserRepository userRepository;
     private final AccountRepository accountRepository;
+
+    public AccountListRespDto findListByUser(Long userId) {
+        User userPS = userRepository.findById(userId).orElseThrow(
+                () -> new CustomApiException("유저를 찾을 수 없습니다.")
+        );
+        // 유저의 모든 계좌목록
+        List<Account> accountListPS = accountRepository.findByUser_id(userId);
+        return new AccountListRespDto(userPS, accountListPS);
+    }
+
+    public static class AccountListRespDto {
+        private String fullname;
+        private List<AccountDto> accounts = new ArrayList<>();
+
+        public AccountListRespDto(User user, List<Account> accounts) {
+            this.fullname = user.getFullname();
+            //this.accounts = accounts.stream().map((account -> new AccountDto(account)).collect(Collectors.toList());
+            this.accounts = accounts.stream().map(AccountDto::new).collect(Collectors.toList());
+            // [account, account]
+
+        }
+
+        public class AccountDto {
+            private Long id;
+            private Long number;
+            private Long balance;
+
+            public AccountDto(Account account) { // Entity 객체를 DTO로 옮김. 원하는 것만 Lazy Loading을 위한 작업
+                this.id = account.getId();
+                this.number = account.getNumber();
+                this.balance = account.getBalance();
+            }
+        }
+    }
 
     @Transactional
     public AccountSaveRespDto saveAccount(AccountSaveReqDto accountSaveReqDto, Long userId) { // 계좌등록
