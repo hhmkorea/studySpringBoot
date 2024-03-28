@@ -53,7 +53,7 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
             log.debug("디버그 : 임시 세션이 생성됨");
 
         }
-        chain.doFilter(request, response);
+        chain.doFilter(request, response); // 토큰없이 테스트 하기 위한 설정 --> Header가 없어도 바로 chain.doFilter실행함. --> SecurityConfig에서 낚아채서 에러 터트림.
     }
 
     // 토큰 유효성검사
