@@ -8,7 +8,7 @@ public interface AccountRepository extends JpaRepository<Account, Long> {
 
     // JPA query method
     // select * from account where number = :number
-    // 리펙토링
+    // checkpoint : 리펙토링 해야함!!
     Optional<Account> findByNumber(Long number);
 
 }
