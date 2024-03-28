@@ -20,7 +20,7 @@ import shop.mtcoding.bank.domain.user.User;
  */
 @Setter
 @Getter
-public class AccountSaveReqDto {
+public class AccountReqDto {
     @NotNull
     @Digits(integer = 4, fraction = 4) // Long 길이 체크
     private Long number;

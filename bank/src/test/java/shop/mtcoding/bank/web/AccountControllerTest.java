@@ -16,7 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import shop.mtcoding.bank.config.dummy.DummyObject;
 import shop.mtcoding.bank.domain.user.User;
 import shop.mtcoding.bank.domain.user.UserRepository;
-import shop.mtcoding.bank.dto.account.AccountSaveReqDto;
+import shop.mtcoding.bank.dto.account.AccountReqDto;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -59,10 +59,10 @@ public class AccountControllerTest extends DummyObject {
     @Test
     public void saveAccount_test() throws Exception {
         // given
-        AccountSaveReqDto accountSaveReqDto = new AccountSaveReqDto();
-        accountSaveReqDto.setNumber(9999L);
-        accountSaveReqDto.setPassword(1234L);
-        String requestBody = om.writeValueAsString(accountSaveReqDto);
+        AccountReqDto accountReqDto = new AccountReqDto();
+        accountReqDto.setNumber(9999L);
+        accountReqDto.setPassword(1234L);
+        String requestBody = om.writeValueAsString(accountReqDto);
         System.out.println("테스트: " + requestBody);
 
         // when

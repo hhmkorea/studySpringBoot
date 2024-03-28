@@ -9,9 +9,9 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import shop.mtcoding.bank.config.auth.LoginUser;
 import shop.mtcoding.bank.dto.ResponseDto;
-import shop.mtcoding.bank.dto.account.AccountSaveReqDto;
-import shop.mtcoding.bank.dto.account.AccountSaveRespDto;
-import shop.mtcoding.bank.handler.ex.CustomForbiddenException;
+import shop.mtcoding.bank.dto.account.AccountReqDto;
+import shop.mtcoding.bank.dto.account.AccountRespDto.AccountListRespDto;
+import shop.mtcoding.bank.dto.account.AccountRespDto.AccountSaveRespDto;
 import shop.mtcoding.bank.service.AccountService;
 
 /**
@@ -34,11 +34,11 @@ public class AccountController {
     private final AccountService accountService;
 
     @PostMapping("/s/account")
-    public ResponseEntity<?> saveAccount(@RequestBody @Valid AccountSaveReqDto accountSaveReqDto, BindingResult bindingResult, @AuthenticationPrincipal LoginUser loginUser) {
+    public ResponseEntity<?> saveAccount(@RequestBody @Valid AccountReqDto accountReqDto, BindingResult bindingResult, @AuthenticationPrincipal LoginUser loginUser) {
         // BindingResult : AOP가 알아서 잡아서 처리
         // AuthenticationPrincipal : 세션에 있는 값 처리
-        AccountSaveRespDto accountSaveRespDto = accountService.saveAccount(accountSaveReqDto, loginUser.getUser().getId());
-        return new ResponseEntity<>(new ResponseDto<>(1, "계좌등록 성공", accountSaveRespDto), HttpStatus.CREATED);
+        AccountSaveRespDto accountRespDto = accountService.saveAccount(accountReqDto, loginUser.getUser().getId());
+        return new ResponseEntity<>(new ResponseDto<>(1, "계좌등록 성공", accountRespDto), HttpStatus.CREATED);
     }
 
     // 인증이 필요하고, account 테이블 데이타 다 주세요!!
@@ -46,7 +46,7 @@ public class AccountController {
     @GetMapping("/s/account/login-user")
     public ResponseEntity<?> findUserAccount(@AuthenticationPrincipal LoginUser loginUser) {
 
-        AccountService.AccountListRespDto accountListRespDto = accountService.findListByUser(loginUser.getUser().getId());
+        AccountListRespDto accountListRespDto = accountService.findListByUser(loginUser.getUser().getId());
         return new ResponseEntity<>(new ResponseDto<>(1, "유저별 계좌 목록보기 성공", accountListRespDto), HttpStatus.OK);
     }
 }

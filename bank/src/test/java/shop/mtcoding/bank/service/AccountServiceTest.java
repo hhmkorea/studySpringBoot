@@ -10,12 +10,12 @@ import shop.mtcoding.bank.domain.account.Account;
 import shop.mtcoding.bank.domain.account.AccountRepository;
 import shop.mtcoding.bank.domain.user.User;
 import shop.mtcoding.bank.domain.user.UserRepository;
-import shop.mtcoding.bank.dto.account.AccountSaveReqDto;
-import shop.mtcoding.bank.dto.account.AccountSaveRespDto;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import shop.mtcoding.bank.dto.account.AccountReqDto;
+import shop.mtcoding.bank.dto.account.AccountRespDto.AccountSaveRespDto;
 
 import java.util.Optional;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * packageName    : shop.mtcoding.bank.service
@@ -47,9 +47,9 @@ public class AccountServiceTest extends DummyObject {
     public void saveAccount_test() throws Exception {
         // given
         Long userId = 1L;
-        AccountSaveReqDto accountSaveReqDto = new AccountSaveReqDto();
-        accountSaveReqDto.setNumber(1111L);
-        accountSaveReqDto.setPassword(1234L);
+        AccountReqDto accountReqDto = new AccountReqDto();
+        accountReqDto.setNumber(1111L);
+        accountReqDto.setPassword(1234L);
 
         // stub 1
         User ssar = newMockUser(userId, "ssar", "쌀");
@@ -63,11 +63,11 @@ public class AccountServiceTest extends DummyObject {
         Mockito.when(accountRepository.save(ArgumentMatchers.any())).thenReturn(ssarAccount);
 
         // when
-        AccountSaveRespDto accountSaveRespDto = accountService.saveAccount(accountSaveReqDto, userId);
-        String responseBody = om.writeValueAsString(accountSaveRespDto);
+        AccountSaveRespDto accountRespDto = accountService.saveAccount(accountReqDto, userId);
+        String responseBody = om.writeValueAsString(accountRespDto);
         System.out.println("테스트 : "+responseBody);
 
         // then
-        assertThat(accountSaveRespDto.getNumber()).isEqualTo(1111L);
+        assertThat(accountRespDto.getNumber()).isEqualTo(1111L);
     }
 }
