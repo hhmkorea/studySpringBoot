@@ -4,14 +4,18 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
-@AutoConfigureMockMvc // Mock(가짜) 환경에 MockMvc가 등록됨
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK) // 가짜환경에서 테스트
+@Sql("classpath:db/teardown.sql") // 실행시점 : BeforeEach 실행 직전마다!!
+@ActiveProfiles("test") // 쿼리 파라매터값까지 로그로 보여줌.
+@AutoConfigureMockMvc
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 public class SecurityConfigTest {
 
     // 가짜 환경에 등록된 MockMvc를 DI함.
