@@ -1,22 +1,25 @@
 package shop.mtcoding.bank.web;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-import org.springframework.transaction.annotation.Transactional;
 import shop.mtcoding.bank.config.dummy.DummyObject;
 import shop.mtcoding.bank.domain.user.UserRepository;
 import shop.mtcoding.bank.dto.user.UserReqDto.JoinReqDto;
 
-@Transactional
+@ActiveProfiles("test")
+@Sql("classpath:db/teardown.sql")
 @AutoConfigureMockMvc
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 public class UserControllerTest extends DummyObject {
@@ -26,10 +29,13 @@ public class UserControllerTest extends DummyObject {
     private ObjectMapper om;
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private EntityManager em;
 
     @BeforeEach
     public void setUp() {
         userRepository.save(newUser("ssar", "쌀"));
+        em.clear();
     }
 
     @Test
