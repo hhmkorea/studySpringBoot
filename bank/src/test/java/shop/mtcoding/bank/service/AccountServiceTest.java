@@ -102,6 +102,7 @@ public class AccountServiceTest extends DummyObject {
 
     // Account -> balance 변경됐는지
     // Transaction -> balance 잘 기록됐는지
+    // 계좌 입금_테스트
     @Test
     public void dipositAccount_test() throws Exception {
         // given
@@ -134,7 +135,7 @@ public class AccountServiceTest extends DummyObject {
 
     // DTO가 잘 만들어 졌는지 확인.
     @Test
-    public void dipositAccount2_test() throws Exception {
+    public void dipositAccount_test2() throws Exception {
         // given
         AccountDepositReqDto accountDepositReqDto = new AccountDepositReqDto();
         accountDepositReqDto.setNumber(1111L);
@@ -161,4 +162,31 @@ public class AccountServiceTest extends DummyObject {
         // then
         assertThat(ssarAccount1.getBalance()).isEqualTo(1100L);
     }
+
+    // 서비스 테스트... 기술적인 테크닉!
+    // 진짜 서비스 테스트 하고 싶으면, 내가 지금 무엇을 여기서 테스트해야할지 명확히 구분(책임 분리)
+    // DTO를 만드는 책임 -> 서비스에 있지만!! (서비스에서 DTO검증 안하고 Controller에서 테스트 해봐도 됨)
+    // DB 관련된 것도 -> 서비스 것이 아니면 테스트해 볼 필요없음.
+    // DB 관련된 것 조회했을 때, 그 값을 통해서 어떤 비즈니스 로직이 흘러가는 것이 있으면 -> stub으로 정의해서 테스트 해보면 됨.
+
+    // DB Stub 가짜로 만들어서 deposit 검증... 0원 검증
+    @Test
+    public void dipositAccount_test3() throws Exception {
+        // given
+        Account account = newMockAccount(1L, 1111L, 1000L, null);
+        Long amount = 100L;
+        // when
+        if (amount <= 0L) {
+            throw new CustomApiException("0원 이하의 금액을 입금할 수 없습니다.");
+        }
+        account.deposit(100L);
+
+        // then
+        assertThat(account.getBalance()).isEqualTo(1100L);
+    }
+
+    // 계좌 출금_테스트(서비스)
+    // 계좌 이체_테스트(서비스)
+    // 계좌 목록보기_유저별_테스트(서비스)
+    // 계좌 상세보기_테스트(서비스)
 }
