@@ -141,10 +141,10 @@ public class AccountService {
             private String sender;
             private String reciver;
             private Long amount;
-            @JsonIgnore
-            private Long depositAccountBalance; // 클라이언트에게 전달X -> 서비스 단에서 테스트 용도
             private String tel;
             private String createdAt;
+            @JsonIgnore
+            private Long depositAccountBalance; // 클라이언트에게 전달X -> 서비스 단에서 테스트 용도
 
             public TransactionDto(Transaction transaction) { // 생성자 만들고 transaction 객체로 변경해서서 설정하기. 객체로 받게끔 수정.
                 this.id = transaction.getId();
