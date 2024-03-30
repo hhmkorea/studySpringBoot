@@ -1,13 +1,6 @@
 package shop.mtcoding.bank.service;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.validation.constraints.Digits;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import lombok.Setter;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import shop.mtcoding.bank.domain.account.Account;
@@ -18,9 +11,11 @@ import shop.mtcoding.bank.domain.transaction.TransactionRepository;
 import shop.mtcoding.bank.domain.user.User;
 import shop.mtcoding.bank.domain.user.UserRepository;
 import shop.mtcoding.bank.dto.account.AccountReqDto;
-import shop.mtcoding.bank.dto.account.AccountRespDto.*;
+import shop.mtcoding.bank.dto.account.AccountReqDto.AccountDepositReqDto;
+import shop.mtcoding.bank.dto.account.AccountRespDto.AccountDepositRespDto;
+import shop.mtcoding.bank.dto.account.AccountRespDto.AccountListRespDto;
+import shop.mtcoding.bank.dto.account.AccountRespDto.AccountSaveRespDto;
 import shop.mtcoding.bank.handler.ex.CustomApiException;
-import shop.mtcoding.bank.util.CustomDateUtil;
 
 import java.util.List;
 import java.util.Optional;
@@ -120,58 +115,4 @@ public class AccountService {
         return new AccountDepositRespDto(depositAccountPS, transactionPS);
     }
 
-    @Setter
-    @Getter
-    public static class AccountDepositRespDto { // 입금요청 응답 DTO
-        private Long id; // 계좌ID
-        private Long number; // 계좌번호
-        private TransactionDto transaction; // 트랜잭션 로그(잔액은 못보고, 히스토리만 남김)
-
-        public AccountDepositRespDto(Account account, Transaction transaction) { // 생성자 만들고 Account, Transaction 객체로 변경해서서 설정하기. 객체로 받게끔 수정.
-            this.id = account.getId();
-            this.number = account.getNumber();
-            this.transaction = new TransactionDto(transaction); // Transaction 안에 있는 값을 DTO로 바꿔서 넣어줌.
-        }
-
-        @Setter
-        @Getter
-        public class TransactionDto {
-            private Long id;
-            private String gubun;
-            private String sender;
-            private String reciver;
-            private Long amount;
-            private String tel;
-            private String createdAt;
-            @JsonIgnore
-            private Long depositAccountBalance; // 클라이언트에게 전달X -> 서비스 단에서 테스트 용도
-
-            public TransactionDto(Transaction transaction) { // 생성자 만들고 transaction 객체로 변경해서서 설정하기. 객체로 받게끔 수정.
-                this.id = transaction.getId();
-                this.gubun = transaction.getGubun().getValue();
-                this.sender = transaction.getSender();
-                this.reciver = transaction.getReceiver();
-                this.amount = transaction.getAmmount();
-                this.depositAccountBalance = transaction.getDepositAccountBalance();
-                this.tel = transaction.getTel();
-                this.createdAt = CustomDateUtil.toStringFormat(transaction.getCreatedAt());
-            }
-        }
-    }
-
-    @Getter
-    @Setter
-    public static class AccountDepositReqDto { // 입금 요청 DTO
-        @NotNull
-        @Digits(integer = 4, fraction = 4)
-        private Long number;
-        @NotNull
-        private Long amount; // 0원 유효성 검사
-        @NotEmpty
-        @Pattern(regexp = "DEPOSIT")
-        private String gubun; // DEPOSIT
-        @NotEmpty
-        @Pattern(regexp = "^[0-9]{11}")
-        private String tel;
-    }
 }
