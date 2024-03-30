@@ -116,4 +116,13 @@ public class AccountControllerTest extends DummyObject {
                 () -> new CustomApiException("계좌를 찾을 수 없습니다."))
         );
     }
+
+    @Test
+    public void depositAccount_test() throws Exception {
+        // given
+
+        // when
+
+        // then
+    }
 }
