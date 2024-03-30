@@ -89,7 +89,7 @@ public class AccountService {
 
     // 인증이 필요 없다.
     @Transactional
-    public void depositAccount(AccountDepositReqDto accountDepositReqDto) { // 계좌입금 : ATM -> 누군가의 계좌
+    public AccountDepositRespDto depositAccount(AccountDepositReqDto accountDepositReqDto) { // 계좌입금 : ATM -> 누군가의 계좌
         // 0원 체크
         if (accountDepositReqDto.getAmount() <= 0L) {
             throw new CustomApiException("0원 이하의 금액을 입금할 수 없습니다.");
@@ -107,28 +107,30 @@ public class AccountService {
         // 거래내역 남기기
         Transaction transaction = Transaction.builder()
                 .depositAccount(depositAccountPS)
-                .withdrawAccount(null)
+                .withdrawAccount(null) // 입금할때 출금 계좌는 필요없음.
                 .depositAccountBalance(depositAccountPS.getBalance()) // 영속화된 잔액!!
                 .ammount(accountDepositReqDto.getAmount())
-                .gubun(TransactionEnum.DEPOSIT)
-                .sender("ATM")
+                .gubun(TransactionEnum.DEPOSIT) // 입금
+                .sender("ATM") // ATM 출금
                 .receiver(accountDepositReqDto.getNumber()+"")
                 .tel(accountDepositReqDto.getTel())
                 .build();
+
         Transaction transactionPS = transactionRepository.save(transaction);
+        return new AccountDepositRespDto(depositAccountPS, transactionPS);
     }
 
     @Setter
     @Getter
-    public static class AccountDepositRespDto {
+    public static class AccountDepositRespDto { // 입금요청 응답 DTO
         private Long id; // 계좌ID
         private Long number; // 계좌번호
-        private TransactionDto transaction;
+        private TransactionDto transaction; // 트랜잭션 로그(잔액은 못보고, 히스토리만 남김)
 
-        public AccountDepositRespDto(Long id, Long number, TransactionDto transaction) {
-            this.id = id;
-            this.number = number;
-            this.transaction = transaction;
+        public AccountDepositRespDto(Account account, Transaction transaction) { // 생성자 만들고 Account, Transaction 객체로 변경해서서 설정하기. 객체로 받게끔 수정.
+            this.id = account.getId();
+            this.number = account.getNumber();
+            this.transaction = new TransactionDto(transaction); // Transaction 안에 있는 값을 DTO로 바꿔서 넣어줌.
         }
 
         @Setter
@@ -144,7 +146,7 @@ public class AccountService {
             private String tel;
             private String createdAt;
 
-            public TransactionDto(Transaction transaction) {
+            public TransactionDto(Transaction transaction) { // 생성자 만들고 transaction 객체로 변경해서서 설정하기. 객체로 받게끔 수정.
                 this.id = transaction.getId();
                 this.gubun = transaction.getGubun().getValue();
                 this.sender = transaction.getSender();
@@ -159,7 +161,7 @@ public class AccountService {
 
     @Getter
     @Setter
-    public static class AccountDepositReqDto {
+    public static class AccountDepositReqDto { // 입금 요청 DTO
         @NotNull
         @Digits(integer = 4, fraction = 4)
         private Long number;
