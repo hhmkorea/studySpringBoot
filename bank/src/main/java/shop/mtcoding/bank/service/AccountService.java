@@ -188,7 +188,7 @@ public class AccountService {
         withdrawAccountPS.checkOwner(userId);
 
         // 출금계좌 비밀번호 확인
-        withdrawAccountPS.checkSamePassword(accountTransferReqDto.getWithdrawNumber());
+        withdrawAccountPS.checkSamePassword(accountTransferReqDto.getWithdrawPassword());
 
         // 출금계좌 잔액 확인
         withdrawAccountPS.checkBalance(accountTransferReqDto.getAmount());
