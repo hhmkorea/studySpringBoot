@@ -1,11 +1,6 @@
 package shop.mtcoding.bank.service;
 
-import jakarta.validation.constraints.Digits;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import lombok.Setter;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import shop.mtcoding.bank.domain.account.Account;
@@ -16,12 +11,14 @@ import shop.mtcoding.bank.domain.transaction.TransactionRepository;
 import shop.mtcoding.bank.domain.user.User;
 import shop.mtcoding.bank.domain.user.UserRepository;
 import shop.mtcoding.bank.dto.account.AccountReqDto;
-import shop.mtcoding.bank.dto.account.AccountReqDto.AccountWithdrawReqDto;
 import shop.mtcoding.bank.dto.account.AccountReqDto.AccountDepositReqDto;
+import shop.mtcoding.bank.dto.account.AccountReqDto.AccountTransferReqDto;
+import shop.mtcoding.bank.dto.account.AccountReqDto.AccountWithdrawReqDto;
 import shop.mtcoding.bank.dto.account.AccountRespDto.AccountDepositRespDto;
 import shop.mtcoding.bank.dto.account.AccountRespDto.AccountListRespDto;
 import shop.mtcoding.bank.dto.account.AccountRespDto.AccountSaveRespDto;
 import shop.mtcoding.bank.dto.account.AccountRespDto.AccountWithdrawRespDto;
+import shop.mtcoding.bank.dto.account.AccountRespDto.AccountTransferRespDto;
 import shop.mtcoding.bank.handler.ex.CustomApiException;
 
 import java.util.List;
@@ -64,7 +61,7 @@ public class AccountService {
 
         // 해당 계좌가 DB에 있는지 중복여부 체크
         Optional<Account> accountOP = accountRepository.findByNumber(accountReqDto.getNumber());
-        if(accountOP.isPresent()) {
+        if (accountOP.isPresent()) {
             throw new CustomApiException("해당 계좌가 이미 존재합니다.");
         }
 
@@ -115,11 +112,11 @@ public class AccountService {
         Transaction transaction = Transaction.builder()
                 .withdrawAccount(withdrawAccountPS)
                 .depositAccount(null) // 출금할때 입금 계좌는 필요없음.
-                .depositAccountBalance(withdrawAccountPS.getBalance()) // 영속화된 잔액!!
+                .withdrawAccountBalance(withdrawAccountPS.getBalance()) // 출금계좌 잔액!!
                 .depositAccountBalance(null) //
                 .ammount(accountWithdrawReqDto.getAmount())
                 .gubun(TransactionEnum.WITHDRAW) // 출금
-                .sender(accountWithdrawReqDto.getNumber()+"")
+                .sender(accountWithdrawReqDto.getNumber() + "")
                 .receiver("ATM") // ATM 입금
                 .build();
 
@@ -150,11 +147,11 @@ public class AccountService {
         Transaction transaction = Transaction.builder()
                 .depositAccount(depositAccountPS)
                 .withdrawAccount(null) // 입금할때 출금 계좌는 필요없음.
-                .depositAccountBalance(depositAccountPS.getBalance()) // 영속화된 잔액!!
+                .depositAccountBalance(depositAccountPS.getBalance()) // 입금계좌 잔액!!
                 .ammount(accountDepositReqDto.getAmount())
                 .gubun(TransactionEnum.DEPOSIT) // 입금
                 .sender("ATM") // ATM 출금
-                .receiver(accountDepositReqDto.getNumber()+"")
+                .receiver(accountDepositReqDto.getNumber() + "")
                 .tel(accountDepositReqDto.getTel())
                 .build();
 
@@ -162,5 +159,58 @@ public class AccountService {
         return new AccountDepositRespDto(depositAccountPS, transactionPS);
     }
 
+    @Transactional
+    public AccountTransferRespDto transferAccount(AccountTransferReqDto accountTransferReqDto, Long userId) { // 계좌이체
 
+        // 출금 계좌와 입금 계좌가 동일하면 안됨
+        if (accountTransferReqDto.getWithdrawNumber().longValue() == accountTransferReqDto.getDipositNumber().longValue()) {
+            throw new CustomApiException("입출금 계좌가 동일합니다. ");
+        }
+
+        // 0원 체크
+        if (accountTransferReqDto.getAmount() <= 0L) {
+            throw new CustomApiException("0원 이하의 금액을 입금할 수 없습니다.");
+        }
+
+        // 출금계좌 확인
+        Account withdrawAccountPS = accountRepository.findByNumber(accountTransferReqDto.getWithdrawNumber())
+                .orElseThrow(
+                        () -> new CustomApiException("출금계좌를 찾을 수 없습니다.")
+                );
+
+        // 입금계좌 확인
+        Account depositAccountPS = accountRepository.findByNumber(accountTransferReqDto.getDipositNumber())
+                .orElseThrow(
+                        () -> new CustomApiException("입금계좌를 찾을 수 없습니다.")
+                );
+
+        // 출금 소유자 확인 (로그인한 사람과 동일한지)
+        withdrawAccountPS.checkOwner(userId);
+
+        // 출금계좌 비밀번호 확인
+        withdrawAccountPS.checkSamePassword(accountTransferReqDto.getWithdrawNumber());
+
+        // 출금계좌 잔액 확인
+        withdrawAccountPS.checkBalance(accountTransferReqDto.getAmount());
+
+        // 이체하기 : 출금해서 입금하기
+        withdrawAccountPS.withdraw(accountTransferReqDto.getAmount());
+        depositAccountPS.deposit(accountTransferReqDto.getAmount());
+
+        // 거래내역 남기기(내 계좌에서 ATM으로 출금)
+        Transaction transaction = Transaction.builder()
+                .withdrawAccount(withdrawAccountPS)
+                .depositAccount(depositAccountPS) // 출금할때 입금 계좌는 필요없음.
+                .withdrawAccountBalance(withdrawAccountPS.getBalance()) // 출금 계좌 잔액
+                .depositAccountBalance(depositAccountPS.getBalance()) // 입금 계좌 잔액
+                .ammount(accountTransferReqDto.getAmount())
+                .gubun(TransactionEnum.TRANSFER) // 이체
+                .sender(accountTransferReqDto.getWithdrawNumber() + "") // 보내는 곳 : 출금계좌
+                .receiver(accountTransferReqDto.getDipositNumber()+ "") // 받는 곳 : 입금계좌
+                .build();
+
+        // DTO 응납
+        Transaction transactionPS = transactionRepository.save(transaction);
+        return new AccountTransferRespDto(withdrawAccountPS, transactionPS);
+    }
 }

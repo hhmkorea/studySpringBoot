@@ -23,6 +23,25 @@ import shop.mtcoding.bank.domain.user.User;
 @Setter
 @Getter
 public class AccountReqDto {
+
+    @Setter
+    @Getter
+    public static class AccountTransferReqDto { // 요청 DTO
+        @NotNull
+        @Digits(integer = 4, fraction = 4)
+        private Long WithdrawNumber; // 출금 계좌 번호
+        @NotNull
+        @Digits(integer = 4, fraction = 4)
+        private Long dipositNumber; // 입금 계좌 번호
+        @NotNull
+        @Digits(integer = 4, fraction = 4)
+        private Long withdrawPassword; // 출금 계좌 비밀번호
+        @NotNull
+        private Long amount;
+        @Pattern(regexp = "TRANSFER")
+        private String gubun;
+    }
+
     @Setter
     @Getter
     public static class AccountWithdrawReqDto { // 요청 DTO
@@ -36,8 +55,8 @@ public class AccountReqDto {
         private Long amount;
         @Pattern(regexp = "WITHDRAW")
         private String gubun;
-
     }
+
     @Getter
     @Setter
     public static class AccountDepositReqDto { // 입금 요청 DTO

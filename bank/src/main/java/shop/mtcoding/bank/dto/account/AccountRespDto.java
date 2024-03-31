@@ -25,6 +25,44 @@ import java.util.stream.Collectors;
  */
 public class AccountRespDto {
 
+    @Setter
+    @Getter
+    public static class AccountTransferRespDto { // 입금요청 응답 DTO
+        private Long id; // 계좌ID
+        private Long number; // 계좌번호
+        private Long balance; // 출금 계좌 잔액
+        private TransactionDto transaction; // 트랜잭션 로그(잔액은 못보고, 히스토리만 남김)
+
+        public AccountTransferRespDto(Account account, Transaction transaction) {
+            this.id = account.getId();
+            this.number = account.getNumber();
+            this.balance = account.getBalance();
+            this.transaction = new TransactionDto(transaction);
+        }
+
+        @Setter
+        @Getter
+        public class TransactionDto {
+            private Long id;
+            private String gubun;
+            private String sender;
+            private String reciver;
+            private Long amount;
+            @JsonIgnore
+            private Long depositAccountBalance; // 입금계좌 잔액
+            private String createdAt;
+
+            public TransactionDto(Transaction transaction) {
+                this.id = transaction.getId();
+                this.gubun = transaction.getGubun().getValue();
+                this.sender = transaction.getSender();
+                this.reciver = transaction.getReceiver();
+                this.amount = transaction.getAmmount();
+                this.createdAt = CustomDateUtil.toStringFormat(transaction.getCreatedAt());
+            }
+        }
+    }
+
     // DTO가 똑같아도 재사용하지 않기 (나중에 만약에 출금할때 DTO가 달라져야 하면 DTO를 공유하면 수정잘못하면 망함 - 독립적으로 만드세요)
     @Setter
     @Getter
