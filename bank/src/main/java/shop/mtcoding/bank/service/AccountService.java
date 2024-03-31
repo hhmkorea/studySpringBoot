@@ -163,7 +163,7 @@ public class AccountService {
     public AccountTransferRespDto transferAccount(AccountTransferReqDto accountTransferReqDto, Long userId) { // 계좌이체
 
         // 출금 계좌와 입금 계좌가 동일하면 안됨
-        if (accountTransferReqDto.getWithdrawNumber().longValue() == accountTransferReqDto.getDipositNumber().longValue()) {
+        if (accountTransferReqDto.getWithdrawNumber().longValue() == accountTransferReqDto.getDepositNumber().longValue()) {
             throw new CustomApiException("입출금 계좌가 동일합니다. ");
         }
 
@@ -179,7 +179,7 @@ public class AccountService {
                 );
 
         // 입금계좌 확인
-        Account depositAccountPS = accountRepository.findByNumber(accountTransferReqDto.getDipositNumber())
+        Account depositAccountPS = accountRepository.findByNumber(accountTransferReqDto.getDepositNumber())
                 .orElseThrow(
                         () -> new CustomApiException("입금계좌를 찾을 수 없습니다.")
                 );
@@ -206,7 +206,7 @@ public class AccountService {
                 .ammount(accountTransferReqDto.getAmount())
                 .gubun(TransactionEnum.TRANSFER) // 이체
                 .sender(accountTransferReqDto.getWithdrawNumber() + "") // 보내는 곳 : 출금계좌
-                .receiver(accountTransferReqDto.getDipositNumber()+ "") // 받는 곳 : 입금계좌
+                .receiver(accountTransferReqDto.getDepositNumber()+ "") // 받는 곳 : 입금계좌
                 .build();
 
         // DTO 응납

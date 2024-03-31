@@ -32,7 +32,7 @@ public class AccountReqDto {
         private Long WithdrawNumber; // 출금 계좌 번호
         @NotNull
         @Digits(integer = 4, fraction = 4)
-        private Long dipositNumber; // 입금 계좌 번호
+        private Long depositNumber; // 입금 계좌 번호
         @NotNull
         @Digits(integer = 4, fraction = 4)
         private Long withdrawPassword; // 출금 계좌 비밀번호
