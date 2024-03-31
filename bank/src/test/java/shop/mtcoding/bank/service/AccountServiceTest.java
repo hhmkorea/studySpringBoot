@@ -14,9 +14,11 @@ import shop.mtcoding.bank.domain.transaction.TransactionRepository;
 import shop.mtcoding.bank.domain.user.User;
 import shop.mtcoding.bank.domain.user.UserRepository;
 import shop.mtcoding.bank.dto.account.AccountReqDto;
+import shop.mtcoding.bank.dto.account.AccountReqDto.AccountWithdrawReqDto;
 import shop.mtcoding.bank.dto.account.AccountReqDto.AccountDepositReqDto;
 import shop.mtcoding.bank.dto.account.AccountRespDto.AccountDepositRespDto;
 import shop.mtcoding.bank.dto.account.AccountRespDto.AccountSaveRespDto;
+import shop.mtcoding.bank.dto.account.AccountRespDto.AccountWithdrawRespDto;
 import shop.mtcoding.bank.handler.ex.CustomApiException;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -186,6 +188,30 @@ public class AccountServiceTest extends DummyObject {
     }
 
     // 계좌 출금_테스트(서비스)
+    @Test
+    public void withdrawAccount_test() throws Exception {
+        // given
+        Long amount = 1000L;
+        Long password = 1234L;
+        Long userId = 1L;
+
+        User ssar = newMockUser(1L, "ssar", "쌀");
+        Account ssarAccount = newMockAccount(1L, 1111L, 1000L, ssar);
+
+        // when
+        // 0원 체크
+        if (amount <= 0L) {
+            throw new CustomApiException("0원 이하의 금액을 입금할 수 없습니다.");
+        }
+        // 출금 소유자 확인
+        ssarAccount.checkOwner(userId);
+        ssarAccount.checkSamePassword(password);
+        //ssarAccount.checkBalance(amount);
+        ssarAccount.withdraw(amount);
+
+        // then
+        assertThat(ssarAccount.getBalance()).isEqualTo(900L);
+    }
     // 계좌 이체_테스트(서비스)
     // 계좌 목록보기_유저별_테스트(서비스)
     // 계좌 상세보기_테스트(서비스)

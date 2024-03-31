@@ -16,6 +16,7 @@ import shop.mtcoding.bank.domain.transaction.TransactionRepository;
 import shop.mtcoding.bank.domain.user.User;
 import shop.mtcoding.bank.domain.user.UserRepository;
 import shop.mtcoding.bank.dto.account.AccountReqDto;
+import shop.mtcoding.bank.dto.account.AccountReqDto.AccountWithdrawReqDto;
 import shop.mtcoding.bank.dto.account.AccountReqDto.AccountDepositReqDto;
 import shop.mtcoding.bank.dto.account.AccountRespDto.AccountDepositRespDto;
 import shop.mtcoding.bank.dto.account.AccountRespDto.AccountListRespDto;
@@ -103,13 +104,10 @@ public class AccountService {
                 );
         // 출금 소유자 확인 (로그인한 사람과 동일한지)
         withdrawAccountPS.checkOwner(userId);
-
         // 출금계좌 비밀번호 확인
         withdrawAccountPS.checkSamePassword(accountWithdrawReqDto.getPassword());
-
         // 출금계좌 잔액 확인
         withdrawAccountPS.checkBalance(accountWithdrawReqDto.getAmount());
-
         // 출금하기
         withdrawAccountPS.withdraw(accountWithdrawReqDto.getAmount());
 
@@ -128,7 +126,6 @@ public class AccountService {
         // DTO 응납
         Transaction transactionPS = transactionRepository.save(transaction);
         return new AccountWithdrawRespDto(withdrawAccountPS, transactionPS);
-
     }
 
     // 인증이 필요 없다.
@@ -165,20 +162,5 @@ public class AccountService {
         return new AccountDepositRespDto(depositAccountPS, transactionPS);
     }
 
-    @Setter
-    @Getter
-    public static class AccountWithdrawReqDto { // 요청 DTO
-        @NotNull
-        @Digits(integer = 4, fraction = 4)
-        private Long number;
-        @NotNull
-        @Digits(integer = 4, fraction = 4)
-        private Long password;
-        @NotNull
-        private Long amount;
-        @Pattern(regexp = "WITHDRAW")
-        private String gubun;
-
-    }
 
 }

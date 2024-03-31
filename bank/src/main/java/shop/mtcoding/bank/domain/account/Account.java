@@ -66,7 +66,7 @@ public class Account {
     }
 
     public void checkSamePassword(Long password) {
-        if (this.password != password) {
+        if (this.password.longValue() != password.longValue()) {
             throw new CustomApiException("계좌 비밀번호 검증에 실패했습니다.");
         }
     }
@@ -79,6 +79,7 @@ public class Account {
     }
 
     public void withdraw(Long amount) {
-        balance = balance - amount; // 출금됨 : 계좌 잔액 = 기존 잔액 - 출금액 
+        checkBalance(amount);
+        balance = balance - amount; // 출금됨 : 계좌 잔액 = 기존 잔액 - 출금액
     }
 }
