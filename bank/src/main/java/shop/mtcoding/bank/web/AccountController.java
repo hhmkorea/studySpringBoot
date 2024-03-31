@@ -10,14 +10,9 @@ import org.springframework.web.bind.annotation.*;
 import shop.mtcoding.bank.config.auth.LoginUser;
 import shop.mtcoding.bank.dto.ResponseDto;
 import shop.mtcoding.bank.dto.account.AccountReqDto;
-import shop.mtcoding.bank.dto.account.AccountReqDto.AccountTransferReqDto;
 import shop.mtcoding.bank.dto.account.AccountReqDto.AccountDepositReqDto;
 import shop.mtcoding.bank.dto.account.AccountReqDto.AccountWithdrawReqDto;
-import shop.mtcoding.bank.dto.account.AccountRespDto.AccountDepositRespDto;
-import shop.mtcoding.bank.dto.account.AccountRespDto.AccountListRespDto;
-import shop.mtcoding.bank.dto.account.AccountRespDto.AccountSaveRespDto;
-import shop.mtcoding.bank.dto.account.AccountRespDto.AccountWithdrawRespDto;
-import shop.mtcoding.bank.dto.account.AccountRespDto.AccountTransferRespDto;
+import shop.mtcoding.bank.dto.account.AccountRespDto.*;
 import shop.mtcoding.bank.service.AccountService;
 
 /**
@@ -74,7 +69,7 @@ public class AccountController {
                                              BindingResult bindingResults, // @Valid 다음에 들어와야 유효성 검사를 할 수 있음.
                                              @AuthenticationPrincipal LoginUser loginUser) {
         AccountWithdrawRespDto accountWithdrawRespDto = accountService.withdrawAccount(accountWithdrawReqDto, loginUser.getUser().getId());
-        return new ResponseEntity<>(new ResponseDto<>(1, "계좌 출금 완료", accountWithdrawReqDto), HttpStatus.CREATED);
+        return new ResponseEntity<>(new ResponseDto<>(1, "계좌 출금 완료", accountWithdrawRespDto), HttpStatus.CREATED);
     }
 
     @PostMapping("/s/account/transfer")
