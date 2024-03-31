@@ -48,7 +48,7 @@ public class AccountRespDto {
             private String sender;
             private String reciver;
             private Long amount;
-            @JsonIgnore
+            //@JsonIgnore
             private Long depositAccountBalance; // 입금계좌 잔액
             private String createdAt;
 
@@ -58,6 +58,7 @@ public class AccountRespDto {
                 this.sender = transaction.getSender();
                 this.reciver = transaction.getReceiver();
                 this.amount = transaction.getAmmount();
+                this.depositAccountBalance = transaction.getDepositAccountBalance();
                 this.createdAt = CustomDateUtil.toStringFormat(transaction.getCreatedAt());
             }
         }
