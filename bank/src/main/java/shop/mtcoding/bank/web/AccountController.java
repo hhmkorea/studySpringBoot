@@ -77,7 +77,14 @@ public class AccountController {
                                              BindingResult bindingResult,
                                              @AuthenticationPrincipal LoginUser loginUser) {
         AccountTransferRespDto accountTransferRespDto = accountService.transferAccount(accountTransferReqDto, loginUser.getUser().getId());
-        return new ResponseEntity<>(new ResponseDto<>(1, "계좌 이체 완료 ", accountTransferRespDto), HttpStatus.CREATED);
+        return new ResponseEntity<>(new ResponseDto<>(1, "계좌 이체 완료", accountTransferRespDto), HttpStatus.CREATED);
     }
 
+    @GetMapping("/s/account/{number}")
+    public ResponseEntity<?> findDetailAccount(@PathVariable Long number,
+                                               @RequestParam(value = "page", defaultValue = "0") Integer page,
+                                               @AuthenticationPrincipal LoginUser loginUser) {
+        AccountDetailRespDto accountDetailRespDto = accountService.viewAcountDetail(number, loginUser.getUser().getId(), page);
+        return new ResponseEntity<>(new ResponseDto<>(1, "계좌 상세보기 성공", accountDetailRespDto), HttpStatus.OK);
+    }
 }

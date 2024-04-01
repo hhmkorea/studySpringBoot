@@ -18,16 +18,18 @@ import org.springframework.test.web.servlet.ResultActions;
 import shop.mtcoding.bank.config.dummy.DummyObject;
 import shop.mtcoding.bank.domain.account.Account;
 import shop.mtcoding.bank.domain.account.AccountRepository;
+import shop.mtcoding.bank.domain.transaction.Transaction;
+import shop.mtcoding.bank.domain.transaction.TransactionRepository;
 import shop.mtcoding.bank.domain.user.User;
 import shop.mtcoding.bank.domain.user.UserRepository;
 import shop.mtcoding.bank.dto.account.AccountReqDto;
-import shop.mtcoding.bank.dto.account.AccountReqDto.AccountTransferReqDto;
 import shop.mtcoding.bank.dto.account.AccountReqDto.AccountDepositReqDto;
+import shop.mtcoding.bank.dto.account.AccountReqDto.AccountTransferReqDto;
 import shop.mtcoding.bank.dto.account.AccountReqDto.AccountWithdrawReqDto;
 import shop.mtcoding.bank.handler.ex.CustomApiException;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
@@ -61,14 +63,14 @@ public class AccountControllerTest extends DummyObject {
     private AccountRepository accountRepository;
 
     @Autowired
+    private TransactionRepository transactionRepository;
+
+    @Autowired
     private EntityManager em;
 
     @BeforeEach
     public void setUp() {
-        User ssar = userRepository.save(newUser("ssar", "쌀"));
-        User cos = userRepository.save(newUser("cos", "코스"));
-        Account ssarAccount = accountRepository.save(newAccount(1111L, ssar));
-        Account cosAccount = accountRepository.save(newAccount(2222L, cos));
+        dataSetting();
         em.clear();
     }
 
@@ -184,4 +186,48 @@ public class AccountControllerTest extends DummyObject {
         // then
         resultActions.andExpect(status().isCreated());
     }
+
+    @WithUserDetails(value = "ssar", setupBefore = TestExecutionEvent.TEST_EXECUTION) // 인증
+    @Test
+    public void findDetailAccountList_test() throws Exception {
+        // given
+        Long number = 1111L;
+        String page = "0";
+
+        // when
+        ResultActions resultActions = mvc.perform(get("/api/s/account/"+number)
+                .param("page", page));
+        String responseBody = resultActions.andReturn().getResponse().getContentAsString();
+        System.out.println("테스트: " + responseBody);
+
+        // then
+        resultActions.andExpect(jsonPath("$.data.transactions[0].balance").value(900L));
+        resultActions.andExpect(jsonPath("$.data.transactions[1].balance").value(800L));
+        resultActions.andExpect(jsonPath("$.data.transactions[2].balance").value(700L));
+        resultActions.andExpect(jsonPath("$.data.transactions[3].balance").value(800L));
+    }
+
+    private void dataSetting() {
+        User ssar = userRepository.save(newUser("ssar", "쌀"));
+        User cos = userRepository.save(newUser("cos", "코스,"));
+        User love = userRepository.save(newUser("love", "러브"));
+        User admin = userRepository.save(newUser("admin", "관리자"));
+
+        Account ssarAccount1 = accountRepository.save(newAccount(1111L, ssar)); // 1000원 갖고 있음.
+        Account cosAccount = accountRepository.save(newAccount(2222L, cos));
+        Account loveAccount = accountRepository.save(newAccount(3333L, love));
+        Account ssarAccount2 = accountRepository.save(newAccount(4444L, ssar));
+
+        Transaction withdrawTransaction1 = transactionRepository
+                .save(newWithdrawTransaction(ssarAccount1, accountRepository));
+        Transaction depositTransaction1 = transactionRepository
+                .save(newDepositTransaction(cosAccount, accountRepository));
+        Transaction transferTransaction1 = transactionRepository
+                .save(newTransferTransaction(ssarAccount1, cosAccount, accountRepository));
+        Transaction transferTransaction2 = transactionRepository
+                .save(newTransferTransaction(ssarAccount1, loveAccount, accountRepository));
+        Transaction transferTransaction3 = transactionRepository
+                .save(newTransferTransaction(cosAccount, ssarAccount1, accountRepository));
+    }
+
 }
