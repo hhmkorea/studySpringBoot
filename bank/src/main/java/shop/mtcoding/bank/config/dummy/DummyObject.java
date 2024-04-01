@@ -14,9 +14,11 @@ public class DummyObject {
 
     protected Transaction newDepositTransaction(Account account, AccountRepository accountRepository) {
         account.deposit(100L); // 1000원이 있었다면 900원이 됨.
-        // Dirty Checking 이 안되기 때문에
+
+        // Repository Test에서는 더티체킹 됨.
+        // Controller Test에서는 더티체킹 안됨.
         if (accountRepository != null) {
-            accountRepository.save(account);
+            accountRepository.save(account); // 그래서 강제로 save 넣음. 내가 데이터 처리 주도권 잡음.
         }
         Transaction transaction = Transaction.builder()
                 .withdrawAccount(null)
@@ -34,7 +36,7 @@ public class DummyObject {
 
     protected Transaction newWithdrawTransaction(Account account, AccountRepository accountRepository) {
         account.withdraw(100L);
-        // Dirty Checking 이 안되기 때문에
+
         if (accountRepository != null) {
             accountRepository.save(account);
         }
@@ -53,8 +55,8 @@ public class DummyObject {
 
     protected Transaction newTransferTransaction(Account withdrawAccount, Account depositAccount, AccountRepository accountRepository) {
         withdrawAccount.withdraw(100L);
-        depositAccount.deposit(100L); //
-        // Dirty Checking 이 안되기 때문에
+        depositAccount.deposit(100L);
+
         if (accountRepository != null) {
             accountRepository.save(withdrawAccount);
             accountRepository.save(depositAccount);
@@ -62,8 +64,8 @@ public class DummyObject {
         Transaction transaction = Transaction.builder()
                 .withdrawAccount(withdrawAccount)
                 .depositAccount(depositAccount)
-                .withdrawAccountBalance(depositAccount.getBalance())
-                .depositAccountBalance(withdrawAccount.getBalance())
+                .withdrawAccountBalance(withdrawAccount.getBalance())
+                .depositAccountBalance(depositAccount.getBalance())
                 .ammount(100L)
                 .gubun(TransactionEnum.TRANSFER)
                 .sender(withdrawAccount.getNumber() + "")

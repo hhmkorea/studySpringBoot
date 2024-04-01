@@ -47,8 +47,8 @@ public class TransactionRepositoryImpl implements Dao {
             sql += "join fetch t.depositAccount da ";
             sql += "where t.depositAccount.id = :depositAccountId ";
         } else { // gubun = ALL
-            sql += "left join fetch t.withdrawAccount wa ";
-            sql += "left join fetch t.depositAccount aa ";
+            sql += "left join t.withdrawAccount wa ";
+            sql += "left join t.depositAccount da ";
             sql += "where t.withdrawAccount.id = :withdrawAccountId ";
             sql += "or ";
             sql += "t.depositAccount.id = :depositAccountId ";
