@@ -14,11 +14,7 @@ import shop.mtcoding.bank.dto.account.AccountReqDto;
 import shop.mtcoding.bank.dto.account.AccountReqDto.AccountDepositReqDto;
 import shop.mtcoding.bank.dto.account.AccountReqDto.AccountTransferReqDto;
 import shop.mtcoding.bank.dto.account.AccountReqDto.AccountWithdrawReqDto;
-import shop.mtcoding.bank.dto.account.AccountRespDto.AccountDepositRespDto;
-import shop.mtcoding.bank.dto.account.AccountRespDto.AccountListRespDto;
-import shop.mtcoding.bank.dto.account.AccountRespDto.AccountSaveRespDto;
-import shop.mtcoding.bank.dto.account.AccountRespDto.AccountWithdrawRespDto;
-import shop.mtcoding.bank.dto.account.AccountRespDto.AccountTransferRespDto;
+import shop.mtcoding.bank.dto.account.AccountRespDto.*;
 import shop.mtcoding.bank.handler.ex.CustomApiException;
 
 import java.util.List;
@@ -212,5 +208,23 @@ public class AccountService {
         // DTO 응납
         Transaction transactionPS = transactionRepository.save(transaction);
         return new AccountTransferRespDto(withdrawAccountPS, transactionPS);
+    }
+
+    public AccountDetailRespDto viewAcountDetail(Long number, Long userId, Integer page ) { // 계좌 상세보기
+        // 1. 구분값 고정
+        String gubun = "ALL";
+
+        // 2. 계좌 확인
+        Account accountPS = accountRepository.findByNumber(number).orElseThrow(
+                () -> new CustomApiException("계좌를 찾을 수 없습니다.")
+        );
+
+        // 2. 계좌 소유자 확인
+        accountPS.checkOwner(userId);
+
+        // 4. 입출금 목록 보기
+        List<Transaction> transactionListPS = transactionRepository.findTransactionList(accountPS.getId(), gubun, page);
+
+        return new AccountDetailRespDto(accountPS, transactionListPS);
     }
 }

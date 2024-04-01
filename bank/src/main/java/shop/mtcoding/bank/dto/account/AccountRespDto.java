@@ -181,4 +181,62 @@ public class AccountRespDto {
         }
     }
 
+    @Getter
+    @Setter
+    public static class AccountDetailRespDto {
+        private Long id; // 계좌 ID
+        private Long number; // 계좌 번호
+        private Long balance; // 그 계좌의 최종 잔액
+        private List<TransactionDto> transactions = new ArrayList<>();
+
+        public AccountDetailRespDto(Account account, List<Transaction> transactions) {
+            this.id = account.getId();
+            this.number = account.getNumber();
+            this.balance = account.getBalance();
+            this.transactions = transactions.stream()
+                    .map((transaction) -> new TransactionDto(transaction, account.getNumber()))
+                    .collect(Collectors.toList());;
+        }
+
+        @Getter
+        @Setter
+        public class TransactionDto {
+            private Long id;
+            private String gubun;
+            private Long amount;
+
+            private String sender;
+            private String reciver;
+
+            private String tel;
+            private String createdAt;
+
+            private Long balance;
+
+            public TransactionDto(Transaction transaction, Long accountNumber) {
+                this.id = transaction.getId();
+                this.gubun = transaction.getGubun().getValue();
+                this.amount = transaction.getAmmount();
+                this.sender = transaction.getSender();
+                this.reciver = transaction.getReceiver();
+                this.createdAt = CustomDateUtil.toStringFormat(transaction.getCreatedAt());
+                this.tel = transaction.getTel() == null ? "없음" : transaction.getTel();
+
+                // 1111 계좌의 입출금 내역 (출금계좌 = null, 입금계좌  = 값) (입금계좌 = 값, 입금계좌  = null)
+                if (transaction.getDepositAccount() == null) { // 입금계좌가 null 이면
+                    this.balance = transaction.getWithdrawAccountBalance();
+                } else if (transaction.getWithdrawAccount() == null) {
+                    this.balance = transaction.getDepositAccountBalance();
+                } else {
+                    // 1111 계좌의 입출금 내역 (출금계좌 = 값, 입금계좌  = 값)
+                    if (accountNumber.longValue() == transaction.getDepositAccount().getNumber()) {
+                        this.balance = transaction.getDepositAccountBalance();
+                    } else {
+                        this.balance = transaction.getWithdrawAccountBalance();
+                    }
+                }
+            }
+        }
+    }
+
 }
