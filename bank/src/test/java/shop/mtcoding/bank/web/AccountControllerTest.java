@@ -105,14 +105,14 @@ public class AccountControllerTest extends DummyObject {
     * */
     @WithUserDetails(value = "ssar", setupBefore = TestExecutionEvent.TEST_EXECUTION) // cos로 로그인
     @Test
-    public void deleteAccout_test() throws Exception {
+    public void deleteAccount_test() throws Exception {
         // given
         Long number = 1111L;
 
         // when
         ResultActions resultActions = mvc.perform(delete("/api/s/account/" + number));
         String responseBody = resultActions.andReturn().getResponse().getContentAsString();
-        System.out.println("테스트: " + responseBody);
+        System.out.println("테스트 체크 : " + responseBody);
 
         // then
         // Junit 테스트에서 delete 쿼리는 DB관련(DML)으로 가장 마지막에 실행되면 발동안함.

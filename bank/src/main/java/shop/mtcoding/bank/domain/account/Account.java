@@ -33,6 +33,8 @@ public class Account {
     @ManyToOne(fetch = FetchType.LAZY) // 지연로딩, account.getUser().아무필드호출() == Lazy 발동
     private User user; // user_id // 한명의 유저는 여러개의 계좌를 가질 수 있음.
 
+    // 양방향 매핑 - 쿼리를 보면 마음에 안들게 나올 것.
+
     @CreatedDate // Insert
     @Column(nullable = false)
     private LocalDateTime createdAt;
