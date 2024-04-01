@@ -42,7 +42,7 @@ public class TransactionRespDto {
             private String sender;
             private String reciver;
             private Long amount;
-            private Long tel;
+            private String tel;
             private String createdAt;
             private Long balance;
 
@@ -53,7 +53,7 @@ public class TransactionRespDto {
                 this.sender = transaction.getSender();
                 this.reciver = transaction.getReceiver();
                 this.createdAt = CustomDateUtil.toStringFormat(transaction.getCreatedAt());
-                this.tel = Long.valueOf(transaction.getTel() == null ? "없음" : transaction.getTel());
+                this.tel = transaction.getTel() == null ? "없음" : transaction.getTel();
 
                 // 1111 계좌의 입출금 내역 (출금계좌 = null, 입금계좌  = 값) (입금계좌 = 값, 입금계좌  = null)
                 if (transaction.getDepositAccount() == null) { // 입금계좌가 null 이면

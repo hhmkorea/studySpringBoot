@@ -8,7 +8,6 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import shop.mtcoding.bank.domain.account.Account;
-import shop.mtcoding.bank.domain.user.User;
 
 import java.time.LocalDateTime;
 
@@ -41,7 +40,7 @@ public class Transaction {
     // 계좌가 사라져도 로그는 남아야 한다.
     private String sender;
     private String receiver;
-    private String tel;
+    private String tel; // ATM -> 1111 입금 (ATM기로 무통장 입금 - 전화번호는 좀 남겨나야 함)
 
     @CreatedDate
     @Column(nullable = false)
