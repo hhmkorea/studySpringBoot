@@ -11,6 +11,7 @@ import shop.mtcoding.bank.domain.account.Account;
 import shop.mtcoding.bank.domain.account.AccountRepository;
 import shop.mtcoding.bank.domain.user.User;
 import shop.mtcoding.bank.domain.user.UserRepository;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
 
@@ -45,6 +46,7 @@ public class TransactionRepositoryImplTest  extends DummyObject {
     public void setUp() {
         autoIncrementReset();
         dataSetting();
+        em.clear();
     }
 
     @Test
@@ -61,10 +63,13 @@ public class TransactionRepositoryImplTest  extends DummyObject {
             System.out.println("받는사람 : " + t.getReceiver());
             System.out.println("출금계좌 잔액 : " + t.getWithdrawAccountBalance());
             System.out.println("입금계좌 잔액 : " + t.getDepositAccountBalance());
+            System.out.println("account 잔액 : " + t.getWithdrawAccount().getBalance());
+           // System.out.println("account fullname : " + t.getWithdrawAccount().getUser().getFullname());
             System.out.println("findTransactionList_all_test ================================ ");
         });
 
         // then
+        assertThat(transactionListPS.get(3).getDepositAccountBalance()).isEqualTo(800L);
     }
 
     @Test
