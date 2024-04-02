@@ -3,7 +3,9 @@ package shop.mtcoding.bank.config;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.CacheControl;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -14,6 +16,8 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import shop.mtcoding.bank.config.jwt.JwtAuthenticationFilter;
 import shop.mtcoding.bank.config.jwt.JwtAuthorizationFilter;
 import shop.mtcoding.bank.domain.user.UserEnum;
@@ -21,13 +25,21 @@ import shop.mtcoding.bank.util.CustomResponseUtil;
 
 // @Slf4j // JUnit테스트할때 문제 생겨서 Logger 사용
 @Configuration // IoC에 설정파일로 등록해줌
-public class SecurityConfig {
+@ComponentScan
+public class SecurityConfig implements WebMvcConfigurer {
     public final Logger log = LoggerFactory.getLogger(SecurityConfig.class);
 
     @Bean // IoC 컨테이너에 BCryptPasswordEncoder() 객체가 등록됨, @Configuration가 붙어있는 곳에서만 작동함.
     public BCryptPasswordEncoder passwordEncoder() {
         log.debug("디버그 : BCryptPasswordEncoder 빈 등록됨");
         return new BCryptPasswordEncoder();
+    }
+
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/**")  // 모든 리소스 허용
+                .addResourceLocations("classpath:/templates/") // 리소스 위치 설정
+                .setCacheControl(CacheControl.noCache());
     }
 
     // JWT 필터 등록이 필요함!
