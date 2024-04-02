@@ -196,7 +196,7 @@ public class AccountService {
         // 거래내역 남기기(내 계좌에서 ATM으로 출금)
         Transaction transaction = Transaction.builder()
                 .withdrawAccount(withdrawAccountPS)
-                .depositAccount(depositAccountPS) // 출금할때 입금 계좌는 필요없음.
+                .depositAccount(depositAccountPS)
                 .withdrawAccountBalance(withdrawAccountPS.getBalance()) // 출금 계좌 잔액
                 .depositAccountBalance(depositAccountPS.getBalance()) // 입금 계좌 잔액
                 .ammount(accountTransferReqDto.getAmount())
