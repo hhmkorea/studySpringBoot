@@ -169,9 +169,9 @@ public class AccountRespDto {
         }
 
         public class AccountDto {
-            private Long id;
-            private Long number;
-            private Long balance;
+            public Long id;
+            public Long number;
+            public Long balance;
 
             public AccountDto(Account account) { // Entity 객체를 DTO로 옮김. 원하는 것만 Lazy Loading을 위한 작업
                 this.id = account.getId();
