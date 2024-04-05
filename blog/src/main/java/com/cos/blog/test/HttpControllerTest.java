@@ -16,9 +16,9 @@ public class HttpControllerTest {
 	
 	private static final String TAG = "HttpControllerTest : ";
 
-	//Member m = new Member(1, "ssar", "1234", "email");
 	Member m = Member.builder().username("ssar").password("1234").email("ssar@nate.com").build();
-	
+
+	// http://localhost:8000/blog/http/lombok
 	@GetMapping("/http/lombok")
 	public String lombokTest() {
 		System.out.println(TAG+"getter로 읽기 : " + m.getUsername());
