@@ -5,7 +5,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 // 사용자가 요청 -> 응답(HTML 파일)
@@ -14,7 +13,21 @@ import org.springframework.web.bind.annotation.RestController;
 // 사용자가 요청 -> 응답(Data)
 @RestController
 public class HttpControllerTest {
+	
+	private static final String TAG = "HttpControllerTest : ";
 
+	//Member m = new Member(1, "ssar", "1234", "email");
+	Member m = Member.builder().username("ssar").password("1234").email("ssar@nate.com").build();
+	
+	@GetMapping("/http/lombok")
+	public String lombokTest() {
+		System.out.println(TAG+"getter로 읽기 : " + m.getUsername());
+		 m.setUsername("cos");
+		 System.out.println(TAG+"setter 적용 후 값 읽기 : " + m.getUsername());
+		 
+		 return "lombok test 완료";
+	}
+	
 	// 인터넷 브라우저 요청은 무조건 get요청밖에 할 수 없다.
 	// http://localhost:8080/http/get (select)
 	@GetMapping("/http/get")
