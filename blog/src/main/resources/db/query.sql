@@ -16,3 +16,6 @@ show variables like 'c%';
 -- 테이블 확인
 select * from user;
 desc user;
+
+select * from board;
+desc board;
