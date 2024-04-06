@@ -43,7 +43,7 @@ public class Board {
     private int count; // 조회수
 
     // FetchType.EAGER : 해당 Entity(테이블) 조인해서 데이타 다 가져옴.
-    // FetchType.LAZY : 해당 Entity(테이블) 조인해서 "필요하면" 데이타 가벼올게!, 예:펼치기
+    // FetchType.LAZY : 해당 Entity(테이블) 조인해서 "필요하면" 데이타 가져올게!, 예:펼치기
     @ManyToOne(fetch = FetchType.EAGER) // 연관관계, Board = Many, User = One
     @JoinColumn(name="userId")
     private User user; // DB는 오브젝트를 저장할 수 없다. FK, 자바는 오브젝트를 저장할 수 있다.
