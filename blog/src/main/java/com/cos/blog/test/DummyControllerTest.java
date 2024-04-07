@@ -4,10 +4,16 @@ import com.cos.blog.model.RoleType;
 import com.cos.blog.model.User;
 import com.cos.blog.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 /**
  * packageName    : com.cos.blog.test
@@ -26,6 +32,24 @@ public class DummyControllerTest {
 
     @Autowired // 의존성 주입(DI), class가 메모리에 뜰때 @Autowired로 지정된 변수도 같이 뜸.
     private UserRepository userRepository;
+
+    @GetMapping("/dummy/users")
+    public List<User> list() {
+        return userRepository.findAll();
+    }
+
+    // 한 페이지당 2건에 데이터를 리턴받아 볼 예정
+    @GetMapping("/dummy/user")
+    public List<User> pageList(@PageableDefault(size = 2, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
+        Page<User> pagingUser =  userRepository.findAll(pageable);
+
+        if (pagingUser.isLast()) {
+
+        }
+        List<User> users = pagingUser.getContent();
+
+        return users;
+    }
 
     // {id} 주소로 parameter 전달 받을 수 있음.
     // http://localhost:8000/blog/dummy/user/5

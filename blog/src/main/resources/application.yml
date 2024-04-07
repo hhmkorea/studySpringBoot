@@ -33,5 +33,10 @@ spring:
   jackson:
     serialization:
       fail-on-empty-beans: false
-      
+
+logging:
+  level:
+    org.hibernate.orm.jdbc.bind: TRACE
+    com.cos.blog: DEBUG
+
       
