@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
  * -----------------------------------------------------------
  * 2024-04-07        dotdot       최초 생성
  */
+// html 파일이 아니라 data를 리턴해주는 controller = RestController
 @RestController
 public class DummyControllerTest {
 
@@ -43,6 +44,13 @@ public class DummyControllerTest {
         User user = userRepository.findById(id).orElseThrow(() -> {
             return new IllegalArgumentException("해당 사용자는 없습니다. id: " + id);
         } );
+
+        /* 요청 : 웹브라우저, 리턴 : user 객체 = 자바오브젝트
+        --> 변환 ( 웹 브라우저가 이해할 수 있는 데이터 ) -> json (Gson 라이브러리)
+            스프링부트 = MessageConverter라는 애가 응답시에 자동 작동
+            만약에 자바 오브젝트를 리턴하게 되면 MessageConverter가 Jackson 라이브러리 호출해서
+            user 오브젝트를 json으로 변환해서 브라우저에 던져줌.
+         */
         return user;
     }
 
