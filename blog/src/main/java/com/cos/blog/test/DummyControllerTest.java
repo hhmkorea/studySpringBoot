@@ -37,7 +37,7 @@ public class DummyControllerTest {
         id에 대한 데이터가 있으면 update
      */
     // email, password
-    @Transactional
+    @Transactional // 함수 종료시에 자동 commit이 됨.
     @PutMapping("/dummy/user/{id}")
     public User updateUser(@PathVariable int id, @RequestBody User requestUser) {
         // @RequestBody : json 데이타 받을때 필요함.
@@ -46,15 +46,15 @@ public class DummyControllerTest {
         System.out.println("password : " + requestUser.getPassword());
         System.out.println("email : " + requestUser.getEmail());
 
-        // save로 업데이트 할경우 해당 객체의 값을 조회해서 넣어야 함.
+        // save로 업데이트 할경우 해당 객체의 값을 조회해서 넣어야 함,
         User user = userRepository.findById(id).orElseThrow(() -> {
             return new IllegalArgumentException("수정에 실패하였습니다.");
-        });
+        }); // 영속화된 User 오브젝트
         user.setPassword(requestUser.getPassword());
         user.setEmail(requestUser.getEmail());
 
         //userRepository.save(user);
-        return null;
+        return user;
     }
 
     @GetMapping("/dummy/users")
