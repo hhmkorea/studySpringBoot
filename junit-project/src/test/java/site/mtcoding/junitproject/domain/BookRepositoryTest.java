@@ -86,7 +86,7 @@ public class BookRepositoryTest {
     @Test
     public void delete_test() {
         // given
-        Long id = 2L;
+        Long id = 5L;
         System.out.println("------------------ delete_test : " + id);
         // when
         bookRepository.deleteById(id);
