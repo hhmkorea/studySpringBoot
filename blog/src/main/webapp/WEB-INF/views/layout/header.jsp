@@ -16,8 +16,8 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
             <div class="navbar-nav">
-                <a class="nav-link active" aria-current="page" href="/user/login">로그인</a>
-                <a class="nav-link" href="/user/join">회원가입</a>
+                <a class="nav-link active" aria-current="page" href="/blog/user/loginForm">로그인</a>
+                <a class="nav-link" href="/blog/user/joinForm">회원가입</a>
             </div>
         </div>
     </div>
