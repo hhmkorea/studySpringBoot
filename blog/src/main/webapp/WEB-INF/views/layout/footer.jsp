@@ -1,0 +1,23 @@
+<%@page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>래ㅐㅅㄷㄱ</title>
+</head>
+<body>
+
+<br />
+<footer class="py-3 my-4 bg-body-secondary">
+    <p class="text-center text-body-secondary">💻Create by Dotdot<p>
+    <p class="text-center text-body-secondary">📞010-2222-7777<p>
+    <p class="text-center text-body-secondary">📧test@test.com<p>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+</footer>
+</body>
+</html>
