@@ -1,6 +1,8 @@
 package com.cos.blog.contorller.api;
 
+import com.cos.blog.contorller.dto.ResponseDto;
 import com.cos.blog.model.User;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,8 +22,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserApiController {
 
     @PostMapping("/api/user")
-    public int save(@RequestBody User user) {
+    public ResponseDto<Integer> save(@RequestBody User user) {
         System.out.println("UserApiController : save 호출됨");
-        return 1;
+        // 실제로 DB에 insert를 하고 아래에서 return 하면 됨.
+        return new ResponseDto<Integer>(HttpStatus.OK, 1); // 자바 오브젝트를 json으로 변환해서 리턴(Jackson)
     }
 }

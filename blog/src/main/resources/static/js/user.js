@@ -20,6 +20,7 @@ let index = {
 
         // ajax 호출시 default가 비동기 호출
         // ajax 통신을 이용해서 3개의 데이터를 json으로 변경하여 insert 요청!!
+        // ajax가 통신을 성공하고 서버가 json을 리턴해주면 dataType: "json"을 지정하지 않아도 자동으로 자바 오브젝트로 변환해줌!!!
         $.ajax({
             type: "POST",
             url: "/blog/api/user",
@@ -28,6 +29,7 @@ let index = {
             dataType: "json" // 요청을 서버로 해서 응답이 왔을 때 기본적으로 문자열로 들어옴(but 생긴게 json이라면) => JS 오브젝트로 변경.
         }).done(function (resp){
             alert("회원가입이 완료되었습니다.");
+            //console.log(resp);
             location.href = "/blog"; // 메인화면으로 이동.
         }).fail(function (error){
             alert(JSON.stringify(error));
