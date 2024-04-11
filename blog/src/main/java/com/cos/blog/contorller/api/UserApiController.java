@@ -32,7 +32,7 @@ public class UserApiController {
         System.out.println("UserApiController : save 호출됨");
         // 실제로 DB에 insert를 하고 아래에서 return 하면 됨.
         user.setRole(RoleType.USER);
-        int result = userService.joinMember(user); // 회원가입
-        return new ResponseDto<Integer>(HttpStatus.OK, result); // 자바 오브젝트를 json으로 변환해서 리턴(Jackson)
+        userService.joinMember(user); // 회원가입
+        return new ResponseDto<Integer>(HttpStatus.OK.value(), 1); // 자바 오브젝트를 json으로 변환해서 리턴(Jackson)
     }
 }

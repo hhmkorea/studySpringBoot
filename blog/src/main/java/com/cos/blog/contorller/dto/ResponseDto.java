@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.http.HttpStatus;
 
 /**
  * packageName    : com.cos.blog.contorller.dto
@@ -23,6 +22,6 @@ import org.springframework.http.HttpStatus;
 @AllArgsConstructor
 @Builder
 public class ResponseDto<T> { // <T> : Generic
-    HttpStatus status;
+    int status;
     T data;
 }
