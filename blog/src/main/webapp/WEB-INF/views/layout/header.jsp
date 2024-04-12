@@ -22,7 +22,6 @@
             crossorigin="anonymous"></script>
 </head>
 <body>
-<h1>${principal}</h1>
 <nav class="navbar bg-dark navbar-expand-lg bg-body-tertiary" data-bs-theme="dark">
     <div class="container-fluid">
         <a class="navbar-brand" href="/">Dotdot</a>
