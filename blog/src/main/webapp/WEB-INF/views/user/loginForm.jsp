@@ -15,9 +15,11 @@
             <input type="checkbox" class="form-check-input" id="exampleCheck1">
             <label class="form-check-label" for="exampleCheck1">Remember me</label>
         </div>
-        <button type="submit" class="btn btn-primary">로그인</button>
     </form>
+
+    <button id="btn-login" class="btn btn-primary">로그인</button>
 </div>
 
+<script src="/blog/js/user.js"></script>
 <%@ include file="../layout/footer.jsp" %>
 </html>
