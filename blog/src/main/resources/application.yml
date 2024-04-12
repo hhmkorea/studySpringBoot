@@ -1,7 +1,7 @@
 server:
   port: 8000
   servlet:
-    context-path: /blog    # 내프로젝트에 들어가기 위한 진입점 
+    context-path: /    # 내프로젝트에 들어가기 위한 진입점
     encoding:
       charset: UTF-8
       enabled: true
