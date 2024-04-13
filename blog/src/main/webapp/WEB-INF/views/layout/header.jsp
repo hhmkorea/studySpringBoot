@@ -33,11 +33,11 @@
             <c:choose>
                 <c:when test="${empty principal}">
                     <div class="navbar-nav">
-                        <a class="nav-link" href="/loginForm">로그인</a>
-                        <a class="nav-link" href="/joinForm">회원가입</a>
+                        <a class="nav-link" href="/auth/loginForm">로그인</a>
+                        <a class="nav-link" href="/auth/joinForm">회원가입</a>
                     </div>
                 </c:when>
-                <c:otherwise>
+                <c:otherwise> <!-- 로그인해서 세션이 있는 사용자가 보는 화면 -->
                     <div class="navbar-nav">
                         <a class="nav-link" href="/board/form">글쓰기</a>
                         <a class="nav-link" href="/user/form">회원정보</a>
