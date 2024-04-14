@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class BoardController {
 
+    // @AuthenticationPrincipal PrincipalDetail principal
     @GetMapping({"","/"})
     public String index() { // 컨트롤러에서 세션을 어떻게 찾는가?
         // /WEB-INF/views/index.jsp
