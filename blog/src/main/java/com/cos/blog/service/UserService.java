@@ -1,8 +1,10 @@
 package com.cos.blog.service;
 
+import com.cos.blog.model.RoleType;
 import com.cos.blog.model.User;
 import com.cos.blog.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,8 +26,15 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired // DI가 되어 주입됨.
+    private BCryptPasswordEncoder encoder;
+
     @Transactional
     public void joinMember(User user) { // 회원가입(정상:1, 비정상:-1)
+        String rawPassword = user.getPassword(); // 1234 원문
+        String encPassword = encoder.encode(rawPassword); // 해쉬
+        user.setPassword(encPassword);
+        user.setRole(RoleType.USER);
         userRepository.save(user);
     }
 
