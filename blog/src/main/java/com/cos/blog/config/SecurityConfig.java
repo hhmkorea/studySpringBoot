@@ -32,10 +32,6 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-    /* 시큐리티가 대신 로그인해주면서 password를 가로치기 하는데
-       해당 password가 무엇으로 해쉬가 되어 회원가입이 되었는지 알아야
-       같은 해쉬로 암호화해서 DB에 있는 해쉬랑 비교할 수 있음.
-    */
     @Bean
     SecurityFilterChain configure(HttpSecurity http) throws Exception {
 
@@ -53,8 +49,11 @@ public class SecurityConfig {
                 .loginProcessingUrl("/auth/loginProc")
                 .defaultSuccessUrl("/")); // 스프링 시큐리티가 해당 주소로 로그인을 가로채서 대신 로그인 해준다.
 
+        /* 시큐리티가 대신 로그인해주면서 password를 가로치기 하는데
+           해당 password가 무엇으로 해쉬가 되어 회원가입이 되었는지 알아야
+           같은 해쉬로 암호화해서 DB에 있는 해쉬랑 비교할 수 있음.  */
         // 사용자 인증 처리 컴포넌트 서비스 등록
-        // http.userDetailsService(principalDetailService);
+        // http.userDetailsService(principalDetailService); // TO_DO : 일단 주석처리
 
         return http.build();
     }
