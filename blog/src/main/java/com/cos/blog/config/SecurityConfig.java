@@ -15,14 +15,23 @@ package com.cos.blog.config;
 import com.cos.blog.config.auth.PrincipalDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.CacheControl;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 // 빈 등록 : 스프링 컨테이너에서 객체를 관리할 수 있게 하는 것
 @Configuration // 빈등록 (IoC관리)
-public class SecurityConfig {
+@ComponentScan
+public class SecurityConfig implements WebMvcConfigurer {
 
     @Autowired
     private PrincipalDetailService principalDetailService;
@@ -32,11 +41,24 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/**")  // 모든 리소스 허용
+                .addResourceLocations("classpath:/templates/") // 리소스 위치 설정
+                .setCacheControl(CacheControl.noCache());
+    }
+
     @Bean
     SecurityFilterChain configure(HttpSecurity http) throws Exception {
+        System.out.println("디버그 : filterChain 빈 등록됨");
+
+        http.headers(h -> h.frameOptions(f -> f.sameOrigin())); // sameOrigin
 
         // 사이트 위변조 요청 방지
-        http.csrf(c -> c.disable()); // csrf 토큰 비활성화 (테스트시 걸어두는 게 좋음)
+        http.csrf(c -> c.disable()); // csrf 토큰 비활성화 (테스트시 걸어두는 게 좋음)// enable이면 post맨 작동안함 ( 참고: 유튜브 시큐리티 강의 )
+        http.cors(co -> co.configurationSource(configurationSource())); // JS 요청되는거 허용여부 - 안함
+        // jSessionId를 서버쪽에서 관리안하겠다는 뜻!!
+        http.sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
         // 인가(접근권한) 설정
         http.authorizeHttpRequests(auth ->
@@ -58,4 +80,18 @@ public class SecurityConfig {
         return http.build();
     }
 
+    public CorsConfigurationSource configurationSource() {
+        System.out.println("디버그 : configurationSource cors 설정이 SecurityFilterChain에 등록됨");
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.addAllowedHeader("*");
+        configuration.addAllowedMethod("*"); // GET, POST, PUT, DELETE (JS 요청 허용)
+        configuration.addAllowedOriginPattern("*"); // 모든 IP 주소 허용 (frontend IP만 허용 react)
+        configuration.setAllowCredentials(true); // 클라이언트에서 쿠키 요청 허용
+        configuration.addExposedHeader("Authorization"); // 옛날에는 디폴트, 지금은 아님. Cors 정책이 바뀜.
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+
+        return source;
+    }
 }
