@@ -1,6 +1,7 @@
 package com.cos.blog.service;
 
 import com.cos.blog.model.Board;
+import com.cos.blog.model.User;
 import com.cos.blog.repository.BoardRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,8 +26,9 @@ public class BoardService {
     private BoardRepository boardRepository;
 
     @Transactional
-    public void write(Board board) { // 글쓰기(title, content)
-        board.setCount(0);
+    public void write(Board board, User user) { // 글쓰기(title, content)
+        board.setCount(0); // 조회수
+        board.setUser(user);
         boardRepository.save(board);
     }
 

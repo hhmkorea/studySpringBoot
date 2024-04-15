@@ -30,7 +30,7 @@ public class BoardApiController {
 
     @PostMapping("/api/board")
     public ResponseDto<Integer> save(@RequestBody Board board, @AuthenticationPrincipal PrincipalDetail principal) {
-        boardService.write(board); // 글쓰기
+        boardService.write(board, principal.getUser()); // 글쓰기
         return new ResponseDto<Integer>(HttpStatus.OK.value(), 1);
     }
 
