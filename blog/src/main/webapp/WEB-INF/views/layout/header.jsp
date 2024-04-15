@@ -39,8 +39,8 @@
                 </c:when>
                 <c:otherwise> <!-- 로그인해서 세션이 있는 사용자가 보는 화면 -->
                     <div class="navbar-nav">
-                        <a class="nav-link" href="/board/form">글쓰기</a>
-                        <a class="nav-link" href="/user/form">회원정보</a>
+                        <a class="nav-link" href="/board/saveForm">글쓰기</a>
+                        <a class="nav-link" href="/user/updateForm">회원정보</a>
                         <a class="nav-link" href="/logout">로그아웃</a>
                     </div>
                 </c:otherwise>
