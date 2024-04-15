@@ -3,17 +3,25 @@
 
 <div class="container">
     <form action="" method="post">
-        <div class="mb-3">
-            <label for="title" class="form-label">Title</label>
+        <div class="form-group">
+            <label for="title">Title</label>
             <input type="text" class="form-control" id="title" placeholder="Enter title">
         </div>
         <div class="form-group">
             <label for="content">Content</label>
-            <textarea class="form-control" rows="5" id="content" placeholder="Enter content"></textarea>
+            <textarea class="form-control summernote" rows="5" id="content"></textarea>
         </div>
         <button id="btn-save" class="btn btn-primary">글쓰기</button>
     </form>
 </div>
+
+<script>
+    $('.summernote').summernote({
+        placeholder: 'Hello Bootstrap 4',
+        tabsize: 2,
+        height: 300
+    });
+</script>
 
 <%@ include file="../layout/footer.jsp" %>
 </html>
