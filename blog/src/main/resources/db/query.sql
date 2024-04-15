@@ -20,7 +20,7 @@ desc user;
 select * from board;
 desc board;
 
-update board set title = '안녕 + 이미지' where id = 1;
+-- update board set title = '안녕 + 이미지' where id = 1;
 
 -- TINYTEXT으로 등록되어서 LONGBLOB으로 설정.
 -- alter table board modify content longblob;

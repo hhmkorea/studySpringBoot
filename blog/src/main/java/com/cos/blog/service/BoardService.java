@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 /**
  * packageName    : com.cos.blog.service
  * fileName       : UserService
@@ -32,4 +34,7 @@ public class BoardService {
         boardRepository.save(board);
     }
 
+    public List<Board> viewList() { // 글목록 보기
+        return boardRepository.findAll();
+    }
 }
