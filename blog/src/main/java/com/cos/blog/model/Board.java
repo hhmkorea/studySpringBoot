@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.sql.Timestamp;
@@ -37,9 +36,8 @@ public class Board {
     private String title;
 
     @Lob // 대용량 데이터
-    private String conente; // 섬머노트 라이브러리 <html>태그가 섞여서 디자인이 됨.
+    private String content; // 섬머노트 라이브러리 <html>태그가 섞여서 디자인이 됨.
 
-    @ColumnDefault("0") // 기본값 0, 문자면 '0'
     private int count; // 조회수
 
     // FetchType.EAGER : 해당 Entity(테이블) 조인해서 데이타 다 가져옴.
