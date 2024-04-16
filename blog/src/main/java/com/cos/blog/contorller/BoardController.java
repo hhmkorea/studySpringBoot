@@ -31,14 +31,20 @@ public class BoardController {
     // @AuthenticationPrincipal PrincipalDetail principal
     @GetMapping({"","/"})
     public String index(Model model, @PageableDefault(size = 3, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
-        model.addAttribute("boards", boardService.viewList(pageable));
+        model.addAttribute("boards", boardService.viewList(pageable)); // 글목록보기
         return "index"; // viewResolver 작동!!
     }
 
     @GetMapping("/board/{id}")
     public String findById(@PathVariable int id, Model model) {
-        model.addAttribute("board", boardService.viewDetail(id));
+        model.addAttribute("board", boardService.viewDetail(id)); // 글상세보기
         return "board/detail";
+    }
+
+    @GetMapping("/board/{id}/updateForm")
+    public String updateForm(@PathVariable int id, Model model) {
+        model.addAttribute("board", boardService.viewDetail(id)); // 글상세보기
+        return "board/updateForm";
     }
 
     // USER 권한이 필요
