@@ -37,4 +37,12 @@ public class BoardService {
     public Page<Board> viewList(Pageable pageable) { // 글목록 보기
         return boardRepository.findAll(pageable);
     }
+
+    public Board viewDetail(int id) {
+        return boardRepository.findById(id)
+                .orElseThrow(() -> {
+                    return new IllegalArgumentException("글 상세보기 실패 : 아이디를 찾을 수 없습니다.");
+                }
+        );
+    }
 }
