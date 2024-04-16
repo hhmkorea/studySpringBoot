@@ -34,15 +34,23 @@ public class BoardService {
         boardRepository.save(board);
     }
 
+    @Transactional(readOnly = true)
     public Page<Board> viewList(Pageable pageable) { // 글목록 보기
         return boardRepository.findAll(pageable);
     }
 
+    @Transactional(readOnly = true)
     public Board viewDetail(int id) {
         return boardRepository.findById(id)
                 .orElseThrow(() -> {
                     return new IllegalArgumentException("글 상세보기 실패 : 아이디를 찾을 수 없습니다.");
                 }
         );
+    }
+
+    @Transactional
+    public void deleteById(int id) {
+        System.out.println("deleteById : " + id);
+        boardRepository.deleteById(id);
     }
 }
