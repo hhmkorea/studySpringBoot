@@ -53,8 +53,8 @@ let index = {
             content: $("#content").val()
         };
         $.ajax({
-            type: "POST",
-            url: "/api/board",
+            type: "PUT",
+            url: "/api/board/" + id,
             data: JSON.stringify(data),
             contentType: "application/json; charset=utf-8",
             dataType: "json"
