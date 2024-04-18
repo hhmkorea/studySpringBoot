@@ -23,4 +23,17 @@ desc board;
 -- update board set title = '안녕 + 이미지' where id = 1;
 
 -- TINYTEXT으로 등록되어서 LONGBLOB으로 설정.
--- alter table board modify content longblob;
+-- alter table board modify content longblob;s
+
+-- 암호화 : AES_ENCRYPT /  AES_DECRYPT 방식 사용하기
+# Update user
+# Set password=HEX(AES_ENCRYPT('암호값', '1234')) where username = 'kaka';
+#
+# select username , CONVERT(AES_DECRYPT( UNHEX(password) , '1111') USING utf8) as passowrd
+# from user WHERE username = 'kaka';
+
+-- 비밀번호 초기화
+update user
+set password='$2a$10$0xL1d.Jzp7WFAbpDrAQe6.WyOh6JigqKontL6vtumKLYmf3hFizou' -- 1234
+where username in ('kaka');
+
