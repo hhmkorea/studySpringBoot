@@ -6,6 +6,7 @@ import com.cos.blog.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -34,4 +35,11 @@ public class UserApiController {
         return new ResponseDto<Integer>(HttpStatus.OK.value(), 1); // 자바 오브젝트를 json으로 변환해서 리턴(Jackson)
     }
 
+    @PutMapping("/user")
+    public ResponseDto<Integer> update(@RequestBody User user) {
+        // 기본적으로 key=value, x-www.form-urlencoded 형태로 데이타 들어옴.
+        // @RequestBody가 있어야 json 타입으로 받을 수 있음.
+        userService.updateMember(user); // 회원수정
+        return new ResponseDto<Integer>(HttpStatus.OK.value(), 1);
+    }
 }

@@ -29,23 +29,23 @@
     </button>
     <div class="collapse navbar-collapse" id="collapsibleNavbar">
 
-    <c:choose>
-                <c:when test="${empty principal}">
-                    <div class="navbar-nav">
-                        <a class="nav-link" href="/auth/loginForm">로그인</a>
-                        <a class="nav-link" href="/auth/joinForm">회원가입</a>
-                    </div>
-                </c:when>
-                <c:otherwise> <!-- 로그인해서 세션이 있는 사용자가 보는 화면 -->
-                    <div class="navbar-nav">
-                        <a class="nav-link" href="/board/saveForm">글쓰기</a>
-                        <a class="nav-link" href="/user/updateForm">회원정보</a>
-                        <a class="nav-link" href="/logout">로그아웃</a>
-                    </div>
-                </c:otherwise>
-            </c:choose>
+        <c:choose>
+            <c:when test="${empty principal}">
+                <div class="navbar-nav">
+                    <a class="nav-link" href="/auth/loginForm">로그인</a>
+                    <a class="nav-link" href="/auth/joinForm">회원가입</a>
+                </div>
+            </c:when>
+            <c:otherwise> <!-- 로그인해서 세션이 있는 사용자가 보는 화면 -->
+                <div class="navbar-nav">
+                    <a class="nav-link" href="/board/saveForm">글쓰기</a>
+                    <a class="nav-link" href="/user/updateForm">회원정보</a>
+                    <a class="nav-link" href="/logout">로그아웃</a>
+                </div>
+            </c:otherwise>
+        </c:choose>
 
-        </div>
+    </div>
     </div>
 </nav>
 <br/>
