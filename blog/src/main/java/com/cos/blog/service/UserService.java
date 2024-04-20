@@ -29,13 +29,26 @@ public class UserService {
     @Autowired // DI가 되어 주입됨.
     private BCryptPasswordEncoder encoder;
 
+    @Transactional(readOnly = true)
+    public User findMember(String username) { // 회원찾기 : 기존에 가입된 회원인지 아닌지 체크.
+        User user = userRepository.findAllByUsername(username).orElseGet(() -> {
+            return new User();
+        });
+        return user;
+    }
+
     @Transactional
-    public void joinMember(User user) { // 회원가입(정상:1, 비정상:-1)
+    public int joinMember(User user) { // 회원가입(정상:1, 비정상:-1)
         String rawPassword = user.getPassword(); // 1234 원문
         String encPassword = encoder.encode(rawPassword); // 해쉬
         user.setPassword(encPassword);
         user.setRole(RoleType.USER);
-        userRepository.save(user);
+        try {
+            userRepository.save(user);
+            return 1;
+        } catch (Exception e) {
+            return -1;
+        }
     }
 
     @Transactional
@@ -55,4 +68,5 @@ public class UserService {
         // 회원수정 함수 종료시 = 서비스 종료 = 트랜잭션 종료 = commit 이 자동으로 됩니다.
         // 영속화된 userPS 객체 변화가 감지되면 더티체킹이 되어 update문을 날려줌.
     }
+
 }

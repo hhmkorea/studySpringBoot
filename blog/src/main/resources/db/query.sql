@@ -37,3 +37,18 @@ where username in ('kaka');
 # select username , CONVERT(AES_DECRYPT( UNHEX(password) , '1111') USING utf8) as passowrd
 # from user WHERE username = 'kaka';
 
+select
+    u1_0.id,
+    u1_0.createDate,
+    u1_0.email,
+    u1_0.password,
+    u1_0.role,
+    u1_0.username
+from
+    User u1_0
+where
+    u1_0.username= 'yuyee@nate.com_3444864854'
+;
+desc user;
+
+delete from user where username = 'yuyee@nate.com_3444864854';

@@ -39,4 +39,5 @@ logging:
     org.hibernate.orm.jdbc.bind: TRACE
     com.cos.blog: DEBUG
 
-      
+cos:
+  key: cos1234 # 카카오 로그인 패스워드 통일, 절대 외부에 노출되어서는 안되는 키.
