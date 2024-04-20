@@ -42,6 +42,7 @@ import org.springframework.web.client.RestTemplate;
 
 @Controller
 public class UserController {
+
     @Value("${cos.key}") // application.yml에 설정한 값을 주입함.
     private String cosKey; // 카카오 로그인 패스워드 통일
 
@@ -82,12 +83,14 @@ public class UserController {
         params.add("client_id", "66c53837ec775df5a3d2f7c75cdc8e0b");
         params.add("redirect_uri", "http://localhost:8000/auth/kakao/callback");
         params.add("code", code);
+        params.add("prompt", "none"); // none : 자동로그인, login : 카카오 로그인 창 무조건 띄움
+
 
         // HttpHeader와 HttpBody를 하나의 오브젝트에 담기
-        HttpEntity<MultiValueMap<String,String>> kakaoTokenRequest = new HttpEntity<>(params, headers);
+        HttpEntity<MultiValueMap<String, String>> kakaoTokenRequest = new HttpEntity<>(params, headers);
 
         // Http 요청하기 - Post방식으로 - 그리고 response 변수의 응답 받음.
-        ResponseEntity <String> response = rt.exchange(
+        ResponseEntity<String> response = rt.exchange(
                 "https://kauth.kakao.com/oauth/token", // 토큰 발급 요청 주소
                 HttpMethod.POST, // 요청 메서드 타입
                 kakaoTokenRequest, // 전달할 데이터 : header, body
@@ -110,13 +113,12 @@ public class UserController {
         RestTemplate rt2 = new RestTemplate();
 
         HttpHeaders headers2 = new HttpHeaders();
-        headers2.add("Authorization", "Bearer "+oauthToken.getAccess_token());
+        headers2.add("Authorization", "Bearer " + oauthToken.getAccess_token());
         headers2.add("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8");
-        headers2.add("property_keys", "kakao_account.email");
 
-        HttpEntity<MultiValueMap<String,String>> kakaoProfileRequest2 = new HttpEntity<>(headers2);
+        HttpEntity<MultiValueMap<String, String>> kakaoProfileRequest2 = new HttpEntity<>(headers2);
 
-        ResponseEntity <String> response2 = rt2.exchange(
+        ResponseEntity<String> response2 = rt2.exchange(
                 "https://kapi.kakao.com/v2/user/me",
                 HttpMethod.POST,
                 kakaoProfileRequest2,

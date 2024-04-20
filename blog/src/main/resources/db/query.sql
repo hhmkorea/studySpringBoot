@@ -21,9 +21,9 @@ select * from board;
 desc board;
 
 -- 비밀번호 초기화
-update user
-set password='$2a$10$0xL1d.Jzp7WFAbpDrAQe6.WyOh6JigqKontL6vtumKLYmf3hFizou' -- 1234
-where username in ('kaka');
+# update user
+# set password='$2a$10$0xL1d.Jzp7WFAbpDrAQe6.WyOh6JigqKontL6vtumKLYmf3hFizou' -- 1234
+# where username in ('kaka');
 
 -- update board set title = '안녕 + 이미지' where id = 1;
 
@@ -37,17 +37,10 @@ where username in ('kaka');
 # select username , CONVERT(AES_DECRYPT( UNHEX(password) , '1111') USING utf8) as passowrd
 # from user WHERE username = 'kaka';
 
-select
-    u1_0.id,
-    u1_0.createDate,
-    u1_0.email,
-    u1_0.password,
-    u1_0.role,
-    u1_0.username
-from
-    User u1_0
+select *
+from user
 where
-    u1_0.username= 'yuyee@nate.com_3444864854'
+    username= 'yuyee@nate.com_3444864854'
 ;
 desc user;
 
