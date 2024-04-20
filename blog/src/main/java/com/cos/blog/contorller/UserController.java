@@ -97,6 +97,7 @@ public class UserController {
         HttpHeaders headers2 = new HttpHeaders();
         headers2.add("Authorization", "Bearer "+oauthToken.getAccess_token());
         headers2.add("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8");
+        headers2.add("property_keys", "kakao_account.email");
 
         HttpEntity<MultiValueMap<String,String>> kakaoProfileRequest2 = new HttpEntity<>(headers2);
 
@@ -119,7 +120,7 @@ public class UserController {
 
         // User 오브젝트 : username, password, email
         System.out.println("카카오 아이디(번호) : " + kakaoProfile.getId());
-        System.out.println("카카오 프로필 : " + kakaoProfile.getKakao_account().getProfile());
+        System.out.println("카카오 계정(이메일) : " + kakaoProfile.getKakao_account().getEmail());
 
 
 
