@@ -51,4 +51,4 @@ where
 ;
 desc user;
 
-delete from user where username = 'yuyee@nate.com_3444864854';
+delete from user where email = 'yuyee@nate.com';

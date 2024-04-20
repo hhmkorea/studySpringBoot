@@ -59,12 +59,16 @@ public class UserService {
         User userPS = userRepository.findById(user.getId()).orElseThrow(() -> {
             return new IllegalArgumentException("회원찾기 실패");
         });
-        String rawPassword = user.getPassword();
-        String encPassword = encoder.encode(rawPassword);
-        if(!rawPassword.isEmpty()) {
-            userPS.setPassword(encPassword);
+
+        // Validation 체크 => oauth 필드에 값이 없으면 수정가능.
+        if(userPS.getOauth() == null || userPS.getOauth().equals("")) {
+            String rawPassword = user.getPassword();
+            String encPassword = encoder.encode(rawPassword);
+            if(!rawPassword.isEmpty()) {
+                userPS.setPassword(encPassword);
+            }
+            userPS.setEmail(user.getEmail());
         }
-        userPS.setEmail(user.getEmail());
         // 회원수정 함수 종료시 = 서비스 종료 = 트랜잭션 종료 = commit 이 자동으로 됩니다.
         // 영속화된 userPS 객체 변화가 감지되면 더티체킹이 되어 update문을 날려줌.
     }
