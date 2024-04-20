@@ -1,5 +1,6 @@
 package com.cos.blog.contorller;
 
+import com.cos.blog.model.KakaoProfile;
 import com.cos.blog.model.OAuthToken;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -49,9 +50,10 @@ public class UserController {
     public @ResponseBody String kakaoCallback(String code) { // @ResponseBody : Data를 리턴해주는 컨트롤러 함수
 
         // POST 방식으로 key=value 데이터를 요청(카카오쪽으로)
-        // Retrofit2 : 안드로이드
-        // OkHttp
-        // RestTemplate
+        /* 데이터 요청 객체 지원해주는 라이브러리
+        Retrofit2 : 안드로이드
+        OkHttp
+        RestTemplate */
 
         RestTemplate rt = new RestTemplate();
 
@@ -77,7 +79,7 @@ public class UserController {
                 String.class // 응답받을 타입
         );
 
-        // Gson, Json Simple, ObjectMapper
+        /* 토큰 담는 객체 지원 라이브러리 : Gson, Json Simple, ObjectMapper */
         ObjectMapper objectMapper = new ObjectMapper();
         OAuthToken oauthToken = null;
         try {
@@ -89,7 +91,39 @@ public class UserController {
         }
 
         System.out.println("카카오 엑세스 토큰:" + oauthToken.getAccess_token());
-        return response.getBody();
+
+        RestTemplate rt2 = new RestTemplate();
+
+        HttpHeaders headers2 = new HttpHeaders();
+        headers2.add("Authorization", "Bearer "+oauthToken.getAccess_token());
+        headers2.add("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8");
+
+        HttpEntity<MultiValueMap<String,String>> kakaoProfileRequest2 = new HttpEntity<>(headers2);
+
+        ResponseEntity <String> response2 = rt2.exchange(
+                "https://kapi.kakao.com/v2/user/me",
+                HttpMethod.POST,
+                kakaoProfileRequest2,
+                String.class // 응답받을 타입
+        );
+
+        ObjectMapper objectMapper2 = new ObjectMapper();
+        KakaoProfile kakaoProfile = null;
+        try {
+            kakaoProfile = objectMapper2.readValue(response2.getBody(), KakaoProfile.class);
+        } catch (JsonMappingException e) {
+            e.printStackTrace();
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+
+        // User 오브젝트 : username, password, email
+        System.out.println("카카오 아이디(번호) : " + kakaoProfile.getId());
+        System.out.println("카카오 프로필 : " + kakaoProfile.getKakao_account().getProfile());
+
+
+
+        return response2.getBody();
     }
 
     @GetMapping("/user/updateForm")
