@@ -8,7 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -55,5 +55,5 @@ public class Board {
     private List<Reply> replys; // Reply 안에 Board, User 리턴... 무한참조
 
     @CreationTimestamp
-    private Timestamp createDate;
+    private LocalDateTime createDate;
 }

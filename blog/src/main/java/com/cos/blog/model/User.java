@@ -7,7 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 /**
  * packageName    : com.cos.blog.model
@@ -51,6 +51,6 @@ public class User {
     private String oauth; // kakao, google
 
     @CreationTimestamp // 시간 자동 입력
-    private Timestamp createDate;
+    private LocalDateTime createDate;
 
 }

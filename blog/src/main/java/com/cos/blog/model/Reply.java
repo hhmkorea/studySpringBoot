@@ -7,7 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 /**
  * packageName    : com.cos.blog.model
@@ -42,6 +42,11 @@ public class Reply {
     private User user;
 
     @CreationTimestamp
-    private Timestamp createDate;
+    private LocalDateTime createDate;
 
+    public void update(User user, Board board, String content) {
+        setUser(user);
+        setBoard(board);
+        setContent(content);
+    }
 }

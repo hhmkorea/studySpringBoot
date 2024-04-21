@@ -1,10 +1,12 @@
 package com.cos.blog.service;
 
+import com.cos.blog.contorller.dto.ReplySaveRequestDto;
 import com.cos.blog.model.Board;
 import com.cos.blog.model.Reply;
 import com.cos.blog.model.User;
 import com.cos.blog.repository.BoardRepository;
 import com.cos.blog.repository.ReplyRepository;
+import com.cos.blog.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -31,6 +33,9 @@ public class BoardService {
 
     @Autowired
     private ReplyRepository replyRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @Transactional
     public void write(Board board, User user) { // 글쓰기(title, content)
@@ -72,15 +77,19 @@ public class BoardService {
     }
 
     @Transactional
-    public void writeReply(User user, int boardId, Reply requestReply) { // 댓글쓰기
+    public void writeReply(ReplySaveRequestDto replySaveRequestDto) { // 댓글쓰기
 
-        Board board = boardRepository.findById(boardId).orElseThrow(() -> {
-            return new IllegalArgumentException("댓글 쓰기 실패 : 게시글 idㄹㄹ 찾을 수 없습니다. ");
+        User user = userRepository.findById(replySaveRequestDto.getUserId()).orElseThrow(() -> {
+            return new IllegalArgumentException("댓글 쓰기 실패 : 작성자 id를 찾을 수 없습니다. ");
         });
 
-        requestReply.setUser(user);
-        requestReply.setBoard(board);
+        Board board = boardRepository.findById(replySaveRequestDto.getBoardId()).orElseThrow(() -> {
+            return new IllegalArgumentException("댓글 쓰기 실패 : 게시글 id를 찾을 수 없습니다. ");
+        });
 
-        replyRepository.save(requestReply);
+        Reply reply = new Reply();
+        reply.update(user, board, replySaveRequestDto.getContent());
+
+        replyRepository.save(reply);
     }
 }
