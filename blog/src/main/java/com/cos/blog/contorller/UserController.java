@@ -83,7 +83,7 @@ public class UserController {
         params.add("client_id", "66c53837ec775df5a3d2f7c75cdc8e0b");
         params.add("redirect_uri", "http://localhost:8000/auth/kakao/callback");
         params.add("code", code);
-        params.add("prompt", "none"); // none : 자동로그인, login : 카카오 로그인 창 무조건 띄움
+        //params.add("prompt", "none"); // none : 자동로그인, login : 카카오 로그인 창 무조건 띄움
 
 
         // HttpHeader와 HttpBody를 하나의 오브젝트에 담기

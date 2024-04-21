@@ -12,7 +12,7 @@
             <input type="password" name="password" class="form-control" id="password" placeholder="Enter password">
         </div>
         <button id="btn-login" class="btn btn-primary">로그인</button>
-        <a href="https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=66c53837ec775df5a3d2f7c75cdc8e0b&redirect_uri=http://localhost:8000/auth/kakao/callback&prompt=none"><img height="38px" src="/image/kakao_login_button.png" /></a>
+        <a href="https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=66c53837ec775df5a3d2f7c75cdc8e0b&redirect_uri=http://localhost:8000/auth/kakao/callback"><img height="38px" src="/image/kakao_login_button.png" /></a>
     </form>
 </div>
 
