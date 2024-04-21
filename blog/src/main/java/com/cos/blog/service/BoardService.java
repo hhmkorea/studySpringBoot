@@ -2,7 +2,6 @@ package com.cos.blog.service;
 
 import com.cos.blog.contorller.dto.ReplySaveRequestDto;
 import com.cos.blog.model.Board;
-import com.cos.blog.model.Reply;
 import com.cos.blog.model.User;
 import com.cos.blog.repository.BoardRepository;
 import com.cos.blog.repository.ReplyRepository;
@@ -78,18 +77,31 @@ public class BoardService {
 
     @Transactional
     public void writeReply(ReplySaveRequestDto replySaveRequestDto) { // 댓글쓰기
+        int result = replyRepository.mSave(replySaveRequestDto.getUserId(), replySaveRequestDto.getBoardId(), replySaveRequestDto.getContent());
+        System.out.println("BoardService : "+result);
+    }
 
+
+/* // writeReply(댓글쓰기) 또다른 구현 방법
         User user = userRepository.findById(replySaveRequestDto.getUserId()).orElseThrow(() -> {
             return new IllegalArgumentException("댓글 쓰기 실패 : 작성자 id를 찾을 수 없습니다. ");
-        });
+        }); // 영속화 완료.
 
         Board board = boardRepository.findById(replySaveRequestDto.getBoardId()).orElseThrow(() -> {
             return new IllegalArgumentException("댓글 쓰기 실패 : 게시글 id를 찾을 수 없습니다. ");
-        });
+        }); // 영속화 완료.
 
+// 첫번째 방법!!! ------------------
+//        Reply reply = Reply.builder()
+//                .user(user)
+//                .board(board)
+//                .content(replySaveRequestDto.getContent())
+//                .build();
+
+// 두번째 방법!!! ------------------
         Reply reply = new Reply();
         reply.update(user, board, replySaveRequestDto.getContent());
 
-        replyRepository.save(reply);
-    }
+        replyRepository.save(reply); */
+
 }
