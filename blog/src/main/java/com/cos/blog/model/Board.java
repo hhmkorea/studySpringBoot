@@ -48,7 +48,9 @@ public class Board {
     @JoinColumn(name="userId")
     private User user; // DB는 오브젝트를 저장할 수 없다. FK, 자바는 오브젝트를 저장할 수 있다.
 
-    @OneToMany(mappedBy = "board", fetch = FetchType.EAGER) // Board = One, Reply = Many,
+    @OneToMany(mappedBy = "board", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    // cascade = CascadeType.REMOVE : 게시글 삭제하면 댓글까지 같이 삭제함.
+    // Board = One, Reply = Many,
     // mappedBy : 연관관계의 주인이 아니다, FK(X), DB에 컬럼을 만들지 마세요.
     @JsonIgnoreProperties({"board"}) // Reply를 또 호출할때 무시하고 넘어감.
     @OrderBy("id desc")
