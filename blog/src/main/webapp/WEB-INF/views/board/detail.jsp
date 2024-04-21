@@ -23,10 +23,15 @@
     <hr/>
 
     <div class="card">
-        <div class="card-body"><textarea class="form-control" rows="1"></textarea></div>
-        <div class="card-footer">
-            <button class="btn btn-primary">등록</button>
-        </div>
+        <form>
+            <input type="hidden" id="boardId" value="${board.id}" />
+            <div class="card-body">
+                <textarea id="reply-content" class="form-control" rows="1"></textarea>
+            </div>
+            <div class="card-footer">
+                <button type="button" id="btn-reply-save" class="btn btn-primary">등록</button> <!-- 버튼은 type을 설정하지 않으면 기본적으로 submit이 일어남 -->
+            </div>
+        </form>
     </div>
     <br />
     <div class="card">
