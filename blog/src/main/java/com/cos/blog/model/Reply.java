@@ -31,7 +31,7 @@ public class Reply {
     private int id;
 
     @Column(nullable = false, length = 200)
-    private String conente;
+    private String content;
 
     @ManyToOne // 연관관계, Replay = Many, Board = One
     @JoinColumn(name = "boardId")
