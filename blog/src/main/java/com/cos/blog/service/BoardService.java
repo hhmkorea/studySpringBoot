@@ -82,7 +82,9 @@ public class BoardService {
     }
 
 
-/* // writeReply(댓글쓰기) 또다른 구현 방법
+/* // writeReply(댓글쓰기) 또다른 구현 방법 =====================================================
+
+    public void writeReply(ReplySaveRequestDto replySaveRequestDto) { // 댓글쓰기
         User user = userRepository.findById(replySaveRequestDto.getUserId()).orElseThrow(() -> {
             return new IllegalArgumentException("댓글 쓰기 실패 : 작성자 id를 찾을 수 없습니다. ");
         }); // 영속화 완료.
@@ -102,6 +104,8 @@ public class BoardService {
         Reply reply = new Reply();
         reply.update(user, board, replySaveRequestDto.getContent());
 
-        replyRepository.save(reply); */
+        replyRepository.save(reply);
+    }
+*/
 
 }
