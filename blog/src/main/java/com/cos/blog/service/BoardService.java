@@ -81,6 +81,11 @@ public class BoardService {
         System.out.println("BoardService : "+result);
     }
 
+    @Transactional
+    public void deleteReply(int replyId) {
+        replyRepository.deleteById(replyId);
+    }
+
 
 /* // writeReply(댓글쓰기) 또다른 구현 방법 =====================================================
 
