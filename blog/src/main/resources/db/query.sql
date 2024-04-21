@@ -44,4 +44,9 @@ where
 ;
 desc user;
 
-delete from user where email = 'yuyee@nate.com';
+select * from reply;
+
+-- delete from user where email = 'yuyee@nate.com';
+insert into reply(content, boardId, userId, createDate) values ('첫 번째 댓글', 1, 2, now());
+insert into reply(content, boardId, userId, createDate) values ('두 번째 댓글', 1, 2, now());
+insert into reply(content, boardId, userId, createDate) values ('세 번째 댓글', 1, 2, now());

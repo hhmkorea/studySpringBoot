@@ -49,7 +49,7 @@ public class Board {
 
     @OneToMany(mappedBy = "board", fetch = FetchType.EAGER) // Board = One, Reply = Many,
     // mappedBy : 연관관계의 주인이 아니다, FK(X), DB에 컬럼을 만들지 마세요.
-    private List<Reply> reply;
+    private List<Reply> replys; // Reply 안에 Board, User 리턴... 무한참조
 
     @CreationTimestamp
     private Timestamp createDate;

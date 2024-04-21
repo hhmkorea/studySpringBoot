@@ -40,7 +40,7 @@ public class BoardService {
     }
 
     @Transactional(readOnly = true)
-    public Board viewDetail(int id) {
+    public Board viewDetail(int id) { // 글 상세보기
         return boardRepository.findById(id)
                 .orElseThrow(() -> {
                     return new IllegalArgumentException("글 상세보기 실패 : 아이디를 찾을 수 없습니다.");
@@ -49,13 +49,13 @@ public class BoardService {
     }
 
     @Transactional
-    public void deleteById(int id) {
+    public void deleteById(int id) { // 글 삭제하기
         System.out.println("deleteById : " + id);
         boardRepository.deleteById(id);
     }
 
     @Transactional
-    public void update(int id, Board requestBoard) {
+    public void update(int id, Board requestBoard) { // 글 수정하기
         Board board = boardRepository.findById(id)
                 .orElseThrow(() -> {
                     return new IllegalArgumentException("글 찾기 실패 : 아이디를 찾을 수 없습니다.");
