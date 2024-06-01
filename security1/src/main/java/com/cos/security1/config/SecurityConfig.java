@@ -50,7 +50,7 @@ public class SecurityConfig {
         );
 
         // 3. 로그인 처리 프로세스 설정
-        http.formLogin(f -> f.loginPage("/login")
+        http.formLogin(f -> f.loginPage("/loginForm")
                 .loginProcessingUrl("/loginProc")
                 .defaultSuccessUrl("/")
         );

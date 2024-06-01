@@ -1,7 +1,11 @@
 package com.cos.security1.controller;
 
+import com.cos.security1.model.User;
+import com.cos.security1.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
@@ -18,6 +22,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller // View를 리턴하겠다!!
 public class IndexController {
+
+    @Autowired
+    private UserRepository userRepository;
+
     //localhost:8080/
     //localhost:8080
     @GetMapping({"","/"})
@@ -42,19 +50,23 @@ public class IndexController {
         return "manager";
     }
 
-    // 스프링 시큐리티가 해당 주소 낚아채감.
-    @GetMapping("/login")
-    public @ResponseBody String login() {
-        return "login";
+    // 스프링 시큐리티가 해당 주소 낚아채감. - SecurityConfig 작성후 작동안함.
+    @GetMapping("/loginForm") // 로그인 화면
+    public String loginForm() {
+        return "loginForm";
     }
 
-    @GetMapping("/join")
-    public @ResponseBody String join() {
+    @GetMapping("/joinForm") // 회원가입 화면
+    public String joinForm() {
+        return "joinForm";
+    }
+
+    @PostMapping("/join") // 회원가입 진행
+    public @ResponseBody String join(User user) {
+        System.out.println(user);
+        user.setRole("ROLE_USER");
+
+        userRepository.save(user); // 회원가입 잘됨. 비밀번호 : 1234 => 시큐리티로 로그인 할 수 없음. 이유는 패스워드가 암호회가 안되었기 때문.
         return "join";
-    }
-
-    @GetMapping("/joinProc")
-    public @ResponseBody String joinProc() {
-        return "회원가입 완료됨!!";
     }
 }

@@ -13,3 +13,6 @@ select * from mysql.user;
 -- 한글설정 확인
 show variables like 'c%';
 
+desc user;
+
+select * from user;
