@@ -44,15 +44,15 @@ public class SecurityConfig {
 
         // 2. 인증 주소 설정 (WEB-INF/** 추가해줘야 함. 아니면 인증이 필요한 주소로 무한 리다이렉션 일어남)
         http.authorizeHttpRequests(a -> a
-                .requestMatchers("/user/**").authenticated()
+                .requestMatchers("/user/**").authenticated() // 인증만되면 들어갈 수 있는 주소.
                 //.requestMatchers("/admin/**").hasRole("ROLE_ADMIN")
                 .anyRequest().permitAll()
         );
 
         // 3. 로그인 처리 프로세스 설정
         http.formLogin(f -> f.loginPage("/loginForm")
-                .loginProcessingUrl("/loginProc")
-                .defaultSuccessUrl("/")
+                .loginProcessingUrl("/login") // login 주소가 호출이 되면 시큐리티가 낚아채서 대신 로그인을 진행해줌.
+                .defaultSuccessUrl("/") // 로그인하면 main페이지로 이동.
         );
 
         return http.build();
