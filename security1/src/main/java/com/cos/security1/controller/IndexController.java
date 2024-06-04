@@ -3,6 +3,8 @@ package com.cos.security1.controller;
 import com.cos.security1.model.User;
 import com.cos.security1.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -68,11 +70,24 @@ public class IndexController {
     @PostMapping("/join") // 회원가입 진행
     public String join(User user) {
         System.out.println(user);
-        user.setRole("ROLE_USER");
+        user.setRole("USER"); // ROLE_USER는 옛날방식. 에러남.
         String rawPassword = user.getPassword();
         String encPassword = bCryptPasswordEncoder.encode(rawPassword);
         user.setPassword(encPassword);
         userRepository.save(user); // 회원가입 잘됨. 비밀번호 : 1234 => 시큐리티로 로그인 할 수 없음. 이유는 패스워드가 암호회가 안되었기 때문.
         return "redirect:/loginForm"; // redirect: 뒤에 붙은 함수를 호출해줌.
     }
+
+    //@Secured("ADMIN") // ADMIN 권한만 접근가능 --- 에러?
+    @GetMapping("/info")
+    public @ResponseBody String info() {
+        return "개인정보";
+    }
+
+    //@PreAuthorize("hasAnyRole('MANAGER','ADMIN')") --- 에러?
+    @GetMapping("/data")
+    public @ResponseBody String data() {
+        return "데이터정보";
+    }
+
 }

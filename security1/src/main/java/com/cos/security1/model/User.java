@@ -46,7 +46,7 @@ public class User {
     // DB는 RoleType이라는게 없다.
     //@Enumerated(EnumType.STRING)
     //private RoleType role; // Enum을 쓰는게 좋다. // ADMIN, USER
-    private String role; // ROLE_USER, ROLE_ADMIN
+    private String role; //USER, ADMIN
     //private String oauth; // kakao, google
 
     @CreationTimestamp // 시간 자동 입력

@@ -16,4 +16,9 @@ show variables like 'c%';
 desc user;
 
 select * from user;
-select u1_0.id,u1_0.createDate,u1_0.email,u1_0.password,u1_0.role,u1_0.username from User u1_0 where u1_0.username='ssar';
+
+-- 권한변경 : ROLE_ 빼야함!!!
+update user set role = 'USER' where id = 1;
+update user set role = 'MANAGER' where id = 2;
+update user set role = 'ADMIN' where id = 3;
+COMMIT;
