@@ -10,7 +10,7 @@ server:
 spring:
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/security?serverTimezone=Asia/Seoul
+    url: jdbc:mariadb://localhost:3306/security?serverTimezone=Asia/Seoul
     username: cos
     password: cos1234
     
@@ -25,3 +25,17 @@ spring:
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
     show-sql: true
+
+
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: 213557082766-5d5l8qvfa19pl0o1e7f1goc5d2p0duh9.apps.googleusercontent.com
+            client-secret: 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
+            scope:
+              - email
+              - profile
+
+
