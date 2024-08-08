@@ -1,12 +1,0 @@
-
-­
-java:S6833"eReplace the "@Controller" annotation by "@RestController" and remove all "@ResponseBody" annotations.(”Š©Ûÿÿÿÿÿ8Ğ¡Ü™ş1J$fdafd78d-53c9-4ebf-bc8f-62d51685146e
-…
-java:S6813"BRemove this field injection and use constructor injection instead.(êæÄŞ8Ñ¡Ü™ş1J$62f02822-d32a-4931-9adb-3d1aa7fb7c8f
-…
-java:S6813 "BRemove this field injection and use constructor injection instead.(êæÄŞ8Ñ¡Ü™ş1J$670dc62f-7d01-42e0-8969-986dde138251
-m	java:S106H"+Replace this use of System.out by a logger.(Ø¼¢ƒ8Ø¡Ü™ş1J$935637cf-5b9e-4435-80e3-742e61f6bb45
-–
-java:S1128"SRemove this unused import 'org.springframework.security.access.annotation.Secured'.(…âíö8ËÁŒšş1J$4aaee203-5bba-4844-9760-0cd6d7860982
-
-java:S1128"URemove this unused import 'org.springframework.security.access.prepost.PreAuthorize'.(ˆ†×ùÿÿÿÿ8¤ÜŒšş1J$07a5be3a-1b79-4903-93ff-b8de5b5b91be
