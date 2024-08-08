@@ -1,10 +1,12 @@
 package com.cos.security1.config;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -22,8 +24,10 @@ import org.springframework.security.web.SecurityFilterChain;
  * 2024-06-01        dotdot       최초 생성
  */
 
+@RequiredArgsConstructor
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true) // 특정 주소 접근시 권한 및 인증을 위한 어노테이션 활성화.
 public class SecurityConfig {
     @Bean
@@ -54,6 +58,10 @@ public class SecurityConfig {
                 .loginProcessingUrl("/login") // login 주소가 호출이 되면 시큐리티가 낚아채서 대신 로그인을 진행해줌.
                 .defaultSuccessUrl("/") // 로그인하면 main페이지로 이동.
                 //.usernameParameter("바꿀username") // 로그인 username을 다른 명명으로 바꾸고 싶을때 사용.
+        );
+
+        // 4.oauth2 설정
+        http.oauth2Login(oauth -> oauth.loginPage("/loginForm") // 구글 로그인이 완료된 뒤의 후처리가 필요함.
         );
 
         return http.build();

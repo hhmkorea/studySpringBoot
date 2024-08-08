@@ -66,3 +66,6 @@ _
 /.settings/org.springframework.ide.eclipse.prefs,3\8\38e6652d3153d5900333737d5ac9d19da66845be
 T
 $.settings/org.eclipse.m2e.core.prefs,c\8\c8cb288c04fee82ed81fb7eeaa1e1b3ea20da607
+:
+
+.gitignore,a\5\a5cc2925ca8258af241be7e5b0381edf30266302
