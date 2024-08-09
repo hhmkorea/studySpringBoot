@@ -1,6 +1,7 @@
 package com.cos.security1.config.auth;
 
 import com.cos.security1.model.User;
+import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -27,6 +28,7 @@ import java.util.Collection;
 
 // Security Session => Authentication => UserDetails(PrincipalDetails)
 
+@Data
 public class PrincipalDetails implements UserDetails {
 
     private User user; // Composition
