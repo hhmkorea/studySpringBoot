@@ -27,6 +27,8 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
         System.out.println("getClientRegistration : " + userRequest.getClientRegistration());
         System.out.println("getAccessToken : " + userRequest.getAccessToken().getTokenValue());
         System.out.println("getAttributes : " + super.loadUser(userRequest).getAttributes());
+
+        // 회원가입을 강제로 진행해볼 예정.
         return super.loadUser(userRequest);
     }
 }
