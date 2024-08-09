@@ -1,6 +1,12 @@
 package com.cos.security1.config;
 
+// 1. 코드받기(인증), 2. 엑세스토큰(권한), 3. 사용자프로필 정보를 가져오고,
+// 4-1. 그 정보를 토대로 회원가입을 자동으로 진행시키기도 함.
+// 4-2. (이메일, 전화번호, 이름, 아이디) 쇼핑몰 -> (집주소), 백화점몰 -> (VIP등급, 일반등급)
+
+import com.cos.security1.config.oauth.PrincipalOauth2UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -30,6 +36,10 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableMethodSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true) // 특정 주소 접근시 권한 및 인증을 위한 어노테이션 활성화.
 public class SecurityConfig {
+
+    @Autowired
+    private PrincipalOauth2UserService principalOauth2UserService;
+
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
@@ -61,7 +71,10 @@ public class SecurityConfig {
         );
 
         // 4.oauth2 설정
-        http.oauth2Login(oauth -> oauth.loginPage("/loginForm") // 구글 로그인이 완료된 뒤의 후처리가 필요함.
+        http.oauth2Login(oauth -> // OAuth2 로그인 성공 이후 사용자 정보를 가져올 때의 설정을 담당
+                            oauth.loginPage("/loginForm")   // 구글 로그인이 완료된 뒤의 후처리가 필요함. Tip. 코드X, (엑세스토큰+사용자프로필정보 O)
+                                .userInfoEndpoint(c -> c.userService(principalOauth2UserService))
+                                //.successHandler(null) // 로그인 성공 시 핸들러
         );
 
         return http.build();
