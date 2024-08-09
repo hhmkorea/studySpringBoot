@@ -9,6 +9,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -36,10 +37,21 @@ public class IndexController {
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @GetMapping("/test/login")
-    public @ResponseBody String testLogin(@AuthenticationPrincipal PrincipalDetails principalDetails) {
+    public @ResponseBody String testLogin(Authentication authentication, @AuthenticationPrincipal PrincipalDetails userDetails) { // @AuthenticationPrincipal : security 세션정보 접근 가능한 annotation.
         System.out.println("/test/login ================");
-        System.out.println("principalDetails : " + principalDetails.getUser()); // security3부터 principalDetails ---> 이전 security 버전은 authentication을 먼저 받아야했음.
+        PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
+        System.out.println("principalDetails : " + principalDetails.getUser());
+        System.out.println("userDetails : " + userDetails.getUsername());
         return "세션 정보 확인하기";
+    }
+
+    @GetMapping("/test/oauth/login")
+    public @ResponseBody String testOauthLogin(Authentication authentication) {
+        System.out.println("/test/oauth/login ================");
+        OAuth2User oAuth2User = (OAuth2User) authentication.getPrincipal(); // OAuth2User로 다운 캐스팅
+        System.out.println("oAuth2User.getAttributes : " + oAuth2User.getAttributes());
+
+        return "Oauth2 세션 정보 확인하기";
     }
 
     //localhost:8080/
