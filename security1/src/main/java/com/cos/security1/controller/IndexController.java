@@ -36,8 +36,10 @@ public class IndexController {
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    @GetMapping("/test/login")
-    public @ResponseBody String testLogin(Authentication authentication, @AuthenticationPrincipal PrincipalDetails userDetails) { // @AuthenticationPrincipal : security 세션정보 접근 가능한 annotation.
+    @GetMapping("/test/login") // 일반적인 로그인.
+    public @ResponseBody String testLogin(Authentication authentication, @AuthenticationPrincipal PrincipalDetails userDetails) {
+        // Authentication, DI(의존성주입), PrincipalDetails 타입(=UserDetails)
+        // @AuthenticationPrincipal : security 세션정보 접근 가능한 annotation.
         System.out.println("/test/login ================");
         PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
         System.out.println("principalDetails : " + principalDetails.getUser());
@@ -45,11 +47,14 @@ public class IndexController {
         return "세션 정보 확인하기";
     }
 
-    @GetMapping("/test/oauth/login")
-    public @ResponseBody String testOauthLogin(Authentication authentication) {
+    @GetMapping("/test/oauth/login") // Oauth2 로그인.
+    public @ResponseBody String testOauthLogin(Authentication authentication, @AuthenticationPrincipal OAuth2User oauth) {
+        // Authentication, DI(의존성주입), OAuth2User 타입
+        // @AuthenticationPrincipal : security 세션정보 접근 가능한 annotation.
         System.out.println("/test/oauth/login ================");
         OAuth2User oAuth2User = (OAuth2User) authentication.getPrincipal(); // OAuth2User로 다운 캐스팅
         System.out.println("oAuth2User.getAttributes : " + oAuth2User.getAttributes());
+        System.out.println("OAuth2User : " + oauth.getAttributes());
 
         return "Oauth2 세션 정보 확인하기";
     }
@@ -64,7 +69,7 @@ public class IndexController {
     }
 
     @GetMapping("/user")
-    public @ResponseBody String user() { // @ResponseBody : text와 json 데이터 뿌려줌.
+    public @ResponseBody String user(@AuthenticationPrincipal PrincipalDetails principalDetails) { // @ResponseBody : text와 json 데이터 뿌려줌.
         return "user";
     }
 
