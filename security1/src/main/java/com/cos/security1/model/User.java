@@ -54,4 +54,15 @@ public class User {
 
     @CreationTimestamp // 시간 자동 입력
     private LocalDateTime createDate;
+
+    @Builder
+    public User(String username, String password, String email, String role, String provider, String providerId, LocalDateTime createDate) {
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.role = role;
+        this.provider = provider;
+        this.providerId = providerId;
+        this.createDate = createDate;
+    }
 }
