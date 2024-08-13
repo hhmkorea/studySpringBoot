@@ -47,8 +47,8 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
         System.out.println("getAttributes : " + oAuth2User.getAttributes());
 
         // oAuth2User 타입으로 회원 가입을 강제로 진행해볼 예정.
-        String provider = userRequest.getClientRegistration().getClientId(); // google
-        String providerId = oAuth2User.getAttribute("sub");
+        String provider = userRequest.getClientRegistration().getRegistrationId(); // google
+        String providerId = oAuth2User.getAttribute("sub"); // facebook은 id
         String username = provider+"_"+providerId; // google_108112947952585127251
         String password = bCryptPasswordEncoder.encode("겟인데어");
         String email = oAuth2User.getAttribute("email");
