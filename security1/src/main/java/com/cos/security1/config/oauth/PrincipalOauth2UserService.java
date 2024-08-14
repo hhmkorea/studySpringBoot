@@ -62,7 +62,7 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
             System.out.println("우리는 구글과 페이스북만 지원해요 ㅎㅎㅎ");
         }
         String provider = oAuth2UserInfo.getProvider();
-        String providerId = oAuth2UserInfo.getProvider();
+        String providerId = oAuth2UserInfo.getProviderId();
         String username = provider+"_"+providerId; // google_108112947952585127251
         String password = bCryptPasswordEncoder.encode("겟인데어");
         String email = oAuth2UserInfo.getEmail();
@@ -71,7 +71,7 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
         User userEntity = userRepository.findByUsername(username);
 
         if(userEntity == null) {
-            System.out.println("구글 로그인이 최초입니다.");
+            System.out.println("로그인이 최초입니다.");
             userEntity = User.builder()
                     .username(username)
                     .password(password)
@@ -82,7 +82,7 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
                     .build();
             userRepository.save(userEntity);
         } else {
-            System.out.println("구글 로그인을 이미 한적이 있습니다. 당신은 자동회원 가입이 되어 있습니다.");
+            System.out.println("로그인을 이미 한적이 있습니다. 당신은 자동회원 가입이 되어 있습니다.");
         }
 
         return new PrincipalDetails(userEntity, oAuth2User.getAttributes()); // Authentication에 둘다 저장됨
