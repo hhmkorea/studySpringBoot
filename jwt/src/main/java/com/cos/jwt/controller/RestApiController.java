@@ -1,5 +1,6 @@
 package com.cos.jwt.controller;
 
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
  * -----------------------------------------------------------
  * 2024-08-21        dotdot       최초 생성
  */
+//@CrossOrigin // 인증이 필요하지 않은 요청만 허용.
 @RestController
 public class RestApiController {
 
