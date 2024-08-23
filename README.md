@@ -34,4 +34,4 @@
 
         1. BycryptPasswordEncoder 주입시 순화참조 문제 해결!! (9강): https://www.inflearn.com/questions/476829
         2. SecurityConfig 최신 버전에 맞게 수정!! (20강~22강): https://www.inflearn.com/questions/1335544
-
+        3. authenticationManager() 문제 해결!! (24강) : https://www.inflearn.com/community/questions/1145565
