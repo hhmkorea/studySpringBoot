@@ -32,8 +32,7 @@ import org.springframework.web.filter.CorsFilter;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-    private final CorsConfig corsConfig; //
-    private final CorsFilter corsFilter; // Bean 으로 등록되어 있어서 바로 가져다 써도됨 근데 나는 걍 위에 클래스에서 메소드 호출할거임~
+    private final CorsConfig corsConfig;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -53,8 +52,6 @@ public class SecurityConfig {
                         .requestMatchers("/api/v1/admin/**").hasRole("ADMIN") // //admin으로 들어오면 ADMIN권한이 있는 사람만 들어올 수 있음
                         .anyRequest().permitAll() // 그리고 나머지 url은 전부 권한을 허용해준다.
                 );
-//        http.formLogin(form -> form
-//                .loginPage("/login"));
         return http.build();
     }
 }
