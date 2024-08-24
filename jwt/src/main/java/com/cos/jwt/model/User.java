@@ -31,7 +31,7 @@ public class User {
     private long id;
     private String username;
     private String password;
-    private String roles; // USER, ADMIN
+    private String roles; // USER, ADMIN ---> security 최신 버전에서는 권한 적용시 ROLE_ 쓰지 않음.
 
     public List<String> getRoleList() { // size 2개, 0:USER, 1:ADMIN
         if(this.roles.length() > 0) {
