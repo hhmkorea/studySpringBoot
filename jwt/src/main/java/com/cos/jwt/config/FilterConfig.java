@@ -1,5 +1,11 @@
 package com.cos.jwt.config;
 
+import com.cos.jwt.filter.MyFilter1;
+import com.cos.jwt.filter.MyFilter2;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
 /**
  * packageName    : com.cos.jwt.config
  * fileName       : FilterConfig
@@ -11,7 +17,6 @@ package com.cos.jwt.config;
  * -----------------------------------------------------------
  * 2024-08-22        dotdot       최초 생성
  */
-/*
 @Configuration
 public class FilterConfig {
 
@@ -31,4 +36,4 @@ public class FilterConfig {
         return bean;
     }
 
-}*/
+}

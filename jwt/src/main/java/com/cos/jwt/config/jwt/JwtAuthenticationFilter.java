@@ -8,6 +8,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+
 /**
  * packageName    : com.cos.jwt.config.jwt
  * fileName       : JwtAuthenticationFilter
@@ -33,6 +36,18 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         System.out.println("JwtAuthenticationFilter : 로그인 시도중");
 
         // 1. username, password 받아서
+        try {
+            BufferedReader br = request.getReader();
+
+            String input = null;
+            while ((input = br.readLine()) !=null) {
+                System.out.println(input);
+            }
+            //System.out.println(request.getInputStream().toString());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        System.out.println("=======================");
 
         // 2. 정상인지 로그인 시도 해보기. authenticationManager로 로그인 시도!!
         // PrincipalDetailsService 호출 됨. loadUserByUsername() 함수 실행됨.
