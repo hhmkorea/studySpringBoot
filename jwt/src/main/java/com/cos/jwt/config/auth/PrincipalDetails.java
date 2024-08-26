@@ -1,6 +1,7 @@
 package com.cos.jwt.config.auth;
 
 import com.cos.jwt.model.User;
+import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -18,6 +19,7 @@ import java.util.Collection;
  * -----------------------------------------------------------
  * 2024-08-23        dotdot       최초 생성
  */
+@Data
 public class PrincipalDetails implements UserDetails {
 
     private User user;
@@ -26,13 +28,8 @@ public class PrincipalDetails implements UserDetails {
         this.user = user;
     }
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        Collection<GrantedAuthority> authorities = new ArrayList<>();
-        user.getRoleList().forEach(r -> {
-            authorities.add(()-> r);
-        });
-        return authorities;
+    public User getUser() {
+        return user;
     }
 
     @Override
@@ -64,4 +61,14 @@ public class PrincipalDetails implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        Collection<GrantedAuthority> authorities = new ArrayList<>();
+        user.getRoleList().forEach(r -> {
+            authorities.add(()-> r);
+        });
+        return authorities;
+    }
+
 }

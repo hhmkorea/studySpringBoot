@@ -1,14 +1,17 @@
 package com.cos.jwt.config.jwt;
 
+import com.cos.jwt.config.auth.PrincipalDetails;
+import com.cos.jwt.model.User;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 
 /**
@@ -33,29 +36,40 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
+
         System.out.println("JwtAuthenticationFilter : 로그인 시도중");
 
         // 1. username, password 받아서
+        User user;
         try {
-            BufferedReader br = request.getReader();
+//            BufferedReader br = request.getReader();
+//            String input = null;
+//            while ((input = br.readLine()) !=null) {
+//                System.out.println(input);
+//            }
+            ObjectMapper om = new ObjectMapper(); // JSON 데이터를 파싱해줌.
+            user = om.readValue(request.getInputStream(), User.class);
+            System.out.println(user);
 
-            String input = null;
-            while ((input = br.readLine()) !=null) {
-                System.out.println(input);
-            }
+            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()); // 토큰생성
+
+            // 2. 정상인지 로그인 시도 해보기. authenticationManager로 로그인 시도!!
+            // PrincipalDetailsService 호출 됨. loadUserByUsername() 함수 실행됨.
+            Authentication authentication = authenticationManager.authenticate(authenticationToken); // 토큰 넣어서 던짐, Authentication에 로그인한 정보 담김.
+
+            // 3. PrincipalDetails를 세션에 담고(권한 관리를 위해서)
+            // Authentication에 객체가 session 영역에 저장됨 => 로그인 되었다는 뜻.
+            PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
+            System.out.println(principalDetails.getUser().getUsername());
+
+            // 4. JWT 토큰을 만들어서 응답해주면 됨.
+            return authentication;
 
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
+
         System.out.println("=======================");
-
-        // 2. 정상인지 로그인 시도 해보기. authenticationManager로 로그인 시도!!
-        // PrincipalDetailsService 호출 됨. loadUserByUsername() 함수 실행됨.
-
-        // 3. PrincipalDetails를 세션에 담고(권한 관리를 위해서)
-
-        // 4. JWT 토큰을 만들어서 응답해주면 됨. 
-        
-        return super.attemptAuthentication(request, response);
+        return null;
     }
 }
