@@ -1,6 +1,7 @@
 package com.cos.jwt.config;
 
 import com.cos.jwt.config.jwt.JwtAuthenticationFilter;
+import com.cos.jwt.config.jwt.JwtAuthorizationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -45,6 +46,7 @@ public class SecurityConfig {
                 .addFilter(corsConfig.corsFilter()) // @CrossOrigin(인증X), 시큐리티 필터에 등록 인증(O) --> 모든 요청 허용.
                 //.addFilterBefore(new MyFilter3(), SecurityContextPersistenceFilter.class) // ---> 22, 23강 테스트용.
                 .addFilter(new JwtAuthenticationFilter(authenticationManager)) // AuthenticationManager ---> 24강 테스트
+                .addFilter(new JwtAuthorizationFilter(authenticationManager)) // AuthenticationManager ---> 27강 테스트
                 .formLogin((form)-> form.disable())
                 .httpBasic((basic)-> basic.disable())
                 /* --------- security 최신 버전에서는 권한 적용시 ROLE_ 쓰지 않음. 즉, USER, ADMIN, MANAGER로 써야함 ---------- */
