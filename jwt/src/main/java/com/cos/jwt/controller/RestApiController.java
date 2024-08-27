@@ -3,10 +3,7 @@ package com.cos.jwt.controller;
 import com.cos.jwt.model.User;
 import com.cos.jwt.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -28,7 +25,7 @@ import org.springframework.web.bind.annotation.*;
 public class RestApiController {
 
     private final UserRepository userRepository;
-    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder; // JwtApplication에 IoC 등록해둔거 호출.
 
     @GetMapping("home") // 모든 사람이 접근 가능.
     public String home() {

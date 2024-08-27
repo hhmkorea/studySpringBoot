@@ -30,7 +30,7 @@ public class SecurityConfig {
     @Autowired
     private CorsConfig corsConfig;
 
-    @Bean
+    @Bean // authenticationManager를 IoC에 등록해줌.
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
     }

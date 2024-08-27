@@ -8,7 +8,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @SpringBootApplication
 public class JwtApplication {
 
-	@Bean
+	@Bean // BCryptPasswordEncoder를 IoC에 등록해줌.
 	BCryptPasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
