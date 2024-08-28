@@ -23,7 +23,7 @@ desc user;
 select * from user;
 
 -- 권한변경 : ROLE_ 빼야함!!!
-update user set role = 'USER' where id = 1;
-update user set role = 'MANAGER' where id = 2;
-update user set role = 'ADMIN' where id = 3;
+update user set roles = 'USER' where id = 1;
+update user set roles = 'MANAGER' where id = 2;
+update user set roles = 'ADMIN' where id = 3;
 COMMIT;

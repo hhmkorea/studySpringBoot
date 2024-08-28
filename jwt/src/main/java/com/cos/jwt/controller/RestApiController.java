@@ -1,8 +1,10 @@
 package com.cos.jwt.controller;
 
+import com.cos.jwt.config.auth.PrincipalDetails;
 import com.cos.jwt.model.User;
 import com.cos.jwt.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -43,5 +45,25 @@ public class RestApiController {
         user.setRoles("USER"); // 권한은 기본으로 USER로 설정합니다. ---> security 최신 버전에서는 권한 적용시 ROLE_ 쓰지 않음.
         userRepository.save(user);
         return "회원가입완료";
+    }
+
+    @GetMapping("user") // user, manager, admin 권한만 접근 가능
+    public String user(Authentication authentication) {
+        PrincipalDetails principal = (PrincipalDetails) authentication.getPrincipal();
+        System.out.println("principal : " + principal.getUser().getId());
+        System.out.println("principal : " + principal.getUser().getUsername());
+        System.out.println("principal : " + principal.getUser().getPassword());
+
+        return "user";
+    }
+
+    @GetMapping("manager") // manager, admin 권한만 접근 가능
+    public String manager() {
+        return "manager";
+    }
+
+    @GetMapping("admin") // admin 권한만 접근 가능
+    public String admin() {
+        return "admin";
     }
 }
