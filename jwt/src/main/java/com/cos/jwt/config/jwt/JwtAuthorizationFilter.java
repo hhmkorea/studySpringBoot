@@ -47,19 +47,19 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
         //super.doFilterInternal(request, response, chain);
         System.out.println("인증이나 권한이 필요한 주소 요청이 됨.");
 
-        String jwtHeader = request.getHeader("Authorization");
+        String jwtHeader = request.getHeader(JwtProperties.HEADER_STRING);
         System.out.println("jwtHeader: "+jwtHeader);
 
         // header가 있는지 확인
-        if (jwtHeader == null || !jwtHeader.startsWith("Bearer")) {
+        if (jwtHeader == null || !jwtHeader.startsWith(JwtProperties.TOKEN_PREFIX.replace(" ",""))) {
             chain.doFilter(request,response);
             return;
         }
 
         // JWT 토큰 검증해서 정상적인 사용자인지 확인
-        String jwtToken = jwtHeader.replace("Bearer ", "");
+        String jwtToken = jwtHeader.replace(JwtProperties.TOKEN_PREFIX, "");
 
-        String username = JWT.require(Algorithm.HMAC512("cos"))
+        String username = JWT.require(Algorithm.HMAC512(JwtProperties.SECRET))
                                 .build()
                                 .verify(jwtToken)
                                 .getClaim("username")
