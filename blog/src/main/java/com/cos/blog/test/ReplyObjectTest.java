@@ -1,7 +1,7 @@
 package com.cos.blog.test;
 
 import com.cos.blog.model.Reply;
-import org.junit.Test;
+import org.testng.annotations.Test;
 
 /**
  * packageName    : com.cos.blog.test
