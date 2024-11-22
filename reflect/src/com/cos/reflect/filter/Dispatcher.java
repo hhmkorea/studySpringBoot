@@ -35,6 +35,8 @@ public class Dispatcher implements Filter {
 			userController.join();
 		} else if (endPoint.equals("/login")) {
 			userController.login();
+		} else if (endPoint.equals("/user")) { // 계속 추가해야함. 못 팔아먹음.
+			userController.user();
 		}
 	}
 
