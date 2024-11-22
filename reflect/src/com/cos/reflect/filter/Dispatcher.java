@@ -1,6 +1,8 @@
 package com.cos.reflect.filter;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -18,7 +20,7 @@ public class Dispatcher implements Filter {
 	@Override
 	public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain)
 			throws IOException, ServletException {
-//		System.out.println("디스패쳐 진입");
+
 		HttpServletRequest request = (HttpServletRequest) req;
 		HttpServletResponse response = (HttpServletResponse) resp;
 		
@@ -31,12 +33,25 @@ public class Dispatcher implements Filter {
 		System.out.println("엔드포인트 : " + endPoint);
 		
 		UserController userController = new UserController();
-		if (endPoint.equals("/join")) {
-			userController.join();
-		} else if (endPoint.equals("/login")) {
-			userController.login();
-		} else if (endPoint.equals("/user")) { // 계속 추가해야함. 못 팔아먹음.
-			userController.user();
+//		if (endPoint.equals("/join")) {
+//			userController.join();
+//		} else if (endPoint.equals("/login")) {
+//			userController.login();
+//		} else if (endPoint.equals("/user")) {
+//			userController.user();
+//		}
+		
+		// 리플렉션 -> 메서드를 런타임 시점에서 찾아내서 실행, 
+		Method[] methods = userController.getClass().getDeclaredMethods(); // 그 파일의 메서드만!! 
+		for (Method method : methods) {
+			//System.out.println(method.getName());
+			if (endPoint.equals("/" + method.getName())) {
+				try {
+					method.invoke(userController);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
 		}
 	}
 
