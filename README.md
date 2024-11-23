@@ -39,5 +39,14 @@
 
 > 강의 소스 2 : https://github.com/codingspecialist/Reflection-Controller-V2
 
-+ reflect 
++ reflect : 
+
+#### +++ 관련 용어 정리 +++ 
++ Data Transper Object : DTO
+    통신을 위한 정확하게 받을 수 있는 데이터만 가지고 Object로 만든거. 
+    null error 방지용.
+    (예:User에 4개의 변수가 있는데 Join은 3개, Login은 2개 파라매터 받음)
+
++ Postman : parameter를 넣어서 URL 테스트 가능.
+
 ####
