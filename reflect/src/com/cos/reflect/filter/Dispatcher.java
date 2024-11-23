@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -16,6 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.cos.reflect.anno.RequestMapping;
 import com.cos.reflect.controller.UserController;
+import com.cos.reflect.controller.dto.LoginDto;
 
 // 분기 시키기 - 라우터 역할
 public class Dispatcher implements Filter {
@@ -62,13 +64,28 @@ public class Dispatcher implements Filter {
 		for (Method method:methods) { // 4바퀴 (join, login, user, hello)
 			Annotation annotation = method.getDeclaredAnnotation(RequestMapping.class); 
 			RequestMapping requestMapping = (RequestMapping) annotation; // 다운캐스팅한 이유? 
-			System.out.println(requestMapping.value()); // 주소를 annotation에 걸어서 함수 호출 가능.
+			//System.out.println(requestMapping.value()); // 주소를 annotation에 걸어서 함수 호출 가능.
+			
+			//System.out.println("LoginDto.class : " + LoginDto.class);
 			
 			if (requestMapping.value().equals(endPoint)) {
 				try {
-					String path = (String)method.invoke(userController);
-					
-					RequestDispatcher dis = request.getRequestDispatcher(path); // 내부에서 실행하기 때문에 필터를 안탐. 외부에서는 필터 들어와서 못탐.
+					Parameter[] params = method.getParameters();
+					String path = null;
+					if (params.length != 0) {
+						//System.out.println("params[0].getType() : " + params[0].getType());
+						Object dtoInstance = params[0].getType().newInstance(); // /user/login => LoginDto, /user/join => JoinDto 실행시 결정되므로 Object로 받음.
+						String username = request.getParameter("username");		
+						String password = request.getParameter("password");
+						System.out.println("username : " + username);
+						System.out.println("password : " + password);
+												
+						path = "/";
+					} else {
+						path = (String)method.invoke(userController);	
+					}
+						
+					RequestDispatcher dis = request.getRequestDispatcher(path); // 필터를 다시 안탐!! 내부적으로 동작함.
 					dis.forward(request, response);
 				} catch (Exception e) {
 					e.printStackTrace();
