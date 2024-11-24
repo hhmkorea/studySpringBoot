@@ -25,10 +25,15 @@ public class MyFilter implements Filter {
 		
 		HttpServletResponse servletResponse = (HttpServletResponse) response;
 		servletResponse.setContentType("text/event-stream; charset=utf-8"); 
-		// event-stream : 스트림을 열어놓고 데이터를 계속 줌. flush 할때 마다 화면에서 하나씩 순차적으로 데이타 뿌려줌.  
+		// event-stream : 스트림을 열어놓고 데이터를 계속 줌. flush 할때 마다 화면에서 하나씩 순차적으로 데이타 뿌려줌.  	
 		
-		// WebFlux : 비동기, 단일 스레드로 동작함!!!
-		// Spring MVC : 사용자가 들어올때마다 개별 스레드를 만들어서 동작함.
+		/*
+		 * WebFlux : 비동기, 단일 스레드로 동작함!!! 
+		 * Spring MVC : 사용자가 들어올때마다 개별 스레드를 만들어서 동작함. SSE
+		 * 프로토콜 : 응답을 종료하지 않고 이어짐.
+		 */
+		
+		// 1. Reactive Streams 라이브러리를 쓰면 표준을 지켜서 응답을 할 수 있다.  
 		PrintWriter out = servletResponse.getWriter();
 		for (int i = 0; i < 5; i++) {
 			out.println("응답 : " + i ); // 버퍼에 데이타 쌓기.
@@ -40,7 +45,7 @@ public class MyFilter implements Filter {
 			}
 		}
 		
-		//  SSE 프로토콜 : 응답을 종료하지 않고 이어짐. 
+		// 2. SSE Emitter 라이브러리를 사용하면 편하게 쓸 수 있다. 
 		while(true) {
 			try {
 				if (eventNotify.getChange()) {
@@ -56,4 +61,6 @@ public class MyFilter implements Filter {
 		}
 	}
 
+	// 3. WebFlux -> Reactive Streams 이 라이브러리가 적용된 stream을 배우고 (비동기 단일스레드 동작)
+	// 4. Servlet MVC -> Reactive Streams 이 라이브러리가 적용된 stream을 배우고 (멀티 스레드 동작)
 }
