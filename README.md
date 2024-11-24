@@ -48,7 +48,8 @@
 #### 3) 메타코딩 'Spring WebFlux' 강의 실습
 > 강의 URL : https://www.youtube.com/playlist?list=PL93mKxaRDidFH5gRwkDX5pQxtp0iv3guf
 
-+ fluxtest :
++ fluxtest : 노가다 코드
++ reactive-test : 출판사, 구독자, 구독
 
 #
 ## *** 폴더별 설명(기타) ***
