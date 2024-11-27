@@ -33,7 +33,7 @@ public class MyFilter implements Filter {
 		 * 프로토콜 : 응답을 종료하지 않고 이어짐.
 		 */
 		
-		// 1. Reactive Streams 라이브러리를 쓰면 표준을 지켜서 응답을 할 수 있다.  
+		// 1. Reactive Streams 라이브러리를 쓰면 표준을 지켜서 응답을 할 수 있다.  -- 소비할때까지만 유지, 데이터가 있으면 바로 지속적으로 제공.
 		PrintWriter out = servletResponse.getWriter();
 		for (int i = 0; i < 5; i++) {
 			out.println("응답 : " + i ); // 버퍼에 데이타 쌓기.
@@ -45,7 +45,7 @@ public class MyFilter implements Filter {
 			}
 		}
 		
-		// 2. SSE Emitter 라이브러리를 사용하면 편하게 쓸 수 있다. 
+		// 2. SSE Emitter 라이브러리를 사용하면 편하게 쓸 수 있다. -- SSE 프로토콜, 소비가 끝나도 종료 안됨, 데이터를 다줘도 계속 유지하고 있음.
 		while(true) {
 			try {
 				if (eventNotify.getChange()) {

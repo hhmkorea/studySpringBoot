@@ -33,3 +33,5 @@
 /security1/.project
 /jwt/.mvn/
 /reflect/build/
+/reactive-test/target/
+/reactive-test/.settings/
