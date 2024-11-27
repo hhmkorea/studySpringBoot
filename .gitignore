@@ -32,6 +32,7 @@
 /security1/.factorypath
 /security1/.project
 /jwt/.mvn/
+/reflect/.settings/
 /reflect/build/
-/reactive-test/target/
 /reactive-test/.settings/
+/reactive-test/target/
