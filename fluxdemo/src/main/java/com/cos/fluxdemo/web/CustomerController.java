@@ -11,6 +11,7 @@ import com.cos.fluxdemo.domain.CustomerRepository;
 
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.publisher.Sinks;
 
 import com.cos.fluxdemo.domain.Customer;
 
@@ -18,10 +19,16 @@ import com.cos.fluxdemo.domain.Customer;
 public class CustomerController {
 
 	private final CustomerRepository customerRepository;
+	private final Sinks.Many<Customer> sink;
+	
+	/* Sink?
+	    A 요청 -> Flux -> Stream
+	    B 요청 -> Flux -> Stream
+	    -> Flxux.merge -> sink  	*/
 	
 	public CustomerController(CustomerRepository customerRepository) {
-		super();
 		this.customerRepository = customerRepository;
+		sink = Sinks.many().multicast().onBackpressureBuffer();
 	}
 	
 	@GetMapping("/flux")
@@ -37,10 +44,17 @@ public class CustomerController {
 	@GetMapping(value = "/customer", produces = MediaType.APPLICATION_STREAM_JSON_VALUE)  // 1건 onNext할때마다 Buffer로 flush 해줌. 데이터가 소진되면 response(응답) 종료됨.
 	public Flux<Customer> findAll() { // 여러 건 있을때 
 		return customerRepository.findAll().delayElements(Duration.ofSeconds(1)).log();
-	}
+	} 
 	
 	@GetMapping("/customer/{id}") 
 	public Mono<Customer> findById(@PathVariable Long id) { // 한 건만 있을때 
 		return customerRepository.findById(id).log();
 	}
+	
+	@GetMapping(value = "/customer/sse", produces = MediaType.TEXT_EVENT_STREAM_VALUE) // Server Sent Event, 1건씩 data() 형태로 바로바로 보여줌. 데이터가 없으면 종료.
+	public Flux<Customer> findAllSSE() {
+		return customerRepository.findAll().delayElements(Duration.ofSeconds(1)).log();
+	}
+	
+	
 }
