@@ -5,7 +5,7 @@ import org.springframework.data.repository.reactive.ReactiveCrudRepository;
 
 import reactor.core.publisher.Flux;
 
-public interface CustomerRepository extends ReactiveCrudRepository<Customer, Long> {
+public interface CustomerRepository extends ReactiveCrudRepository<Customer, Long> { 
 
     @Query("SELECT * FROM customer WHERE last_name = :lastname")
     Flux<Customer> findByLastName(String lastName);

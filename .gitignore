@@ -34,5 +34,12 @@
 /jwt/.mvn/
 /reflect/.settings/
 /reflect/build/
+/reactive-test/.idea/
 /reactive-test/.settings/
 /reactive-test/target/
+/fluxdemo/.mvn/
+/fluxdemo/.settings/
+/fluxdemo/target/
+/fluxtest/.mvn/
+/fluxtest/.settings/
+/fluxtest/target/
