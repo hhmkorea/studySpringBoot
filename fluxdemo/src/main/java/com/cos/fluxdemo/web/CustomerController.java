@@ -3,8 +3,10 @@ package com.cos.fluxdemo.web;
 import java.time.Duration;
 
 import org.springframework.http.MediaType;
+import org.springframework.http.codec.ServerSentEvent;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cos.fluxdemo.domain.CustomerRepository;
@@ -51,10 +53,25 @@ public class CustomerController {
 		return customerRepository.findById(id).log();
 	}
 	
-	@GetMapping(value = "/customer/sse", produces = MediaType.TEXT_EVENT_STREAM_VALUE) // Server Sent Event, 1건씩 data() 형태로 바로바로 보여줌. 데이터가 없으면 종료.
-	public Flux<Customer> findAllSSE() {
-		return customerRepository.findAll().delayElements(Duration.ofSeconds(1)).log();
-	}
+	/*
+	 * @GetMapping(value = "/customer/sse", produces =
+	 * MediaType.TEXT_EVENT_STREAM_VALUE) // Server Sent Event, 1건씩 data() 형태로 바로바로
+	 * 보여줌. 데이터가 없으면 종료. public Flux<Customer> findAllSSE() { return
+	 * customerRepository.findAll().delayElements(Duration.ofSeconds(1)).log(); }
+	 */
 	
+	@GetMapping("/customer/sse") // 생략, produces = MediaType.TEXT_EVENT_STREAM_VALUE) 
+	public Flux<ServerSentEvent<Customer>> findAllSSE() {
+		return sink.asFlux().map(c -> ServerSentEvent.builder(c).build()).doOnCancel(() -> { // response(응답) 취소 될때 
+			sink.asFlux().blockLast(); // 마지막 데이터가 호출됨. 
+		});
+	}
+
+	@PostMapping("/customer")
+	public Mono<Customer> save() {
+		return customerRepository.save(new Customer("gildong", "Hong")).doOnNext(c -> {
+			sink.tryEmitNext(c); // Publisher에 데이터가 하나 추가됨.
+		});
+	}
 	
 }
