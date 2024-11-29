@@ -1,0 +1,6 @@
+spring:
+  data:
+    mongodb:
+      host: localhost
+      port: 27017 # MongoDB 기본포트 
+      database: chatdb # 해당 프로젝트 MongoDB 데이터베이스 이름

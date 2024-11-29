@@ -43,3 +43,6 @@
 /fluxtest/.mvn/
 /fluxtest/.settings/
 /fluxtest/target/
+/chatapp/.mvn/
+/chatapp/.settings/
+/chatapp/target/
