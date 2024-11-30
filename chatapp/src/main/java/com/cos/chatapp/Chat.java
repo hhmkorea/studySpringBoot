@@ -19,4 +19,6 @@ public class Chat {
 	private String receiver; // 받는 사람
 	
 	private LocalDateTime createdAt;
+
+	
 }
