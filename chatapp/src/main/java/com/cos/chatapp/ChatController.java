@@ -1,6 +1,8 @@
 package com.cos.chatapp;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -31,7 +33,7 @@ public class ChatController {
 	@CrossOrigin // JS 요청을 허용 
 	@PostMapping("/chat")
 	public Mono<Chat> setMsg(@RequestBody Chat chat) { // 한 건만 데이터 리턴 
-		chat.setCreatedAt(LocalDateTime.now());
-		return chatRepository.save(chat);
+		chat.setCreatedAt(LocalDateTime.now(ZoneId.of("Asia/Seoul")));
+		return chatRepository.save(chat); // Object를 리턴하면 자동으로 JSON 변환 (MessageConverer)
 	}
 }
