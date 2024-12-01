@@ -23,17 +23,26 @@ public class ChatController {
 	
 	private final ChatRepository chatRepository;
 
+	// 귓속말 할때 사용하면 되요!! 
 	@CrossOrigin // JS 요청을 허용 
 	@GetMapping(value = "/sender/{sender}/receiver/{receiver}", produces = MediaType.TEXT_EVENT_STREAM_VALUE) // SSE 프로토콜, response 계속 유지.
 	public Flux<Chat> getMsg(@PathVariable String sender, @PathVariable String receiver) { // 경로에서 넘어온 파라매터 받음.
 		return chatRepository.mFindBySender(sender, receiver)
 				.subscribeOn(Schedulers.boundedElastic());
 	}
-
+	
+	// 채팅방 대화 
+	@CrossOrigin
+	@GetMapping(value = "/chat/romNum/{roomNum}", produces = MediaType.TEXT_EVENT_STREAM_VALUE) 
+	public Flux<Chat> findByUsername(@PathVariable Integer roomNum) { 
+		return chatRepository.mFindByRoomNum(roomNum)
+				.subscribeOn(Schedulers.boundedElastic());
+	}
+	
 	@CrossOrigin // JS 요청을 허용 
 	@PostMapping("/chat")
 	public Mono<Chat> setMsg(@RequestBody Chat chat) { // 한 건만 데이터 리턴 
-		chat.setCreatedAt(LocalDateTime.now(ZoneId.of("Asia/Seoul")));
+		chat.setCreatedAt(LocalDateTime.now());
 		return chatRepository.save(chat); // Object를 리턴하면 자동으로 JSON 변환 (MessageConverer)
 	}
 }
