@@ -1,0 +1,50 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /
+    encoding:
+      charset: utf-8
+      enabled: true
+    
+spring:
+  mvc:
+    view:
+      prefix: /WEB-INF/views/
+      suffix: .jsp
+      
+  datasource:
+    driver-class-name: org.mariadb.jdbc.Driver
+    url: jdbc:mariadb://localhost:3306/photogram?serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true&useSSL=false
+    username: cos
+    password: cos1234
+    
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: update #create : 데이타 관련 제약조건 변경되면 씀. 현재 DB 초기화, none : 스키마 변경 안함. 
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    show-sql: true
+      
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 2MB
+
+  security:
+    user:
+      name: test
+      password: 1234   
+
+    oauth2:
+      client:
+        registration:
+          facebook:
+            client-id: 1376957826263733
+            client-secret: 74c159b3ad798d3bda4358d962dc0a45
+            scope:
+            - public_profile
+            - email
+
+file:
+  path: D:/upload/
