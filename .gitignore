@@ -48,3 +48,8 @@
 /chatapp/target/
 /chat-front/.idea/
 /Servers/
+/photogram/.idea/
+/photogram/.mvn/
+/photogram/.settings/
+/photogram/bin/
+/photogram/target/
