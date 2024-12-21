@@ -43,7 +43,7 @@ where
     username= 'yuyee@nate.com_3444864854'
 ;
 desc user;
-
+select * from board;
 select * from reply;
 
 -- delete from user where email = 'yuyee@nate.com';
