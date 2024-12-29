@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
  * fileName       : UserApiController
  * author         : dotdot
  * date           : 2024-04-10
- * description    : 회원가입 Ajax 요청 Controller(앱에서도 사용가능)
+ * description    : 게시판 Ajax 요청 Controller(앱에서도 사용가능)
  * ===========================================================
  * DATE              AUTHOR             NOTE
  * -----------------------------------------------------------
